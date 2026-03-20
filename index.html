@@ -1,954 +1,708 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MBMP — We capture what others overlook.</title>
+<title>MBMP — Emotion Specialists</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── MBMP · Black · White · Gold ── */
-:root{
-  --k:#000;--bg:#0d0d0d;--bg2:#161616;--w:#fff;
-  --m:rgba(255,255,255,.38);--d:rgba(255,255,255,.08);--d2:rgba(255,255,255,.16);
-  --gold:#c8a96e;
-  --ff:"Cormorant Garamond",Georgia,serif;
-  --fb:"DM Sans",sans-serif;
+:root {
+  --bg: #050507; --bg2: #0a0a0f;
+  --glass: rgba(255,255,255,0.05); --glass-h: rgba(255,255,255,0.09);
+  --bdr: rgba(255,255,255,0.07); --bdr-h: rgba(255,255,255,0.15);
+  --txt: #f0eeeb; --txt2: rgba(240,238,235,0.55); --txt3: rgba(240,238,235,0.28);
+  --acc: #c8a45c; --acc-glow: rgba(200,164,92,0.3); --acc-soft: rgba(200,164,92,0.08);
+  --wrow: #f5f3ef; --drow: #0c0c10;
+  --r-sm: 12px; --r-md: 20px;
+  --fd: 'Outfit', sans-serif; --fb: 'DM Sans', sans-serif;
+  --navh: 72px;
+  --sp: clamp(80px,12vh,160px); --sx: clamp(20px,5vw,80px);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--k);color:rgba(255,255,255,.86);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--fb);background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
 a{color:inherit;text-decoration:none}img,video{display:block;max-width:100%}
-::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--gold)}
+button{font-family:var(--fd);cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
 
-/* lang */
-body.en [data-de]{display:none!important}body.en [data-en]{display:block}
-body:not(.en) [data-en]{display:none!important}body:not(.en) [data-de]{display:block}
-span[data-de],span[data-en]{display:inline}
-body.en span[data-en]{display:inline}body.en span[data-de]{display:none}
-body:not(.en) span[data-de]{display:inline}body:not(.en) span[data-en]{display:none}
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.45}
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;
-     display:flex;align-items:center;justify-content:space-between;padding:0 44px;
-     transition:background .4s}
-nav.s{background:rgba(0,0,0,.96);border-bottom:1px solid var(--d)}
-.nl img{height:20px;width:auto}
-.nm{display:flex;gap:28px;list-style:none}
-.nm a{font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.4);transition:color .2s}
-.nm a:hover{color:#fff}
-.nr{display:flex;align-items:center;gap:11px}
-.nb{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.38);
-     padding:4px 10px;border:1px solid var(--d);background:none;font-family:var(--fb);transition:all .2s}
-.nb:hover{color:#fff;border-color:var(--d2)}
-.nc{font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;padding:7px 15px;
-     border:1px solid rgba(255,255,255,.2);color:#fff;background:none;transition:all .25s;display:inline-block}
-.nc:hover{background:#fff;color:#000}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--navh);display:flex;align-items:center;justify-content:space-between;padding:0 var(--sx);background:rgba(5,5,7,0.5);backdrop-filter:blur(40px) saturate(1.4);-webkit-backdrop-filter:blur(40px) saturate(1.4);border-bottom:1px solid var(--bdr);transition:background .4s}
+.nav.scrolled{background:rgba(5,5,7,0.92)}
+.nav-logo img{height:18px;width:auto;filter:brightness(1.15);transition:opacity .3s}
+.nav-logo img:hover{opacity:.8}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-family:var(--fd);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt2);transition:color .3s;position:relative}
+.nav-links a:hover{color:var(--txt)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--acc);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.lang-toggle{display:flex;gap:2px;background:var(--glass);border:1px solid var(--bdr);border-radius:8px;padding:3px;margin-left:14px}
+.lang-btn{font-size:11px;font-weight:600;letter-spacing:1px;padding:5px 11px;border-radius:6px;transition:all .3s;color:var(--txt2)}
+.lang-btn.active{background:var(--acc);color:var(--bg)}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.nav-ham span{display:block;width:22px;height:1.5px;background:var(--txt);transition:all .3s}
+.mob-menu{display:none;position:fixed;inset:0;z-index:999;background:rgba(5,5,7,0.97);backdrop-filter:blur(40px);flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:var(--fd);font-size:22px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--txt2);transition:color .3s}
+.mob-menu a:hover{color:var(--acc)}
+@media(max-width:900px){.nav-links{display:none}.nav-ham{display:flex}}
 
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--fb);font-size:.62rem;
-      letter-spacing:.11em;text-transform:uppercase;padding:10px 22px;cursor:pointer;
-      transition:all .25s;white-space:nowrap;border:none}
-.bw{background:#fff;color:#000;border:1px solid #fff}.bw:hover{background:transparent;color:#fff}
-.bo{background:none;color:#fff;border:1px solid rgba(255,255,255,.22)}.bo:hover{background:#fff;color:#000;border-color:#fff}
-.bg{background:none;color:var(--gold);border:1px solid rgba(200,169,110,.25)}.bg:hover{background:var(--gold);color:#000}
+/* HERO */
+.hero{position:relative;width:100%;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-video-wrap{position:absolute;inset:0;width:100%;height:100%;z-index:1;overflow:hidden;pointer-events:none}
+.hero-video-wrap iframe{position:absolute;top:50%;left:50%;width:110vw;height:calc(110vw / 16 * 9);min-height:100vh;min-width:calc(100vh / 9 * 16);transform:translate(-50%,-50%);border:none;opacity:.55}
+.hero-ov{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(5,5,7,.45) 0%,rgba(5,5,7,.08) 35%,rgba(5,5,7,.65) 80%,var(--bg) 100%)}
+.hero-ct{position:relative;z-index:3;text-align:center;padding:0 var(--sx);animation:hF 2s ease-out}
+@keyframes hF{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-logo{width:clamp(160px,22vw,300px);margin:0 auto 28px;filter:drop-shadow(0 0 60px rgba(200,164,92,.15))}
+.hero-tag{font-family:var(--fb);font-size:clamp(13px,1.4vw,18px);font-weight:300;letter-spacing:5px;text-transform:uppercase;color:var(--txt2);margin-bottom:44px}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;background:var(--acc);color:var(--bg);font-size:13px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;border-radius:60px;transition:all .4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 50px var(--acc-glow),0 0 100px rgba(200,164,92,.08);border:none;font-family:var(--fd)}
+.cta:hover{transform:scale(1.05);box-shadow:0 0 70px var(--acc-glow),0 0 140px rgba(200,164,92,.12)}
+.cta svg{width:16px;height:16px}
+.hero-sc{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;animation:sB 2.2s infinite}
+.hero-sc span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--txt3);font-family:var(--fd)}
+.sc-line{width:1px;height:36px;background:linear-gradient(180deg,var(--acc),transparent)}
+@keyframes sB{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 
-hr{border:none;border-top:1px solid var(--d)}
-.sec{padding:96px 44px}.wrap{max-width:1120px;margin:0 auto}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.g2t{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
-.eye{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:13px;
-      display:flex;align-items:center;gap:10px}
-.eye::before{content:'';width:14px;height:1px;background:var(--gold);flex-shrink:0}
-h2{font-family:var(--ff);font-size:clamp(1.85rem,4.4vw,3.6rem);font-weight:300;line-height:1.06;
-    letter-spacing:-.02em;color:#fff;margin-bottom:17px}
-h2 em{color:var(--gold);font-style:italic}
-.body{font-size:.88rem;font-weight:300;line-height:1.85;color:var(--m);max-width:490px}
-.body em{font-family:var(--ff);font-style:italic;color:var(--gold);font-size:1.04em}
-.pull{font-family:var(--ff);font-size:clamp(.92rem,1.6vw,1.28rem);font-weight:300;font-style:italic;
-       color:rgba(200,169,110,.7);line-height:1.55;border-left:1px solid var(--gold);padding-left:17px;margin:21px 0}
-.r{opacity:0;transform:translateY(16px);transition:opacity .78s cubic-bezier(.16,1,.3,1),transform .78s cubic-bezier(.16,1,.3,1)}
-.r.v{opacity:1;transform:none}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+/* SECTIONS */
+section{position:relative;z-index:1;padding:var(--sp) var(--sx)}
+.sl{font-family:var(--fd);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
+.st{font-family:var(--fd);font-size:clamp(30px,4.5vw,62px);font-weight:600;line-height:1.12;color:var(--txt);margin-bottom:16px;max-width:800px}
+.ss{font-family:var(--fb);font-size:clamp(15px,1.6vw,20px);font-weight:300;font-style:italic;color:var(--txt2);margin-bottom:40px;max-width:600px}
+.sb{font-size:16px;line-height:1.8;color:var(--txt2);max-width:680px;margin-bottom:20px}
+.sb strong{color:var(--txt);font-weight:500}
+.tc{text-align:center}.tc .st,.tc .ss,.tc .sb{margin-left:auto;margin-right:auto}
 
-/* ── HERO ── */
-#hero{height:100vh;min-height:560px;position:relative;
-       display:flex;align-items:flex-end;padding:0 44px 68px;overflow:hidden}
-.hbg{position:absolute;inset:0;overflow:hidden;background:#000}
-.hbg::after{content:'';position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.1) 55%,rgba(0,0,0,.45) 100%)}
-.hbg iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:calc(100vw + 200px);height:calc(100vh + 200px);pointer-events:none;border:none}
-.hgrid{position:absolute;inset:0;transition:opacity 1.4s;
-  background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:64px 64px}
-/* CENTER LOGO in hero */
-.hlogo{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
-        z-index:2;pointer-events:none;text-align:center}
-.hlogo img{width:clamp(140px,18vw,260px);height:auto;
-  filter:drop-shadow(0 0 40px rgba(0,0,0,.6))}
-.hc{position:relative;z-index:3;max-width:800px;
-     animation:hIn 1.6s cubic-bezier(.16,1,.3,1) both}
-@keyframes hIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
-.hlabel{font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
-         margin-bottom:17px;display:flex;align-items:center;gap:13px}
-.hlabel::before{content:'';width:24px;height:1px;background:var(--gold)}
-h1{font-family:var(--ff);font-size:clamp(2.5rem,6.2vw,5.6rem);font-weight:300;
-    line-height:.97;letter-spacing:-.025em;color:#fff;margin-bottom:21px}
-h1 em{color:var(--gold);font-style:italic}
-.hsub{font-size:clamp(.84rem,1.35vw,.98rem);font-weight:300;color:rgba(255,255,255,.48);
-       max-width:390px;line-height:1.78;margin-bottom:34px}
-.hbtns{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
-.scr{position:absolute;bottom:24px;right:44px;z-index:2;font-size:.5rem;letter-spacing:.2em;
-      text-transform:uppercase;color:rgba(255,255,255,.18);writing-mode:vertical-rl;
-      display:flex;align-items:center;gap:9px;animation:pu 3s infinite}
-.scr::after{content:'';width:1px;height:38px;background:linear-gradient(var(--gold),transparent)}
-@keyframes pu{0%,100%{opacity:.18}50%{opacity:.58}}
+/* LOGO STRIP */
+.ls-sec{padding:0}
+.lr{display:flex;align-items:center;justify-content:center;gap:clamp(28px,5vw,64px);padding:30px var(--sx);flex-wrap:wrap}
+.lr--l{background:var(--wrow)}.lr--d{background:var(--drow);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+.lr img{height:26px;width:auto;flex-shrink:0;object-fit:contain;filter:grayscale(1);opacity:.4;transition:all .4s}
+.lr--l img{filter:grayscale(1) brightness(.3);opacity:.45}
+.lr img:hover{filter:grayscale(0);opacity:1}.lr--l img:hover{filter:grayscale(0) brightness(1);opacity:1}
 
-/* ── LOGO STRIP ── */
-.logo-strip{background:var(--bg);border-top:1px solid var(--d);border-bottom:1px solid var(--d);
-             padding:30px 0;overflow:hidden;position:relative}
-.logo-strip::before,.logo-strip::after{content:'';position:absolute;top:0;bottom:0;width:76px;z-index:1;pointer-events:none}
-.logo-strip::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
-.logo-strip::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
-.lt{display:flex;align-items:center;gap:48px;animation:slL 26s linear infinite;width:max-content}
-.lt:hover{animation-play-state:paused}
-@keyframes slL{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.li{flex-shrink:0;height:20px}
-.li img{height:100%;width:auto;filter:brightness(0) invert(1);opacity:.32;transition:opacity .3s}
-.li:hover img{opacity:.7}
+/* GLASS */
+.gc{background:var(--glass);border:1px solid var(--bdr);border-radius:var(--r-md);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:36px;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.gc:hover{background:var(--glass-h);border-color:var(--bdr-h);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,.35)}
 
-/* ── EXPERTISE ── */
-#exp{background:var(--bg)}
-.egrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--d);margin-top:34px}
-.ei{padding:22px 18px;border-right:1px solid var(--d);border-bottom:1px solid var(--d);transition:background .2s}
-.ei:hover{background:rgba(255,255,255,.015)}
-.en_{font-family:var(--ff);font-size:.63rem;color:var(--gold);letter-spacing:.1em;margin-bottom:7px}
-.et{font-family:var(--ff);font-size:.9rem;font-weight:400;color:#fff;margin-bottom:4px;line-height:1.25}
-.eb{font-size:.7rem;color:var(--m);line-height:1.65}
+/* SERVICES */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:48px}
+.si{width:44px;height:44px;margin-bottom:16px;border-radius:12px;background:var(--acc-soft);border:1px solid rgba(200,164,92,.12);display:flex;align-items:center;justify-content:center;font-size:18px}
+.sc h3{font-family:var(--fd);font-size:17px;font-weight:600;margin-bottom:10px}
+.sc p{font-size:14px;line-height:1.7;color:var(--txt2)}
 
-/* ── STATS ── */
-.srow{display:flex;border-top:1px solid var(--d);border-bottom:1px solid var(--d)}
-.si{flex:1;padding:30px 22px;border-right:1px solid var(--d)}.si:last-child{border-right:none}
-.sv{font-family:var(--ff);font-size:clamp(1.9rem,3.8vw,3.2rem);font-weight:300;color:#fff;line-height:1;margin-bottom:5px;letter-spacing:-.02em}
-.sl{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
+/* PHOTO GALLERY */
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;margin-top:36px}
+.pg.coll .pi:nth-child(n+8){display:none}
+.pi{position:relative;aspect-ratio:3/2;border-radius:6px;overflow:hidden;cursor:pointer;background:var(--bg2)}
+.pi img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s;filter:brightness(.82)}
+.pi:hover img{transform:scale(1.08);filter:brightness(1)}
+.gt{display:flex;justify-content:center;margin-top:20px}
+.gt button{font-family:var(--fd);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--acc);padding:11px 28px;border:1px solid rgba(200,164,92,.25);border-radius:60px;background:transparent;transition:all .3s;cursor:pointer}
+.gt button:hover{background:var(--acc-soft);border-color:var(--acc)}
 
-/* ── THUMB CARD (shared by videos + reels) ── */
-.thumb-wrap{position:relative;overflow:hidden;background:var(--bg2)}
-.thumb-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  transition:transform .55s;display:block}
-.thumb-overlay{position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.1) 60%,transparent 100%);
-  display:flex;flex-direction:column;justify-content:space-between;align-items:center;
-  padding:14px;transition:background .3s}
-.thumb-overlay:hover{background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.1) 100%)}
-.thumb-play{width:44px;height:44px;border:1px solid rgba(255,255,255,.45);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  transition:all .28s;margin-top:auto;margin-bottom:auto}
-.thumb-play span{font-size:.82rem;color:rgba(255,255,255,.75);margin-left:2px;line-height:1}
-.thumb-card:hover .thumb-play{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.7)}
-.thumb-card:hover .thumb-wrap video{transform:scale(1.04)}
-.thumb-meta{width:100%;margin-top:auto}
-.thumb-cat{font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
-.thumb-title{font-size:.68rem;font-weight:400;color:#fff;line-height:1.3}
+/* VIDEO LANDSCAPE */
+.vgl{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:12px;margin-top:36px}
+@media(max-width:500px){.vgl{grid-template-columns:1fr}}
+.vl{position:relative;aspect-ratio:16/9;border-radius:var(--r-md);overflow:hidden;background:var(--bg2);border:1px solid var(--bdr)}
+.vl iframe{width:100%;height:100%;border:none}
 
-/* ── VIDEO GALLERY ── */
-#videos{background:var(--bg2);border-top:1px solid var(--d)}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:2px;margin-top:30px}
-.vc{cursor:pointer;position:relative}
-.vc .thumb-wrap{aspect-ratio:16/9}
+/* YT THUMBNAIL CARD */
+.yt-card{position:relative;aspect-ratio:16/9;border-radius:var(--r-md);overflow:hidden;background:var(--bg2);border:1px solid var(--bdr);cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.yt-card:hover{transform:translateY(-4px);border-color:var(--bdr-h);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.yt-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s;filter:brightness(.78)}
+.yt-card:hover img{transform:scale(1.04);filter:brightness(.95)}
+.yt-card .pb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;transition:all .35s;pointer-events:none}
+.yt-card .pb::after{content:'';border-style:solid;border-width:9px 0 9px 16px;border-color:transparent transparent transparent white;margin-left:3px}
+.yt-card:hover .pb{background:var(--acc);border-color:var(--acc);transform:translate(-50%,-50%) scale(1.12)}
+.yt-card:hover .pb::after{border-color:transparent transparent transparent var(--bg)}
+.yt-card .vlb{position:absolute;bottom:0;left:0;right:0;padding:24px 18px 14px;background:linear-gradient(transparent,rgba(0,0,0,.75));font-family:var(--fd);font-size:13px;font-weight:500;letter-spacing:.5px;color:rgba(255,255,255,.9);transition:opacity .3s}
 
-/* ── VIDEO MODAL ── */
-.vmod{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.97);
-       align-items:center;justify-content:center;padding:18px}
-.vmod.open{display:flex}
-.vmod-in{width:100%;max-width:960px;position:relative}
-.vmod-in video{width:100%;aspect-ratio:16/9;background:#000;display:block}
-.vmod-close{position:absolute;top:-38px;right:0;font-size:.57rem;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(255,255,255,.4);background:none;border:none;
-  padding:5px;transition:color .2s;cursor:pointer;font-family:var(--fb)}
-.vmod-close:hover{color:#fff}
+/* CORPORATE VIDEO SECTION */
+.corp-playlist{margin-top:36px}
+.corp-playlist h3{font-family:var(--fd);font-size:clamp(18px,2vw,26px);font-weight:600;margin-bottom:18px;color:var(--txt)}
+.corp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+@media(max-width:500px){.corp-grid{grid-template-columns:1fr}}
 
-/* ── REELS ── */
-#reels{background:var(--bg);border-top:1px solid var(--d)}
-.tabs{display:flex;border-bottom:1px solid var(--d);margin-bottom:22px}
-.tab{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 15px;
-      color:var(--m);background:none;border:none;border-bottom:2px solid transparent;
-      margin-bottom:-1px;transition:all .2s;font-family:var(--fb);cursor:pointer}
-.tab.on{color:#fff;border-bottom-color:#fff}.tab:hover{color:#fff}
-.tpanel{display:none}.tpanel.on{display:block}
-.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(154px,1fr));gap:2px}
-.rc{cursor:pointer;position:relative}
-.rc .thumb-wrap{aspect-ratio:9/16}
-.rc .thumb-play{width:38px;height:38px}
-.rc .thumb-play span{font-size:.72rem}
+/* VIDEO PORTRAIT / REELS */
+.ps{margin-top:36px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.ps::-webkit-scrollbar{height:4px}.ps::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+.pt{display:flex;gap:12px;width:max-content;padding:0 var(--sx)}
+.vp{scroll-snap-align:center;position:relative;width:clamp(210px,25vw,300px);aspect-ratio:9/16;border-radius:var(--r-md);overflow:hidden;background:var(--bg2);border:1px solid var(--bdr);flex-shrink:0;cursor:pointer;transition:transform .5s cubic-bezier(.16,1,.3,1),opacity .4s}
+.vp:hover{transform:scale(1.03)}
+.vp img{width:100%;height:100%;object-fit:cover;filter:brightness(.8);transition:filter .4s,transform .5s cubic-bezier(.16,1,.3,1)}
+.vp:hover img{filter:brightness(1);transform:scale(1.04)}
+.vp .pb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;transition:all .35s;pointer-events:none}
+.vp .pb::after{content:'';border-style:solid;border-width:7px 0 7px 13px;border-color:transparent transparent transparent white;margin-left:2px}
+.vp:hover .pb{background:var(--acc);border-color:var(--acc);transform:translate(-50%,-50%) scale(1.12)}
+.vp:hover .pb::after{border-color:transparent transparent transparent var(--bg)}
+.vp .vlb{position:absolute;bottom:0;left:0;right:0;padding:36px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:var(--fd);font-size:11px;font-weight:500;letter-spacing:.5px;color:rgba(255,255,255,.85)}
 
-/* ── INSTAGRAM SECTION ── */
-#instagram{background:var(--bg2);border-top:1px solid var(--d)}
-.ig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;max-width:940px}
+/* REELS GRID */
+.reels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:36px}
+@media(min-width:900px){.reels-grid{grid-template-columns:repeat(4,1fr)}}
+.reel-card{position:relative;aspect-ratio:9/16;border-radius:var(--r-md);overflow:hidden;background:var(--bg2);border:1px solid var(--bdr);cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.reel-card:hover{transform:translateY(-6px);border-color:var(--bdr-h);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.reel-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.78);transition:filter .4s,transform .5s}
+.reel-card:hover img{filter:brightness(1);transform:scale(1.04)}
+.reel-card .pb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;transition:all .35s;pointer-events:none}
+.reel-card .pb::after{content:'';border-style:solid;border-width:7px 0 7px 13px;border-color:transparent transparent transparent white;margin-left:2px}
+.reel-card:hover .pb{background:var(--acc);border-color:var(--acc);transform:translate(-50%,-50%) scale(1.12)}
+.reel-card:hover .pb::after{border-color:transparent transparent transparent var(--bg)}
+.reel-card .vlb{position:absolute;bottom:0;left:0;right:0;padding:36px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:var(--fd);font-size:11px;font-weight:500;letter-spacing:.5px;color:rgba(255,255,255,.85)}
 
-/* ── PHOTO GALLERY ── */
-#photos{background:var(--k);border-top:1px solid var(--d)}
-/* 7-photo preview grid */
-.pg-wrap{margin-top:28px;position:relative}
-.pg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
-.pg-grid .pg-item:first-child{grid-column:1/3;grid-row:1/3}
-.pg-item{overflow:hidden;cursor:pointer;position:relative;aspect-ratio:1}
-.pg-item:first-child{aspect-ratio:unset}
-.pg-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s,opacity .3s}
-.pg-item:hover img{transform:scale(1.04);opacity:.84}
-/* +N overlay on last visible */
-.pg-more{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;
-  justify-content:center;font-family:var(--ff);font-size:1.8rem;font-weight:300;color:#fff;
-  pointer-events:none}
+/* STATS */
+.stb{display:flex;margin:44px 0;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--bdr);background:var(--glass);backdrop-filter:blur(20px)}
+.sti{flex:1;padding:26px 18px;text-align:center;border-right:1px solid var(--bdr)}
+.sti:last-child{border-right:none}
+.stn{font-family:var(--fd);font-size:clamp(24px,2.8vw,40px);font-weight:700;color:var(--acc);margin-bottom:4px}
+.stl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);font-family:var(--fd)}
+@media(max-width:600px){.stb{flex-wrap:wrap}.sti{flex:1 1 50%;border-bottom:1px solid var(--bdr)}}
 
-/* ── LIGHTBOX ── */
-.lb{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.98);
-     align-items:center;justify-content:center;flex-direction:column}
+/* BIG QUOTE */
+.bqs{text-align:center;padding:var(--sp) var(--sx)}
+.bq{font-family:var(--fd);font-size:clamp(22px,3.2vw,46px);font-weight:300;line-height:1.4;color:var(--txt);max-width:880px;margin:0 auto 28px}
+.bq em{font-style:normal;color:var(--acc)}
+
+/* CONTACT */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:44px;align-items:start}
+@media(max-width:800px){.cg{grid-template-columns:1fr}}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-family:var(--fd);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);margin-bottom:7px}
+.fg input,.fg textarea,.fg select{width:100%;padding:13px 16px;background:var(--glass);border:1px solid var(--bdr);border-radius:var(--r-sm);color:var(--txt);font-family:var(--fb);font-size:15px;transition:all .3s;outline:none;-webkit-appearance:none}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft);background:var(--glass-h)}
+.fg textarea{min-height:120px;resize:vertical}
+.fg select{cursor:pointer}.fg select option{background:var(--bg2);color:var(--txt)}
+.ci h3{font-family:var(--fd);font-size:20px;font-weight:600;margin-bottom:14px}
+.ci p{font-size:15px;line-height:1.8;color:var(--txt2);margin-bottom:12px}
+.cd{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bdr);font-size:14px;color:var(--txt2)}
+.cdl{font-family:var(--fd);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--txt3);width:76px;flex-shrink:0}
+
+/* FOOTER */
+.ft{padding:38px var(--sx);border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:1}
+.ft-l{font-family:var(--fd);font-size:12px;color:var(--txt3);letter-spacing:1px}
+.ft-r{display:flex;gap:18px}
+.ft-r a{font-size:12px;color:var(--txt3);letter-spacing:1px;text-transform:uppercase;font-family:var(--fd);transition:color .3s}
+.ft-r a:hover{color:var(--acc)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}
+
+/* LIGHTBOX */
+.lb{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);backdrop-filter:blur(24px);align-items:center;justify-content:center;flex-direction:column}
 .lb.open{display:flex}
-.lb-img{max-height:90vh;max-width:92vw;object-fit:contain;transition:opacity .13s}
-.lb-close{position:absolute;top:15px;right:19px;font-size:.56rem;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(255,255,255,.4);background:none;border:none;
-  padding:6px;transition:color .2s;cursor:pointer;font-family:var(--fb)}
-.lb-close:hover{color:#fff}
-.lb-arr{position:absolute;top:50%;transform:translateY(-50%);background:none;
-  border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:.9rem;
-  width:38px;height:38px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s}
-.lb-arr:hover{border-color:rgba(255,255,255,.3);color:#fff}
-#lbp{left:11px}#lbn{right:11px}
-.lb-n{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:9px}
+.lb img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain;user-select:none}
+.lbc{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;pointer-events:none}
+.lbb{pointer-events:all;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;color:white;font-size:22px}
+.lbb:hover{background:rgba(255,255,255,.15)}
+.lb-x{position:absolute;top:18px;right:18px;pointer-events:all}
+.lb-n{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-family:var(--fd);font-size:12px;letter-spacing:2px;color:var(--txt3)}
 
-/* ── REST ── */
-#markets{background:var(--bg)}
-.mtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:17px}
-.mtag{font-size:.59rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;
-       border:1px solid var(--d);color:var(--m);transition:all .2s}
-.mtag:hover{border-color:var(--d2);color:#fff}
-#pricing{background:var(--k)}
-.plead{font-family:var(--ff);font-size:clamp(1.05rem,2.1vw,1.8rem);font-weight:300;color:#fff;
-        line-height:1.35;margin:19px 0 26px}.plead em{color:var(--gold);font-style:italic}
-#team{background:var(--bg)}
-.tlist{margin-top:26px}
-.ti{display:flex;align-items:flex-start;gap:17px;padding:13px 0;border-bottom:1px solid var(--d)}
-.ti:first-child{border-top:1px solid var(--d)}
-.tid{font-family:var(--ff);font-size:.63rem;color:var(--gold);width:12px;flex-shrink:0;padding-top:1px}
-.tit{font-family:var(--ff);font-size:.9rem;font-weight:400;color:#fff;min-width:140px;flex-shrink:0}
-.tib{font-size:.72rem;color:var(--m);line-height:1.65}
-#contact{background:var(--bg);border-top:1px solid var(--d);text-align:center;padding:116px 44px}
-.cw{max-width:530px;margin:0 auto}
-.ch{font-family:var(--ff);font-size:clamp(1.95rem,4.8vw,4.2rem);font-weight:300;line-height:1.03;
-     letter-spacing:-.022em;color:#fff;margin-bottom:13px}.ch em{color:var(--gold);font-style:italic}
-.cs{font-size:.84rem;color:var(--m);max-width:320px;margin:0 auto 28px;line-height:1.78}
-.form{display:flex;flex-direction:column;gap:0;max-width:360px;margin:0 auto 17px}
-.frow{display:grid;grid-template-columns:1fr 1fr}
-.fi{background:none;border:none;border-bottom:1px solid var(--d);padding:12px 0;color:#fff;
-     font-family:var(--fb);font-size:.78rem;font-weight:300;outline:none;width:100%;transition:border-color .2s}
-.fi:focus{border-color:rgba(255,255,255,.3)}.fi::placeholder{color:var(--m)}
-.frow .fi:first-child{border-right:1px solid var(--d);padding-right:12px}
-.frow .fi:last-child{padding-left:12px}
-.fsel{background:none;border:none;border-bottom:1px solid var(--d);padding:12px 0;color:var(--m);
-       font-family:var(--fb);font-size:.78rem;outline:none;width:100%;cursor:pointer;appearance:none;transition:border-color .2s}
-.fsel:focus{border-color:rgba(255,255,255,.3);color:#fff}.fsel option{background:#0d0d0d}
-.fsub{margin-top:21px;width:100%;padding:12px;background:none;border:1px solid rgba(255,255,255,.18);
-       color:#fff;font-family:var(--ff);font-size:.88rem;font-weight:300;font-style:italic;
-       cursor:pointer;letter-spacing:.04em;transition:all .28s}.fsub:hover{background:#fff;color:#000}
-.ca{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}
-.ca span{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}
-footer{padding:44px;border-top:1px solid var(--d);background:var(--k)}
-.fin{max-width:1120px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.flog img{height:17px;width:auto}
-.ftag{font-size:.58rem;color:var(--m);margin-top:4px}
-.flinks{display:flex;gap:20px;flex-wrap:wrap}.flinks a{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m);transition:color .2s}.flinks a:hover{color:#fff}
-.fbot{max-width:1120px;margin:19px auto 0;padding-top:15px;border-top:1px solid var(--d);display:flex;justify-content:space-between;flex-wrap:wrap;gap:7px}
-.fc{font-size:.56rem;color:var(--m)}
+/* LANG */
+[data-lang="en"] .de{display:none!important}
+[data-lang="de"] .en{display:none!important}
 
-@media(max-width:880px){
-  nav{padding:0 18px}.nm{display:none}
-  .sec,#contact{padding:60px 18px}#hero{padding:0 18px 58px}
-  footer,.fin{padding:28px 18px}.g2,.g2t{grid-template-columns:1fr;gap:36px}
-  .egrid{grid-template-columns:1fr 1fr}.srow{flex-wrap:wrap}
-  .si{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--d)}
-  .vgrid{grid-template-columns:1fr 1fr}.scr{display:none}
-  .hlogo img{width:120px}.pg-grid{grid-template-columns:repeat(3,1fr)}
-  .pg-grid .pg-item:first-child{grid-column:1/3;grid-row:1/2}
-}
-@media(max-width:580px){
-  .egrid{grid-template-columns:1fr}.rgrid{grid-template-columns:repeat(2,1fr)}
-  .vgrid{grid-template-columns:1fr}.pg-grid{grid-template-columns:repeat(3,1fr)}
-  .pg-grid .pg-item:first-child{grid-column:1/4;grid-row:1/2;aspect-ratio:16/7}
+/* SECTION DIVIDER */
+.sec-div{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);margin:0 auto 36px}
+
+@media(max-width:600px){
+  .sg{grid-template-columns:1fr}
+  .pg{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .reels-grid{grid-template-columns:repeat(2,1fr)}
+  .corp-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- MODALS -->
-<div class="vmod" id="vmod">
-  <div class="vmod-in">
-    <button class="vmod-close" onclick="closeVid()">✕ Schließen</button>
-    <video id="vplayer" controls playsinline></video>
-  </div>
-</div>
-<div class="lb" id="lb">
-  <button class="lb-close" onclick="closeLb()">✕ Schließen</button>
-  <button class="lb-arr" id="lbp" onclick="lbNav(-1)">‹</button>
-  <img class="lb-img" id="lbimg" src="" alt="">
-  <button class="lb-arr" id="lbn" onclick="lbNav(1)">›</button>
-  <div class="lb-n" id="lbn2"></div>
-</div>
+<canvas id="particles-canvas"></canvas>
 
-<!-- NAV: MBMP schrift.svg links, clean links, kein Duplikat -->
-<nav id="nav">
-  <a href="#" class="nl"><img src="Content/MBMP%20LOGO/MBMP%20schrift.svg" alt="MBMP"></a>
-  <ul class="nm">
-    <li><a href="#pos"><span data-de>Agentur</span><span data-en>Agency</span></a></li>
-    <li><a href="#exp"><span data-de>Leistungen</span><span data-en>Services</span></a></li>
-    <li><a href="#videos">Video</a></li>
-    <li><a href="#photos">Foto</a></li>
-    <li><a href="#reels">Reels</a></li>
-    <li><a href="#contact"><span data-de>Kontakt</span><span data-en>Contact</span></a></li>
-  </ul>
-  <div class="nr">
-    <button class="nb" id="lbtn" onclick="toggleLang()">EN</button>
-    <a href="dashboard.html" class="nc">Client Login →</a>
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo"><img src="Content/MBMP LOGO/MBMP schrift.svg" alt="MBMP"></a>
+  <div class="nav-links">
+    <a href="#about" class="de">Über uns</a><a href="#about" class="en">About</a>
+    <a href="#services" class="de">Leistungen</a><a href="#services" class="en">Services</a>
+    <a href="#gallery">Portfolio</a>
+    <a href="#corporate">Corporate</a>
+    <a href="#reels">Reels</a>
+    <a href="#contact" class="de">Kontakt</a><a href="#contact" class="en">Contact</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
   </div>
+  <div class="nav-ham" onclick="toggleMob()"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- HERO: YouTube BG + Blume zentriert -->
-<section id="hero">
-  <div class="hbg">
-    <div class="hgrid" id="hgrid"></div>
-    <iframe src="https://www.youtube.com/embed/SMOFA8lZzms?autoplay=1&mute=1&loop=1&playlist=SMOFA8lZzms&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0&showinfo=0"
-      allow="autoplay;encrypted-media"
-      onload="document.getElementById('hgrid').style.opacity='0'"></iframe>
-  </div>
-  <div class="hlogo">
-    <img src="Content/MBMP%20LOGO/Blume%20mit%20text%20weiss.svg" alt="MBMP">
-  </div>
-  <div class="hc">
-    <div class="hlabel"><span data-de>MBMP — Medienproduktion</span><span data-en>MBMP — Media Production</span></div>
-    <h1><span data-de>Wir fangen ein,<br><em>was andere übersehen.</em></span><span data-en>We capture<br><em>what others overlook.</em></span></h1>
-    <p class="hsub"><span data-de>Emotionen. Momente. Marken. Die Agentur für Unternehmen, die nicht zur Masse gehören wollen.</span><span data-en>Emotions. Moments. Brands. The agency for companies that don't want to blend in.</span></p>
-    <div class="hbtns">
-      <a href="#contact" class="btn bw"><span data-de>→ Erstgespräch sichern</span><span data-en>→ Book discovery call</span></a>
-      <a href="dashboard.html" class="btn bo">Client Portal</a>
-    </div>
-  </div>
-  <div class="scr">Scroll</div>
-</section>
-
-<hr>
-
-<!-- KUNDEN LOGOS — alle rein, kein Sortieren -->
-<div class="logo-strip">
-  <div class="lt">
-    <div class="li"><img src="Content/Kunden%20Logos/White/ACTINDO_FULL_COLOUR-1.webp" alt="ACTINDO_FULL_COLOUR-1"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Adobe-logo.webp" alt="Adobe-logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/BINSS.webp" alt="BINSS"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Freistil-Logo.webp" alt="Freistil-Logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Hamel%20logo.webp" alt="Hamel logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Logo%403x.webp" alt="Logo@3x"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Poveracci.webp" alt="Poveracci"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.webp" alt="Viltrox-logo-s-U-E--2a67fab9-1920w-2"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/cropped-bluplanet-picturemark.webp" alt="cropped-bluplanet-picturemark"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/images.webp" alt="images"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/wempe-logo-1.webp" alt="wempe-logo-1"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/Staatliches%20institut%20f%C3%BCr%20musikforschung.webp" alt="Staatliches institut für musikforschung"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/activision-blizzard-logo-18809.webp" alt="activision-blizzard-logo-18809"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/images-7.webp" alt="images-7"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/images.webp" alt="images"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/logo-1-06.webp" alt="logo-1-06"></div>
-    <!-- duplicate -->
-    <div class="li"><img src="Content/Kunden%20Logos/White/ACTINDO_FULL_COLOUR-1.webp" alt="ACTINDO_FULL_COLOUR-1"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Adobe-logo.webp" alt="Adobe-logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/BINSS.webp" alt="BINSS"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Freistil-Logo.webp" alt="Freistil-Logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Hamel%20logo.webp" alt="Hamel logo"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Logo%403x.webp" alt="Logo@3x"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Poveracci.webp" alt="Poveracci"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.webp" alt="Viltrox-logo-s-U-E--2a67fab9-1920w-2"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/cropped-bluplanet-picturemark.webp" alt="cropped-bluplanet-picturemark"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/images.webp" alt="images"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/White/wempe-logo-1.webp" alt="wempe-logo-1"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/Staatliches%20institut%20f%C3%BCr%20musikforschung.webp" alt="Staatliches institut für musikforschung"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/activision-blizzard-logo-18809.webp" alt="activision-blizzard-logo-18809"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/images-7.webp" alt="images-7"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/images.webp" alt="images"></div>
-    <div class="li"><img src="Content/Kunden%20Logos/Dark/logo-1-06.webp" alt="logo-1-06"></div>
+<div class="mob-menu" id="mobMenu">
+  <a href="#about" onclick="closeMob()" class="de">Über uns</a><a href="#about" onclick="closeMob()" class="en">About</a>
+  <a href="#services" onclick="closeMob()" class="de">Leistungen</a><a href="#services" onclick="closeMob()" class="en">Services</a>
+  <a href="#gallery" onclick="closeMob()">Portfolio</a>
+  <a href="#corporate" onclick="closeMob()">Corporate</a>
+  <a href="#reels" onclick="closeMob()">Reels</a>
+  <a href="#contact" onclick="closeMob()" class="de">Kontakt</a><a href="#contact" onclick="closeMob()" class="en">Contact</a>
+  <div class="lang-toggle" style="margin-top:16px">
+    <button class="lang-btn active" data-lang="de">DE</button>
+    <button class="lang-btn" data-lang="en">EN</button>
   </div>
 </div>
 
-<hr>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <iframe src="https://www.youtube.com/embed/SMOFA8lZzms?autoplay=1&mute=1&loop=1&playlist=SMOFA8lZzms&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&iv_load_policy=3" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+  <div class="hero-ov"></div>
+  <div class="hero-ct">
+    <img src="Content/MBMP LOGO/Blume mit text.svg" class="hero-logo" alt="MBMP">
+    <p class="hero-tag"><span class="de">Emotionsspezialisten</span><span class="en">Emotion Specialists</span></p>
+    <a href="#contact" class="cta">
+      <span class="de">Erstgespräch buchen</span><span class="en">Book Your Slot</span>
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="hero-sc"><span>Scroll</span><div class="sc-line"></div></div>
+</section>
 
-<!-- POSITIONING -->
-<section id="pos" class="sec">
-  <div class="wrap">
-    <div class="g2">
-      <div>
-        <div class="eye r"><span data-de>Positionierung</span><span data-en>Positioning</span></div>
-        <h2 class="r"><span data-de>Nicht für jeden.<br><em>Genau für Sie.</em></span><span data-en>Not for everyone.<br><em>Precisely for you.</em></span></h2>
-        <div class="pull r d1"><span data-de>Wer billig kauft, kauft zweimal. Wer MBMP kauft, kauft nie wieder woanders.</span><span data-en>Buy cheap, buy twice. Invest in MBMP — never look elsewhere again.</span></div>
-      </div>
-      <div>
-        <p class="body r d1" style="margin-bottom:15px"><span data-de>Wir sind keine Agentur von der Stange. MBMP steht für über ein Jahrzehnt konsequenter Selbstverbesserung, kompromissloser Qualität und einem Team, das Zuverlässigkeit nicht als Versprechen versteht — sondern als Grundhaltung.</span><span data-en>MBMP is not an off-the-shelf agency. Over a decade of relentless self-improvement, uncompromising quality, and a team that doesn't treat reliability as a promise — it's simply who we are.</span></p>
-        <p class="body r d2" style="margin-bottom:24px"><span data-de>Wer in MBMP investiert, investiert in das Fundament seiner eigenen Multimedia-Marke — und in die Fähigkeit, sich dauerhaft von der Masse abzuheben.</span><span data-en>Investing in MBMP means investing in the foundation of your own multimedia brand — and in the sustained ability to stand apart from the market.</span></p>
-        <a href="#contact" class="btn bo r d3"><span data-de>→ Jetzt anfragen</span><span data-en>→ Get in touch</span></a>
-      </div>
+<!-- LOGOS -->
+<section class="ls-sec">
+  <div class="lr lr--l">
+    <img src="Content/Kunden Logos/Dark/Staatliches institut für musikforschung.webp" alt="Staatliches Institut für Musikforschung">
+    <img src="Content/Kunden Logos/Dark/activision-blizzard-logo-18809.webp" alt="Activision Blizzard">
+    <img src="Content/Kunden Logos/Dark/images-7.webp" alt="Client">
+    <img src="Content/Kunden Logos/Dark/images.webp" alt="Client">
+    <img src="Content/Kunden Logos/Dark/logo-1-06.webp" alt="Client">
+  </div>
+  <div class="lr lr--d">
+    <img src="Content/Kunden Logos/White/Adobe-logo.webp" alt="Adobe">
+    <img src="Content/Kunden Logos/White/ACTINDO_FULL_COLOUR-1.webp" alt="Actindo">
+    <img src="Content/Kunden Logos/White/Hamel logo.webp" alt="Hamel">
+    <img src="Content/Kunden Logos/White/BINSS.webp" alt="BINSS">
+    <img src="Content/Kunden Logos/White/Freistil-Logo.webp" alt="Freistil">
+    <img src="Content/Kunden Logos/White/Poveracci.webp" alt="Poveracci">
+    <img src="Content/Kunden Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.webp" alt="Viltrox">
+    <img src="Content/Kunden Logos/White/wempe-logo-1.webp" alt="Wempe">
+    <img src="Content/Kunden Logos/White/Logo@3x.webp" alt="Client">
+    <img src="Content/Kunden Logos/White/cropped-bluplanet-picturemark.webp" alt="Bluplanet">
+    <img src="Content/Kunden Logos/White/images.webp" alt="Client">
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="rv"><p class="sl"><span class="de">Wer wir sind</span><span class="en">Who we are</span></p>
+    <h2 class="st"><span class="de">Kein Produkt. Ein Fundament.</span><span class="en">Not a product. A foundation.</span></h2></div>
+  <div class="rv rd1">
+    <p class="sb de">MBMP ist keine klassische Agentur. Wir sind Emotionsspezialisten mit Sitz in Zypern, deutscher Arbeitsmentalität und einem internationalen Wirkungsradius, der von der DACH-Region über ganz Europa bis nach Asien reicht.</p>
+    <p class="sb en">MBMP is not your typical agency. We are emotion specialists based in Cyprus, built on a German work ethic, operating on an international stage that stretches from the DACH region across Europe and into Asia.</p></div>
+  <div class="rv rd2">
+    <p class="sb de">Was uns antreibt: Ein junges, diszipliniertes Team mit über einem Jahrzehnt Erfahrung in Interviewführung, visueller Kommunikation und Content-Produktion. Wir produzieren keine Templates — wir schaffen maßgeschneiderte Multimedia-Marken, die sich automatisch von der Masse abheben.</p>
+    <p class="sb en">What drives us: A young, disciplined team with over a decade of experience in interview production, visual communication and content creation. We don't produce templates — we build bespoke multimedia brands that naturally stand out from the crowd.</p></div>
+  <div class="rv rd3">
+    <p class="sb de"><strong>Wer in MBMP investiert, investiert nicht in ein Standardprodukt.</strong> Sondern in über zehn Jahre konsequenter Selbstverbesserung, höchste Ansprüche und ein krankhaftes Maß an Zuverlässigkeit.</p>
+    <p class="sb en"><strong>When you invest in MBMP, you are not investing in a standard product.</strong> You are investing in over ten years of relentless self-improvement, the highest standards, and an almost pathological level of reliability.</p></div>
+  <div class="stb rv">
+    <div class="sti"><div class="stn">10+</div><div class="stl"><span class="de">Jahre</span><span class="en">Years</span></div></div>
+    <div class="sti"><div class="stn de">EU & Asien</div><div class="stn en">EU & Asia</div><div class="stl">International</div></div>
+    <div class="sti"><div class="stn">100%</div><div class="stl"><span class="de">Maßgeschneidert</span><span class="en">Bespoke</span></div></div>
+    <div class="sti"><div class="stn">∞</div><div class="stl"><span class="de">Leidenschaft</span><span class="en">Passion</span></div></div>
+  </div>
+</section>
+
+<!-- QUOTE 1 -->
+<section class="bqs"><div class="rv">
+  <p class="bq de">Wir fangen ein, was andere übersehen. <em>Hoffnungen. Ängste.</em> Die Wahrheit dazwischen.</p>
+  <p class="bq en">We capture what others overlook. <em>Hopes. Fears.</em> The truth in between.</p>
+</div></section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="rv"><p class="sl"><span class="de">Leistungen</span><span class="en">Services</span></p>
+    <h2 class="st"><span class="de">Das Gesamtpaket. Keine halben Sachen.</span><span class="en">The full package. No half measures.</span></h2></div>
+  <div class="sg">
+    <div class="gc sc rv"><div class="si">🎬</div><h3 class="de">Bild & Bewegtbild</h3><h3 class="en">Film & Visual Storytelling</h3><p class="de">Interview-Produktion, Imagefilme, Dokumentationen, emotionale Portraits. Über ein Jahrzehnt geschulte Sinne.</p><p class="en">Interview production, brand films, documentaries, emotional portraits. Over a decade of honed instincts.</p></div>
+    <div class="gc sc rv rd1"><div class="si">🧊</div><h3>3D Animation & Motion</h3><p class="de">Dreidimensionale Welten, Produktvisualisierungen und kinetische Typografie.</p><p class="en">Three-dimensional worlds, product visualisations and kinetic typography.</p></div>
+    <div class="gc sc rv rd2"><div class="si">🌐</div><h3 class="de">Webdesign & Entwicklung</h3><h3 class="en">Web Design & Dev</h3><p class="de">Top-Notch Webseiten, die nicht nur schön sind, sondern verkaufen.</p><p class="en">Top-notch websites that don't just look beautiful — they sell.</p></div>
+    <div class="gc sc rv"><div class="si">✦</div><h3 class="de">Grafik & Identität</h3><h3 class="en">Graphics & Identity</h3><p class="de">Markenentwicklung, Corporate Design, Social Media Assets und Print.</p><p class="en">Brand development, corporate design, social media assets and print.</p></div>
+    <div class="gc sc rv rd1"><div class="si">📈</div><h3 class="de">Content, der verkauft</h3><h3 class="en">Content that sells</h3><p class="de">Strategischer Content, der Emotionen weckt und konvertiert.</p><p class="en">Strategic content that sparks emotion and converts.</p></div>
+    <div class="gc sc rv rd2"><div class="si">🤝</div><h3 class="de">Recruiting & Wissen</h3><h3 class="en">Recruiting & Knowledge</h3><p class="de">Interview-Expertise trifft Employer Branding.</p><p class="en">Interview expertise meets employer branding.</p></div>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY / PORTFOLIO -->
+<section id="gallery">
+  <div class="rv"><p class="sl">Portfolio</p>
+    <h2 class="st"><span class="de">Sehen Sie selbst.</span><span class="en">See for yourself.</span></h2>
+    <p class="ss"><span class="de">Breitgefächert. Kompromisslos. Emotional.</span><span class="en">Diverse. Uncompromising. Emotional.</span></p></div>
+  <div class="rv">
+    <div class="pg coll" id="pGrid">
+      <div class="pi" onclick="oLB(0)"><img src="Content/Foto/DSC07322.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(1)"><img src="Content/Foto/DSC01152.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(2)"><img src="Content/Foto/051A1620.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(3)"><img src="Content/Foto/DSC07696.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(4)"><img src="Content/Foto/L1001680.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(5)"><img src="Content/Foto/_DSC6611.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(6)"><img src="Content/Foto/DSC08923.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(7)"><img src="Content/Foto/051A1680.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(8)"><img src="Content/Foto/051A1851.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(9)"><img src="Content/Foto/Copy of DSC07584.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(10)"><img src="Content/Foto/DSC01157.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(11)"><img src="Content/Foto/DSC01165.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(12)"><img src="Content/Foto/DSC01167.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(13)"><img src="Content/Foto/DSC01168.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(14)"><img src="Content/Foto/DSC01173.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(15)"><img src="Content/Foto/DSC01178.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(16)"><img src="Content/Foto/DSC01911.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(17)"><img src="Content/Foto/DSC02086.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(18)"><img src="Content/Foto/DSC02113.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(19)"><img src="Content/Foto/DSC03740.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(20)"><img src="Content/Foto/DSC06530.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(21)"><img src="Content/Foto/DSC06697.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(22)"><img src="Content/Foto/DSC06740.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(23)"><img src="Content/Foto/DSC06890.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(24)"><img src="Content/Foto/DSC07304.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(25)"><img src="Content/Foto/DSC07320.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(26)"><img src="Content/Foto/DSC07322(1).webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(27)"><img src="Content/Foto/DSC07328.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(28)"><img src="Content/Foto/DSC07334.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(29)"><img src="Content/Foto/DSC07378.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(30)"><img src="Content/Foto/DSC07419.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(31)"><img src="Content/Foto/DSC07435.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(32)"><img src="Content/Foto/DSC07521.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(33)"><img src="Content/Foto/DSC07703.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(34)"><img src="Content/Foto/DSC07729.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(35)"><img src="Content/Foto/DSC07812.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(36)"><img src="Content/Foto/DSC07840.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(37)"><img src="Content/Foto/DSC07970.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(38)"><img src="Content/Foto/DSC08026.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(39)"><img src="Content/Foto/DSC08051.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(40)"><img src="Content/Foto/DSC08056.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(41)"><img src="Content/Foto/DSC08972.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(42)"><img src="Content/Foto/DSC09073.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(43)"><img src="Content/Foto/DSC09137.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(44)"><img src="Content/Foto/DSC09198.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(45)"><img src="Content/Foto/DSC09417.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(46)"><img src="Content/Foto/L1001556.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(47)"><img src="Content/Foto/L1001558.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(48)"><img src="Content/Foto/L1001560.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(49)"><img src="Content/Foto/_DSC6178.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(50)"><img src="Content/Foto/_DSC6506.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(51)"><img src="Content/Foto/_DSC6819.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(52)"><img src="Content/Foto/_DSC6837.webp" loading="lazy" alt="Portfolio"></div>
+      <div class="pi" onclick="oLB(53)"><img src="Content/Foto/_DSC6849.webp" loading="lazy" alt="Portfolio"></div>
+    </div>
+    <div class="gt"><button onclick="tgGal()" id="gBtn"><span class="de">Alle Fotos anzeigen</span><span class="en">Show all photos</span></button></div>
+  </div>
+</section>
+
+<!-- CORPORATE VIDEO SECTION -->
+<section id="corporate">
+  <div class="rv"><p class="sl">Corporate</p>
+    <h2 class="st"><span class="de">Corporate Produktionen</span><span class="en">Corporate Productions</span></h2>
+    <p class="ss"><span class="de">Professionelle Unternehmensvideos, die bewegen.</span><span class="en">Professional corporate videos that move.</span></p></div>
+
+  <!-- Playlist 1 -->
+  <div class="corp-playlist rv" id="corpPlaylist1">
+    <h3 id="corpTitle1"><span class="de">Lade Playlist...</span><span class="en">Loading playlist...</span></h3>
+    <div class="corp-grid" id="corpGrid1"></div>
+  </div>
+
+  <!-- Playlist 2 -->
+  <div class="corp-playlist rv rd1" id="corpPlaylist2">
+    <h3 id="corpTitle2"><span class="de">Lade Playlist...</span><span class="en">Loading playlist...</span></h3>
+    <div class="corp-grid" id="corpGrid2"></div>
+  </div>
+</section>
+
+<!-- REELS -->
+<section id="reels" class="tc">
+  <div class="rv"><p class="sl">Reels</p>
+    <h2 class="st"><span class="de">Shorts & Verticals</span><span class="en">Shorts & Verticals</span></h2>
+    <p class="ss"><span class="de">Kurz. Knackig. Emotional.</span><span class="en">Short. Snappy. Emotional.</span></p></div>
+  <div class="rv" id="reelsContainer">
+    <div class="reels-grid" id="reelsGrid"></div>
+  </div>
+</section>
+
+<!-- QUOTE 2 -->
+<section class="bqs"><div class="rv">
+  <p class="sl"><span class="de">Unsere Positionierung</span><span class="en">Our Positioning</span></p>
+  <p class="bq de">MBMP — das ist Ambition, marklose gewissenhafte Disziplin und ein unglaubliches Talent, kombiniert in einem <em>perfekten Sturm.</em></p>
+  <p class="bq en">MBMP — ambition, quiet and conscientious discipline, and extraordinary talent combined in a <em>perfect storm.</em></p>
+</div></section>
+
+<!-- INTERNATIONAL -->
+<section id="international">
+  <div class="rv"><p class="sl">International</p>
+    <h2 class="st"><span class="de">Deutsche Werte. Internationale Bühne.</span><span class="en">German values. International stage.</span></h2></div>
+  <div class="rv rd1">
+    <p class="sb de">Wir kommen aus Deutschland und arbeiten von Zypern aus — im Herzen Europas, an der Schnittstelle zwischen West und Ost. Unsere Projekte führen uns durch die DACH-Region, quer durch Europa und bis nach Asien.</p>
+    <p class="sb en">We come from Germany and operate from Cyprus — at the heart of Europe, at the crossroads of West and East. Our projects take us across the DACH region, throughout Europe, and deep into Asia.</p></div>
+  <div class="rv rd2">
+    <p class="sb de">Egal ob Ihr Markt in München, Zürich, London oder Tokio liegt — wir sprechen die visuelle Sprache, die dort ankommt.</p>
+    <p class="sb en">Whether your market is in Munich, Zurich, London or Tokyo — we speak the visual language that lands.</p></div>
+</section>
+
+<!-- DELIVERY + INVESTMENT -->
+<section>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px">
+    <div class="gc rv">
+      <p class="sl"><span class="de">Lieferung</span><span class="en">Delivery</span></p>
+      <h3 style="font-family:var(--fd);font-size:24px;font-weight:600;margin:10px 0 12px"><span class="de">Wenn es drauf ankommt: Minuten.</span><span class="en">When it matters: Minutes.</span></h3>
+      <p style="font-size:15px;line-height:1.7;color:var(--txt2)" class="de">Unser Standard-Lieferzeitraum beträgt zwei Wochen — genug Zeit für Perfektion. Doch wenn es wirklich zählt, liefern wir binnen Minuten.</p>
+      <p style="font-size:15px;line-height:1.7;color:var(--txt2)" class="en">Our standard delivery is two weeks — enough for perfection. But when it truly counts, we deliver within minutes.</p>
+    </div>
+    <div class="gc rv rd1">
+      <p class="sl">Investment</p>
+      <h3 style="font-family:var(--fd);font-size:24px;font-weight:600;margin:10px 0 4px"><span class="de">Wer billig kauft, kauft zweimal.</span><span class="en">Buy cheap, buy twice.</span></h3>
+      <p style="font-family:var(--fb);font-size:17px;font-weight:300;font-style:italic;color:var(--txt2);margin-bottom:12px"><span class="de">Wer MBMP kauft, schaut niemals zurück.</span><span class="en">Buy MBMP, never look back.</span></p>
+      <p style="font-size:15px;line-height:1.7;color:var(--txt2)" class="de">Jedes Projekt ist individuell. Deutsche Qualitätsarbeit und eine einkalkulierte Findungsphase für Ihre optimale Strategie.</p>
+      <p style="font-size:15px;line-height:1.7;color:var(--txt2)" class="en">Every project is unique. German-quality craftsmanship and a built-in discovery phase for your optimal strategy.</p>
     </div>
   </div>
 </section>
 
-<hr>
-
-<!-- EXPERTISE -->
-<section id="exp" class="sec">
-  <div class="wrap">
-    <div class="g2">
-      <div>
-        <div class="eye r">Expertise</div>
-        <h2 class="r"><span data-de>Bild. Ästhetik.<br><em>Wirkung.</em></span><span data-en>Image. Aesthetics.<br><em>Impact.</em></span></h2>
-        <p class="body r d1" style="margin-bottom:13px"><span data-de>Über mehr als zehn Jahre Interviewerfahrung: <em>Die stärksten Inhalte entstehen, wenn jemand vergisst, dass die Kamera läuft.</em></span><span data-en>More than a decade of interview experience: <em>The most powerful content happens the moment someone forgets the camera is rolling.</em></span></p>
-        <a href="#contact" class="btn bo r d2"><span data-de>→ Projekt starten</span><span data-en>→ Start a project</span></a>
-      </div>
-      <div>
-        <div class="egrid r d1">
-          <div class="ei"><div class="en_">01</div><div class="et">Content &amp; Storytelling</div><div class="eb"><span data-de>Narrative, die bleiben.</span><span data-en>Narratives that last.</span></div></div>
-          <div class="ei"><div class="en_">02</div><div class="et"><span data-de>Interview &amp; Dokumentar</span><span data-en>Interview &amp; Documentary</span></div><div class="eb"><span data-de>Der Moment der Wahrheit.</span><span data-en>The moment of truth.</span></div></div>
-          <div class="ei"><div class="en_">03</div><div class="et">Visual Branding</div><div class="eb"><span data-de>Ästhetik, die Haltung zeigt.</span><span data-en>Aesthetics that show character.</span></div></div>
-          <div class="ei"><div class="en_">04</div><div class="et">Employer Branding</div><div class="eb"><span data-de>Talente, die passen.</span><span data-en>Talent that truly fits.</span></div></div>
-          <div class="ei"><div class="en_">05</div><div class="et">Edutainment</div><div class="eb"><span data-de>Komplexes unvergesslich.</span><span data-en>Complex made unforgettable.</span></div></div>
-          <div class="ei"><div class="en_">06</div><div class="et">Multimedia-Strategie</div><div class="eb"><span data-de>Fundament der Differenzierung.</span><span data-en>Foundation of differentiation.</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="srow r">
-  <div class="si"><div class="sv">10+</div><div class="sl"><span data-de>Jahre Erfahrung</span><span data-en>Years experience</span></div></div>
-  <div class="si d1"><div class="sv">1–2</div><div class="sl"><span data-de>Wochen Lieferzeit</span><span data-en>Weeks delivery</span></div></div>
-  <div class="si d2"><div class="sv">0</div><div class="sl"><span data-de>Kompromisse</span><span data-en>Compromises</span></div></div>
-  <div class="si d3"><div class="sv">∞</div><div class="sl"><span data-de>Anspruch ans Detail</span><span data-en>Attention to detail</span></div></div>
-</div>
-
-<hr>
-
-<!-- VIDEO GALLERY — native video thumbnails, hover preview -->
-<section id="videos" class="sec">
-  <div class="wrap">
-    <div class="eye r"><span data-de>Videografie</span><span data-en>Videography</span></div>
-    <h2 class="r"><span data-de>Bewegtbild,<br><em>das bewegt.</em></span><span data-en>Moving images<br><em>that move.</em></span></h2>
-    <div class="vgrid r d1">
-      <div class="vc" data-src="Content/Querformat%20video%20gallerie/Kann%20HR-Software%20Unternehmenskultur%20ver%C3%A4ndern.mov">
-        <div class="thumb-wrap" style="aspect-ratio:16/9">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Querformat%20video%20gallerie/Kann%20HR-Software%20Unternehmenskultur%20ver%C3%A4ndern.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-cat">Corporate · HR</div><div class="thumb-title">Kann HR-Software Unternehmenskultur verändern?</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="vc" data-src="Content/Querformat%20video%20gallerie/Sonntagsangst%20.mov">
-        <div class="thumb-wrap" style="aspect-ratio:16/9">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Querformat%20video%20gallerie/Sonntagsangst%20.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-cat">Corporate · HR</div><div class="thumb-title">Sonntagsangst</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="vc" data-src="Content/Querformat%20video%20gallerie/Teilzeitkrankheit%20.mov">
-        <div class="thumb-wrap" style="aspect-ratio:16/9">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Querformat%20video%20gallerie/Teilzeitkrankheit%20.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-cat">Corporate · HR</div><div class="thumb-title">Teilzeitkrankheit</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="vc" data-src="Content/Querformat%20video%20gallerie/was%20bedeuetet%20eine%20gute%20unternehmenskultur%20f%C3%BCr%20dich.mov">
-        <div class="thumb-wrap" style="aspect-ratio:16/9">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Querformat%20video%20gallerie/was%20bedeuetet%20eine%20gute%20unternehmenskultur%20f%C3%BCr%20dich.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-cat">Corporate · HR</div><div class="thumb-title">Was bedeutet eine gute Unternehmenskultur für dich?</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="vc" data-src="Content/Querformat%20video%20gallerie/wie%20einfach%20ist%20es%20in%20deutschland%20ki%20in%20den%20personalbereich%20zu%20bringen.mov">
-        <div class="thumb-wrap" style="aspect-ratio:16/9">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Querformat%20video%20gallerie/wie%20einfach%20ist%20es%20in%20deutschland%20ki%20in%20den%20personalbereich%20zu%20bringen.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-cat">Corporate · KI</div><div class="thumb-title">Wie einfach ist KI im Personalbereich?</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="r d2" style="margin-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <p class="body" style="font-size:.76rem"><span data-de>Das vollständige Portfolio auf YouTube.</span><span data-en>The complete portfolio on YouTube.</span></p>
-      <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0lDSD37_niJvsZIuft06ZW9" target="_blank" class="btn bo"><span data-de>Alle Videos →</span><span data-en>All Videos →</span></a>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- REELS — tabbed, native video thumbnails -->
-<section id="reels" class="sec">
-  <div class="wrap">
-    <div class="eye r">Reels</div>
-    <h2 class="r"><span data-de>Vertical Content,<br><em>der stoppt.</em></span><span data-en>Vertical content<br><em>that stops the scroll.</em></span></h2>
-    <div class="tabs r d1">
-      <button class="tab on" onclick="swTab('corp',this)">Corporate</button>
-      <button class="tab" onclick="swTab('event',this)">Event</button>
-      <button class="tab" onclick="swTab('food',this)">Food</button>
-    </div>
-    <div class="tpanel on" id="tp-corp"><div class="rgrid">
-      <div class="rc" data-src="Content/Reels/Corporate/Kann%20HR-Software%20Unternehmenskultur%20ver%C3%A4ndern%20Vertical.mp4" data-tab="corp">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Corporate/Kann%20HR-Software%20Unternehmenskultur%20ver%C3%A4ndern%20Vertical.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Kann HR-Software Unternehmenskultur verändern?</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Corporate/Sonntagsangst%20Vertical.mp4" data-tab="corp">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Corporate/Sonntagsangst%20Vertical.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Sonntagsangst</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Corporate/Teilzeitkrankheit%20vertical.mp4" data-tab="corp">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Corporate/Teilzeitkrankheit%20vertical.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Teilzeitkrankheit</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Corporate/was%20bedeuetet%20eine%20gute%20unternehmenskultur%20f%C3%BCr%20dich%20Vertical.mp4" data-tab="corp">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Corporate/was%20bedeuetet%20eine%20gute%20unternehmenskultur%20f%C3%BCr%20dich%20Vertical.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Unternehmenskultur?</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Corporate/wie%20einfach%20ist%20es%20in%20deutschland%20ki%20in%20den%20personalbereich%20zu%20bringen%20vertical.mp4" data-tab="corp">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Corporate/wie%20einfach%20ist%20es%20in%20deutschland%20ki%20in%20den%20personalbereich%20zu%20bringen%20vertical.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">KI im Personalbereich</div></div>
-          </div>
-        </div>
-      </div>
-    </div></div>
-    <div class="tpanel" id="tp-event"><div class="rgrid">
-      <div class="rc" data-src="Content/Reels/Event/Adobe%20Leipzig%20Recap.mov" data-tab="event">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Event/Adobe%20Leipzig%20Recap.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Adobe Leipzig Recap</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Event/ENG_Adobe%209by16%20Recap%20Export.mp4" data-tab="event">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Event/ENG_Adobe%209by16%20Recap%20Export.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Adobe 9×16 Recap</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Event/adobe%20ffm.mov" data-tab="event">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Event/adobe%20ffm.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Adobe Frankfurt</div></div>
-          </div>
-        </div>
-      </div>
-    </div></div>
-    <div class="tpanel" id="tp-food"><div class="rgrid">
-      <div class="rc" data-src="Content/Reels/Food/Poveracci%20_Video_02%20V2.mp4" data-tab="food">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Food/Poveracci%20_Video_02%20V2.mp4" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Poveracci – Video 02</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Food/Poveracci%20_Video_03.mov" data-tab="food">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Food/Poveracci%20_Video_03.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Poveracci – Video 03</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rc" data-src="Content/Reels/Food/oysters%20%26%20Pearls%20vertical.mov" data-tab="food">
-        <div class="thumb-wrap" style="aspect-ratio:9/16">
-          <video muted loop playsinline preload="metadata" tabindex="-1">
-            <source src="Content/Reels/Food/oysters%20%26%20Pearls%20vertical.mov" type="video/mp4">
-          </video>
-          <div class="thumb-overlay">
-            <div class="thumb-play"><span>▶</span></div>
-            <div class="thumb-meta"><div class="thumb-title">Oysters &amp; Pearls</div></div>
-          </div>
-        </div>
-      </div>
-    </div></div>
-  </div>
-</section>
-
-<hr>
-
-<!-- INSTAGRAM REELS — separate Sektion unten -->
-<section id="instagram" class="sec">
-  <div class="wrap">
-    <div class="eye r">Instagram</div>
-    <h2 class="r"><span data-de>Direkt von<br><em>Instagram.</em></span><span data-en>Straight from<br><em>Instagram.</em></span></h2>
-    <div class="ig-grid r d1">
-      <blockquote class="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DH6PgvJI2Fc/?igsh=aGpzcmRqcmQxZHVj"
-        data-instgrm-version="14"
-        style="background:#000!important;border:1px solid var(--d)!important;border-radius:0!important;margin:0!important;width:100%!important">
-      </blockquote>
-      <blockquote class="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DH05lurIhhx/?igsh=bjBtMTQzanJ2OHlt"
-        data-instgrm-version="14"
-        style="background:#000!important;border:1px solid var(--d)!important;border-radius:0!important;margin:0!important;width:100%!important">
-      </blockquote>
-      <blockquote class="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DDpGvkAoTW2/?igsh=MWFkZjcxc2lzcWpieQ=="
-        data-instgrm-version="14"
-        style="background:#000!important;border:1px solid var(--d)!important;border-radius:0!important;margin:0!important;width:100%!important">
-      </blockquote>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- PHOTO GALLERY — 7-Bild Vorschau + Lightbox durch alle 54 -->
-<section id="photos" class="sec">
-  <div class="wrap">
-    <div class="eye r"><span data-de>Fotografie</span><span data-en>Photography</span></div>
-    <h2 class="r"><span data-de>Bilder, die<br><em>bleiben.</em></span><span data-en>Images that<br><em>endure.</em></span></h2>
-    <div class="pg-wrap r d1">
-      <div class="pg-grid" id="pgrid">
-      <div class="pg-item" data-i="0"><img src="Content/Foto/051A1620.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="1"><img src="Content/Foto/051A1680.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="2"><img src="Content/Foto/051A1851.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="3"><img src="Content/Foto/Copy%20of%20DSC07584.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="4"><img src="Content/Foto/DSC01152.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="5"><img src="Content/Foto/DSC01157.webp" alt="" loading="lazy"></div>
-      <div class="pg-item" data-i="6"><img src="Content/Foto/DSC01165.webp" alt="" loading="lazy"></div>
-      </div>
-      <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <span style="font-size:.7rem;color:var(--m)"><span data-de>54 Fotografien — klicken zum Durchblättern</span><span data-en>54 photographs — click to browse</span></span>
-        <button class="btn bo" onclick="openLb(0)" style="font-size:.6rem;padding:8px 16px"><span data-de>Alle Fotos →</span><span data-en>All Photos →</span></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- MARKETS -->
-<section id="markets" class="sec">
-  <div class="wrap">
-    <div class="g2">
-      <div>
-        <div class="eye r"><span data-de>Märkte</span><span data-en>Markets</span></div>
-        <h2 class="r"><span data-de>Made in Germany.<br><em>Wirksam global.</em></span><span data-en>Made in Germany.<br><em>Built for the world.</em></span></h2>
-      </div>
-      <div>
-        <p class="body r d1" style="margin-bottom:15px"><span data-de>Geprägt von Präzision, Zuverlässigkeit und dem Anspruch, Dinge beim ersten Mal richtig zu machen.</span><span data-en>Shaped by precision, reliability, and the conviction that things should be done right the first time.</span></p>
-        <div class="mtags r d2"><span class="mtag">Germany</span><span class="mtag">Austria</span><span class="mtag">Switzerland</span><span class="mtag">Europe</span><span class="mtag">Asia-Pacific</span><span class="mtag">Remote Global</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- PRICING -->
-<section id="pricing" class="sec">
-  <div class="wrap">
-    <div class="g2">
-      <div>
-        <div class="eye r"><span data-de>Preisphilosophie</span><span data-en>Pricing</span></div>
-        <h2 class="r"><span data-de>Maßgeschneidert.<br><em>Ohne Kompromiss.</em></span><span data-en>Bespoke.<br><em>No compromise.</em></span></h2>
-      </div>
-      <div class="r d1">
-        <div class="plead"><span data-de>Bei MBMP gibt es <em>keine Preislisten</em>. Jedes Projekt ist so individuell wie Ihr Unternehmen.</span><span data-en>At MBMP, there are <em>no price lists</em>. Every project is as individual as your business.</span></div>
-        <p class="body" style="margin-bottom:21px"><span data-de>Was wir garantieren: deutsche Qualitätsarbeit, transparente Kommunikation und eine Lösung, die sitzt.</span><span data-en>What we guarantee: German-standard quality work, transparent communication, and a solution built to last.</span></p>
-        <a href="dashboard.html" class="btn bw"><span data-de>→ Angebot anfragen</span><span data-en>→ Request a quote</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- TEAM -->
-<section id="team" class="sec">
-  <div class="wrap">
-    <div class="g2t">
-      <div>
-        <div class="eye r"><span data-de>Das Team</span><span data-en>The Team</span></div>
-        <h2 class="r"><span data-de>Jung.<br>Diszipliniert.<br><em>Krankhaft zuverlässig.</em></span><span data-en>Young.<br>Disciplined.<br><em>Pathologically reliable.</em></span></h2>
-        <p class="body r d1"><span data-de>MBMP ist kein Kollektiv von Freelancern. Wir sind ein eingespieltes, hungriges Team mit einem gemeinsamen Anspruch: jeden Tag besser zu werden als gestern.</span><span data-en>MBMP is not a group of freelancers. We are a tight, driven team with one shared standard: be better today than yesterday.</span></p>
-      </div>
-      <div class="tlist r d1">
-        <div class="ti"><div class="tid">—</div><div class="tit"><span data-de>Zuverlässigkeit</span><span data-en>Reliability</span></div><div class="tib"><span data-de>Keine Versprechen. Nur Liefern.</span><span data-en>No promises. Only delivery.</span></div></div>
-        <div class="ti"><div class="tid">—</div><div class="tit"><span data-de>Qualität</span><span data-en>Quality</span></div><div class="tib"><span data-de>Kompromisslos. Immer.</span><span data-en>Non-negotiable. Always.</span></div></div>
-        <div class="ti"><div class="tid">—</div><div class="tit">Ambition</div><div class="tib"><span data-de>Jeden Tag besser als gestern.</span><span data-en>Better every day than the last.</span></div></div>
-        <div class="ti"><div class="tid">—</div><div class="tit"><span data-de>Periphere Wahrnehmung</span><span data-en>Peripheral Vision</span></div><div class="tib"><span data-de>Wir sehen, was andere übersehen.</span><span data-en>We see what others overlook.</span></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr>
+<!-- FINAL CTA -->
+<section class="bqs"><div class="rv">
+  <p class="bq de">Sind Sie bereit, <em>Glück aus der Gleichung</em> zu streichen?</p>
+  <p class="bq en">Ready to remove <em>luck from the equation?</em></p>
+  <a href="#contact" class="cta" style="margin-top:20px"><span class="de">Kontakt aufnehmen</span><span class="en">Contact Us</span>
+    <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</div></section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="cw">
-    <div class="eye r" style="justify-content:center"><span data-de>Erstgespräch</span><span data-en>Discovery Call</span></div>
-    <h2 class="ch r"><span data-de>Bereit, Glück aus<br>der Gleichung zu <em>streichen?</em></span><span data-en>Ready to remove luck<br>from the <em>equation?</em></span></h2>
-    <p class="cs r d1"><span data-de>MBMP macht keine halben Sachen. Begrenzte Kapazitäten. Volle Aufmerksamkeit.</span><span data-en>MBMP doesn't do things halfway. Limited availability. Full attention.</span></p>
-    <div class="form r d2">
-      <div class="frow">
-        <input class="fi" id="fn" type="text" placeholder="Name">
-        <input class="fi" id="fco" type="text" placeholder="Unternehmen">
-      </div>
-      <input class="fi" id="fe" type="email" placeholder="E-Mail">
-      <input class="fi" id="fw" type="url" placeholder="Website (optional)">
-      <select class="fsel"><option value="" disabled selected>Leistung wählen</option><option>Content &amp; Storytelling</option><option>Interview &amp; Documentary</option><option>Visual Branding</option><option>Recruiting Content</option><option>Edutainment</option><option>Brand Strategy</option><option>Erstgespräch</option></select>
-      <button class="fsub" onclick="submitForm()"><span data-de>→ Erstgespräch sichern</span><span data-en>→ Secure your slot</span></button>
+  <div class="rv"><p class="sl"><span class="de">Kontakt</span><span class="en">Contact</span></p>
+    <h2 class="st"><span class="de">Erstgespräch buchen</span><span class="en">Book your first call</span></h2>
+    <p class="ss"><span class="de">Wir machen keine halben Sachen. Oder ist das in Ihrem Unternehmen anders?</span><span class="en">We don't do half measures. Or do things work differently at your company?</span></p></div>
+  <div class="cg rv">
+    <div>
+      <div class="fg"><label><span class="de">Ihr Name</span><span class="en">Your Name</span></label><input type="text" placeholder="Max Mustermann"></div>
+      <div class="fg"><label>E-Mail</label><input type="email" placeholder="max@unternehmen.com"></div>
+      <div class="fg"><label><span class="de">Unternehmen</span><span class="en">Company</span></label><input type="text" placeholder="Unternehmen GmbH"></div>
+      <div class="fg"><label><span class="de">Interesse an</span><span class="en">Interest in</span></label>
+        <select>
+          <option class="de" value="">Bitte wählen...</option><option class="en" value="">Please select...</option>
+          <option class="de">Bild & Bewegtbild</option><option class="en">Film & Storytelling</option>
+          <option>3D Animation</option>
+          <option class="de">Webdesign</option><option class="en">Web Design</option>
+          <option class="de">Grafik & Identität</option><option class="en">Graphics & Identity</option>
+          <option>Content & Strategy</option><option>Recruiting</option>
+          <option class="de">Gesamtpaket</option><option class="en">Full Package</option>
+        </select></div>
+      <div class="fg"><label><span class="de">Ihre Nachricht</span><span class="en">Your Message</span></label><textarea></textarea></div>
+      <button class="cta" type="button"><span class="de">Anfrage senden</span><span class="en">Send Request</span>
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p style="margin-top:10px;font-size:12px;color:var(--txt3);line-height:1.5">
+        <span class="de">Für eine detaillierte Analyse fällt eine kleine Gebühr an — das gewährleistet, dass wir uns die Zeit nehmen, die es braucht.</span>
+        <span class="en">A small fee applies for a detailed analysis — ensuring we dedicate the time you deserve.</span></p>
     </div>
-    <div class="ca r d3">
-      <span><span data-de>Bereits Kunde?</span><span data-en>Already a client?</span></span>
-      <a href="dashboard.html" class="btn bg" style="padding:7px 15px;font-size:.58rem">→ Client Portal</a>
+    <div class="ci">
+      <h3>MBMP</h3>
+      <p class="de">Emotionsspezialisten mit Sitz in Zypern. Deutsche Qualitätsstandards. International tätig.</p>
+      <p class="en">Emotion specialists based in Cyprus. German quality standards. Operating internationally.</p>
+      <div class="cd"><span class="cdl">E-Mail</span><span>info@mbmp.media</span></div>
+      <div class="cd"><span class="cdl de">Telefon</span><span class="cdl en">Phone</span><span>+357 XX XXX XXX</span></div>
+      <div class="cd"><span class="cdl de">Standort</span><span class="cdl en">Location</span><span class="de">Zypern — International tätig</span><span class="en">Cyprus — Operating internationally</span></div>
+      <div class="cd"><span class="cdl">Social</span><span>Instagram · LinkedIn · YouTube</span></div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="fin">
-    <div>
-      <div class="flog"><img src="Content/MBMP%20LOGO/MBMP%20schrift.svg" alt="MBMP" style="height:16px;width:auto"></div>
-      <div class="ftag"><span data-de>Wir fangen ein, was andere übersehen.</span><span data-en>We capture what others overlook.</span></div>
-    </div>
-    <nav class="flinks">
-      <a href="#pos"><span data-de>Agentur</span><span data-en>Agency</span></a>
-      <a href="#exp"><span data-de>Leistungen</span><span data-en>Services</span></a>
-      <a href="#videos">Video</a><a href="#photos">Foto</a>
-      <a href="#reels">Reels</a><a href="#instagram">Instagram</a>
-      <a href="dashboard.html">Client Portal</a>
-      <a href="#contact"><span data-de>Kontakt</span><span data-en>Contact</span></a>
-    </nav>
-    <a href="dashboard.html" class="btn bo" style="font-size:.58rem;padding:7px 14px">Client Login →</a>
-  </div>
-  <div class="fbot">
-    <div class="fc">© 2025 MBMP. <span data-de>Alle Rechte vorbehalten.</span><span data-en>All rights reserved.</span></div>
-    <div class="fc">Made in Germany.</div>
+<footer class="ft">
+  <div class="ft-l">© 2026 MBMP</div>
+  <div class="ft-r">
+    <a href="#" class="de">Impressum</a><a href="#" class="en">Legal</a>
+    <a href="#" class="de">Datenschutz</a><a href="#" class="en">Privacy</a>
+    <a href="#">Instagram</a><a href="#">LinkedIn</a>
   </div>
 </footer>
 
-<script async src="//www.instagram.com/embed.js"></script>
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <div class="lb-x lbb" onclick="cLB()">✕</div>
+  <img id="lbI" src="">
+  <div class="lbc"><div class="lbb" onclick="lbP(event)">‹</div><div class="lbb" onclick="lbN(event)">›</div></div>
+  <div class="lb-n" id="lbC"></div>
+</div>
+
 <script>
-// NAV scroll
-const navEl = document.getElementById('nav');
-window.addEventListener('scroll', () => navEl.classList.toggle('s', scrollY > 50));
+// PARTICLES
+!function(){const c=document.getElementById('particles-canvas'),x=c.getContext('2d');let P=[];const N=50;
+function R(){c.width=innerWidth;c.height=innerHeight}addEventListener('resize',R);R();
+class Q{constructor(){this.r()}r(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*1.5+.3;this.vx=(Math.random()-.5)*.22;this.vy=(Math.random()-.5)*.22;this.o=Math.random()*.3+.05;this.ps=Math.random()*.006+.003;this.po=Math.random()*6.28;this.g=Math.random()>.72}
+u(t){this.x+=this.vx;this.y+=this.vy;if(this.x<-10||this.x>c.width+10||this.y<-10||this.y>c.height+10)this.r();this.co=this.o*(.6+.4*Math.sin(t*this.ps+this.po))}
+d(){const cl=this.g?`rgba(200,164,92,${this.co})`:`rgba(255,255,255,${this.co*.4})`;x.beginPath();x.arc(this.x,this.y,this.s,0,6.28);x.fillStyle=cl;x.fill();if(this.s>1&&this.g){x.beginPath();x.arc(this.x,this.y,this.s*4,0,6.28);x.fillStyle=`rgba(200,164,92,${this.co*.06})`;x.fill()}}}
+for(let i=0;i<N;i++)P.push(new Q);let t=0;!function a(){x.clearRect(0,0,c.width,c.height);t++;P.forEach(p=>{p.u(t);p.d()});requestAnimationFrame(a)}()}();
+
+// NAV
+addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>50));
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
+function closeMob(){document.getElementById('mobMenu').classList.remove('open')}
+
+// LANG
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{
+const l=b.getAttribute('data-lang');document.documentElement.setAttribute('data-lang',l);document.documentElement.lang=l;
+document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll(`[data-lang="${l}"]`).forEach(x=>x.classList.add('active'))}));
 
 // REVEAL
-const ro = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add('v'); ro.unobserve(e.target); }
-}), { threshold: 0.06 });
-document.querySelectorAll('.r').forEach(el => ro.observe(el));
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
 
-// LANGUAGE
-let isEN = false;
-function toggleLang() {
-  isEN = !isEN;
-  document.body.classList.toggle('en', isEN);
-  document.getElementById('lbtn').textContent = isEN ? 'DE' : 'EN';
-  document.documentElement.lang = isEN ? 'en' : 'de';
+// GALLERY TOGGLE
+let gO=false;
+function tgGal(){
+  const g=document.getElementById('pGrid'),b=document.getElementById('gBtn');
+  gO=!gO;
+  g.classList.toggle('coll',!gO);
+  b.innerHTML=gO?'<span class="de">Weniger anzeigen</span><span class="en">Show less</span>':'<span class="de">Alle Fotos anzeigen</span><span class="en">Show all photos</span>';
 }
 
-// VIDEO THUMBNAIL: show first frame, hover = play from random spot
-document.querySelectorAll('.vc, .rc').forEach(card => {
-  const vid = card.querySelector('video');
-  if (!vid) return;
-  // On load, pause at first frame to show as thumbnail
-  vid.addEventListener('loadedmetadata', () => {
-    vid.currentTime = 0.1;
-  });
-  // On seeked, pause so first frame shows as still
-  vid.addEventListener('seeked', () => {
-    if (!card.dataset.playing) vid.pause();
-  }, { once: false });
-  card.addEventListener('mouseenter', () => {
-    card.dataset.playing = '1';
-    const max = Math.min(vid.duration || 8, 8);
-    vid.currentTime = Math.random() * max * 0.4;
-    vid.play().catch(() => {});
-  });
-  card.addEventListener('mouseleave', () => {
-    delete card.dataset.playing;
-    vid.pause();
-    vid.currentTime = 0.1;
-  });
-});
+// LIGHTBOX
+const ph=[...document.querySelectorAll('.pi img')].map(i=>i.src);let li=0;
+function oLB(i){li=i;document.getElementById('lbI').src=ph[i];document.getElementById('lbC').textContent=`${i+1} / ${ph.length}`;document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden'}
+function cLB(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+function lbP(e){e.stopPropagation();li=(li-1+ph.length)%ph.length;oLB(li)}
+function lbN(e){e.stopPropagation();li=(li+1)%ph.length;oLB(li)}
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===document.getElementById('lb'))cLB()});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')cLB();if(e.key==='ArrowLeft')lbP(e);if(e.key==='ArrowRight')lbN(e)});
 
-// VIDEO MODAL
-function openVid(src) {
-  const p = document.getElementById('vplayer');
-  p.src = src;
-  document.getElementById('vmod').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  p.play().catch(() => {});
-}
-function closeVid() {
-  const p = document.getElementById('vplayer');
-  p.pause(); p.src = '';
-  document.getElementById('vmod').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.getElementById('vmod').addEventListener('click', e => { if (e.target===e.currentTarget) closeVid(); });
+// =========================================
+// YOUTUBE PLAYLIST LOADER (via noembed/oembed fallback with RSS)
+// Since we can't use the YT Data API without a key,
+// we use YouTube's RSS feed for playlists
+// =========================================
 
-// Wire video/reel clicks
-document.querySelectorAll('.vc[data-src], .rc[data-src]').forEach(c =>
-  c.addEventListener('click', () => openVid(c.dataset.src))
-);
-
-// TABS
-function swTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('.tpanel').forEach(p => p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('tp-' + id).classList.add('on');
+// Helper: get YouTube video thumbnail
+function ytThumb(videoId, quality) {
+  // quality: default, mqdefault, hqdefault, sddefault, maxresdefault
+  return `https://img.youtube.com/vi/${videoId}/${quality || 'hqdefault'}.jpg`;
 }
 
-// PHOTO LIGHTBOX
-const PHOTOS = ["Content/Foto/051A1620.webp","Content/Foto/051A1680.webp","Content/Foto/051A1851.webp","Content/Foto/Copy%20of%20DSC07584.webp","Content/Foto/DSC01152.webp","Content/Foto/DSC01157.webp","Content/Foto/DSC01165.webp","Content/Foto/DSC01167.webp","Content/Foto/DSC01168.webp","Content/Foto/DSC01173.webp","Content/Foto/DSC01178.webp","Content/Foto/DSC01911.webp","Content/Foto/DSC02086.webp","Content/Foto/DSC02113.webp","Content/Foto/DSC03740.webp","Content/Foto/DSC06530.webp","Content/Foto/DSC06697.webp","Content/Foto/DSC06740.webp","Content/Foto/DSC06890.webp","Content/Foto/DSC07304.webp","Content/Foto/DSC07320.webp","Content/Foto/DSC07322%281%29.webp","Content/Foto/DSC07322.webp","Content/Foto/DSC07328.webp","Content/Foto/DSC07334.webp","Content/Foto/DSC07378.webp","Content/Foto/DSC07419.webp","Content/Foto/DSC07435.webp","Content/Foto/DSC07521.webp","Content/Foto/DSC07696.webp","Content/Foto/DSC07703.webp","Content/Foto/DSC07729.webp","Content/Foto/DSC07812.webp","Content/Foto/DSC07840.webp","Content/Foto/DSC07970.webp","Content/Foto/DSC08026.webp","Content/Foto/DSC08051.webp","Content/Foto/DSC08056.webp","Content/Foto/DSC08923.webp","Content/Foto/DSC08972.webp","Content/Foto/DSC09073.webp","Content/Foto/DSC09137.webp","Content/Foto/DSC09198.webp","Content/Foto/DSC09417.webp","Content/Foto/L1001556.webp","Content/Foto/L1001558.webp","Content/Foto/L1001560.webp","Content/Foto/L1001680.webp","Content/Foto/_DSC6178.webp","Content/Foto/_DSC6506.webp","Content/Foto/_DSC6611.webp","Content/Foto/_DSC6819.webp","Content/Foto/_DSC6837.webp","Content/Foto/_DSC6849.webp"];
-let lbIdx = 0;
-
-// Wire 7 preview items
-document.querySelectorAll('.pg-item[data-i]').forEach(el =>
-  el.addEventListener('click', () => openLb(+el.dataset.i))
-);
-
-function openLb(i) {
-  lbIdx = i;
-  const img = document.getElementById('lbimg');
-  img.style.opacity = '0';
-  img.src = PHOTOS[i];
-  img.onload = () => img.style.opacity = '1';
-  document.getElementById('lbn2').textContent = (i+1) + ' / ' + PHOTOS.length;
-  document.getElementById('lb').classList.add('open');
-  document.body.style.overflow = 'hidden';
+// Helper: create a landscape video card
+function createVideoCard(videoId, title) {
+  const card = document.createElement('a');
+  card.href = `https://www.youtube.com/watch?v=${videoId}`;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.className = 'yt-card';
+  card.innerHTML = `
+    <img src="${ytThumb(videoId, 'hqdefault')}" alt="${title}" loading="lazy">
+    <div class="pb"></div>
+    <div class="vlb">${title}</div>
+  `;
+  return card;
 }
-function closeLb() {
-  document.getElementById('lb').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function lbNav(d) {
-  lbIdx = (lbIdx + d + PHOTOS.length) % PHOTOS.length;
-  const img = document.getElementById('lbimg');
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = PHOTOS[lbIdx];
-    img.onload = () => img.style.opacity = '1';
-    document.getElementById('lbn2').textContent = (lbIdx+1) + ' / ' + PHOTOS.length;
-  }, 110);
-}
-document.getElementById('lb').addEventListener('click', e => { if (e.target===e.currentTarget) closeLb(); });
 
-// KEYBOARD
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeVid(); closeLb(); }
-  if (document.getElementById('lb').classList.contains('open')) {
-    if (e.key === 'ArrowLeft') lbNav(-1);
-    if (e.key === 'ArrowRight') lbNav(1);
+// Helper: create a reel/vertical card
+function createReelCard(videoId, title) {
+  const card = document.createElement('a');
+  card.href = `https://www.youtube.com/watch?v=${videoId}`;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.className = 'reel-card';
+  // For vertical thumbnails, we use maxresdefault and let CSS crop
+  card.innerHTML = `
+    <img src="${ytThumb(videoId, 'maxresdefault')}" alt="${title}" loading="lazy" onerror="this.src='${ytThumb(videoId, 'hqdefault')}'">
+    <div class="pb"></div>
+    <div class="vlb">${title}</div>
+  `;
+  return card;
+}
+
+// Load playlist videos via YouTube RSS feed (no API key needed)
+async function loadPlaylist(playlistId) {
+  try {
+    // Use a CORS proxy or direct RSS. YouTube RSS: https://www.youtube.com/feeds/videos.xml?playlist_id=PLAYLIST_ID
+    const rssUrl = `https://www.youtube.com/feeds/videos.xml?playlist_id=${playlistId}`;
+    // Try fetching via cors-anywhere or direct (may be blocked by CORS)
+    // Fallback: use a public CORS proxy
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+    const res = await fetch(proxyUrl);
+    const text = await res.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const entries = xml.querySelectorAll('entry');
+    const title = xml.querySelector('title') ? xml.querySelector('title').textContent : '';
+    const videos = [];
+    entries.forEach(entry => {
+      const videoId = entry.querySelector('id') ? entry.querySelector('id').textContent.split(':').pop() : '';
+      const videoTitle = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+      if(videoId) videos.push({ id: videoId, title: videoTitle });
+    });
+    return { title, videos };
+  } catch(e) {
+    console.warn('RSS load failed for playlist', playlistId, e);
+    return null;
   }
-});
-
-// ADD +47 overlay on last preview photo
-window.addEventListener('DOMContentLoaded', () => {
-  const items = document.querySelectorAll('.pg-item');
-  if (items.length >= 7) {
-    const last = items[items.length - 1];
-    const ov = document.createElement('div');
-    ov.className = 'pg-more';
-    ov.textContent = '+47';
-    last.appendChild(ov);
-  }
-});
-
-// CONTACT
-function submitForm() {
-  const n = document.getElementById('fn').value.trim();
-  const em = document.getElementById('fe').value.trim();
-  if (!n || !em) { alert(isEN ? 'Please enter name and email.' : 'Bitte Name und E-Mail.'); return; }
-  document.querySelector('.form').innerHTML = `
-    <div style="text-align:center;padding:38px 0;border:1px solid rgba(255,255,255,.08)">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;color:#c8a96e;margin-bottom:11px">✓</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.18rem;color:#fff;margin-bottom:7px">
-        ${isEN ? 'Received.' : 'Erhalten.'}
-      </div>
-      <p style="font-size:.74rem;color:rgba(255,255,255,.35)">
-        ${isEN ? "We'll be in touch within 24 hours." : 'Wir melden uns innerhalb von 24 Stunden.'}
-      </p>
-    </div>`;
 }
+
+// Fallback data in case RSS fails (hardcoded from playlist IDs)
+// Corporate Playlist 1: PLSZTwTHQ9B0mI0oV3qwhePxFqNO2p50cx
+// Corporate Playlist 2: PLSZTwTHQ9B0n6tT2pCcnFOQsweF2nMCRh
+// Reels Playlist: PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz
+
+async function initCorporatePlaylists() {
+  // Playlist 1
+  const pl1 = await loadPlaylist('PLSZTwTHQ9B0mI0oV3qwhePxFqNO2p50cx');
+  if (pl1 && pl1.videos.length > 0) {
+    document.getElementById('corpTitle1').textContent = pl1.title;
+    const grid1 = document.getElementById('corpGrid1');
+    pl1.videos.forEach(v => grid1.appendChild(createVideoCard(v.id, v.title)));
+  } else {
+    // Fallback: embed the playlist directly
+    document.getElementById('corpTitle1').innerHTML = '<span class="de">Corporate Playlist 1</span><span class="en">Corporate Playlist 1</span>';
+    document.getElementById('corpGrid1').innerHTML = `
+      <div class="vl" style="grid-column:1/-1;max-width:800px">
+        <iframe src="https://www.youtube.com/embed/videoseries?list=PLSZTwTHQ9B0mI0oV3qwhePxFqNO2p50cx&rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>`;
+  }
+
+  // Playlist 2
+  const pl2 = await loadPlaylist('PLSZTwTHQ9B0n6tT2pCcnFOQsweF2nMCRh');
+  if (pl2 && pl2.videos.length > 0) {
+    document.getElementById('corpTitle2').textContent = pl2.title;
+    const grid2 = document.getElementById('corpGrid2');
+    pl2.videos.forEach(v => grid2.appendChild(createVideoCard(v.id, v.title)));
+  } else {
+    document.getElementById('corpTitle2').innerHTML = '<span class="de">Corporate Playlist 2</span><span class="en">Corporate Playlist 2</span>';
+    document.getElementById('corpGrid2').innerHTML = `
+      <div class="vl" style="grid-column:1/-1;max-width:800px">
+        <iframe src="https://www.youtube.com/embed/videoseries?list=PLSZTwTHQ9B0n6tT2pCcnFOQsweF2nMCRh&rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>`;
+  }
+}
+
+async function initReels() {
+  const pl = await loadPlaylist('PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz');
+  const grid = document.getElementById('reelsGrid');
+  if (pl && pl.videos.length > 0) {
+    pl.videos.forEach(v => grid.appendChild(createReelCard(v.id, v.title)));
+  } else {
+    // Fallback: embed the playlist as a single player
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;display:flex;justify-content:center">
+        <div style="width:100%;max-width:360px;aspect-ratio:9/16;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--bdr)">
+          <iframe src="https://www.youtube.com/embed/videoseries?list=PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz&rel=0&modestbranding=1" style="width:100%;height:100%;border:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        </div>
+      </div>`;
+  }
+}
+
+// Initialize everything
+document.addEventListener('DOMContentLoaded', () => {
+  initCorporatePlaylists();
+  initReels();
+});
 </script>
+
 </body>
 </html>
