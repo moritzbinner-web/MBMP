@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YourBrand – Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN SYSTEM – Glass iOS/macOS · Dark · Glowing
+   ============================================================ */
+:root {
+  --bg: #07090f;
+  --bg2: #0b0e17;
+  --bg3: #0f1220;
+  --glass: rgba(255,255,255,0.035);
+  --glass2: rgba(255,255,255,0.06);
+  --glass3: rgba(255,255,255,0.09);
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --border3: rgba(255,255,255,0.22);
+  --text: #eef0f7;
+  --text2: rgba(238,240,247,0.6);
+  --text3: rgba(238,240,247,0.35);
+  --accent: #b8e4ff;
+  --accent2: #6ab4d8;
+  --accent-glow: rgba(107,184,255,0.2);
+  --green: #5fffc0;
+  --green-g: rgba(95,255,192,0.15);
+  --orange: #ffb347;
+  --orange-g: rgba(255,179,71,0.15);
+  --red: #ff6b7a;
+  --red-g: rgba(255,107,122,0.15);
+  --purple: #c4b5fd;
+  --purple-g: rgba(196,181,253,0.15);
+  --gold: #ffd166;
+  --nav-w: 248px;
+  --top-h: 60px;
+  --r: 18px;
+  --r2: 12px;
+  --r3: 8px;
+  --ff: 'Syne', sans-serif;
+  --fb: 'DM Sans', sans-serif;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow2: 0 20px 60px rgba(0,0,0,0.6);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body { background: var(--bg); color: var(--text); font-family: var(--fb); min-height: 100vh; overflow-x: hidden; }
+::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+img, video { display: block; max-width: 100%; }
+button { font-family: var(--fb); cursor: pointer; }
+input, textarea, select { font-family: var(--fb); }
+a { color: inherit; text-decoration: none; }
+
+/* ── SCREENS ── */
+.screen { display: none; width: 100%; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ============================================================
+   LOGIN SCREEN
+   ============================================================ */
+#screen-login {
+  align-items: center; justify-content: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(100,180,255,0.08) 0%, transparent 70%), var(--bg);
+  flex-direction: column;
+}
+.login-bg-orb {
+  position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0;
+}
+.orb1 { width: 600px; height: 400px; background: rgba(80,160,255,0.06); top: -100px; left: -100px; }
+.orb2 { width: 500px; height: 400px; background: rgba(120,80,255,0.05); bottom: -100px; right: -50px; }
+.login-wrap { position: relative; z-index: 1; width: 100%; max-width: 440px; padding: 20px; }
+.brand-header { text-align: center; margin-bottom: 36px; }
+.brand-logo-mark {
+  width: 64px; height: 64px; border-radius: 18px;
+  background: var(--glass2); border: 1px solid var(--border2);
+  display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px;
+  box-shadow: 0 0 40px var(--accent-glow);
+}
+.brand-name { font-family: var(--ff); font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; }
+.brand-name em { color: var(--accent); font-style: normal; }
+.brand-tagline { font-size: 0.78rem; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
+.login-card {
+  background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);
+  border: 1px solid var(--border); border-radius: 24px; padding: 36px;
+  box-shadow: var(--shadow2), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.login-tabs { display: flex; gap: 4px; background: var(--glass); border-radius: 12px; padding: 4px; margin-bottom: 28px; }
+.ltab {
+  flex: 1; padding: 9px; text-align: center; border-radius: 9px;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; cursor: pointer;
+  color: var(--text3); transition: all 0.2s;
+}
+.ltab.active { background: var(--glass3); color: var(--accent); box-shadow: 0 0 16px rgba(107,184,255,0.1); }
+.fgroup { margin-bottom: 16px; }
+.fgroup label { display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 7px; }
+.finput {
+  width: 100%; background: var(--glass2); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 12px 15px; color: var(--text); font-size: 0.88rem;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.finput:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent-glow); }
+.finput::placeholder { color: var(--text3); }
+.finput-error { border-color: var(--red) !important; }
+.error-banner { background: var(--red-g); border: 1px solid rgba(255,107,122,0.25); color: var(--red); border-radius: var(--r3); padding: 10px 14px; font-size: 0.8rem; margin-bottom: 14px; display: none; }
+.btn-login {
+  width: 100%; font-family: var(--ff); font-size: 0.88rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; padding: 14px;
+  border-radius: 100px; background: var(--accent); color: #07090f; border: none;
+  box-shadow: 0 0 28px var(--accent-glow); transition: all 0.22s; margin-top: 6px;
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 0 48px rgba(107,184,255,0.45); }
+.demo-row { display: flex; gap: 6px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+.demo-btn {
+  flex: 1; padding: 9px 8px; text-align: center;
+  background: var(--glass); border: 1px solid var(--border); border-radius: 10px;
+  font-size: 0.73rem; font-weight: 600; color: var(--text2); cursor: pointer;
+  transition: all 0.2s;
+}
+.demo-btn:hover { border-color: var(--border2); background: var(--glass2); color: var(--text); }
+.demo-label { font-size: 0.62rem; color: var(--text3); margin-bottom: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ============================================================
+   DASHBOARD LAYOUT
+   ============================================================ */
+#screen-dashboard { flex-direction: row; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--nav-w); flex-shrink: 0; height: 100vh; position: fixed; top: 0; left: 0; z-index: 60;
+  background: rgba(7,9,15,0.92); backdrop-filter: blur(32px);
+  border-right: 1px solid var(--border); display: flex; flex-direction: column;
+  transition: transform 0.3s;
+}
+.sb-logo { padding: 20px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.sb-logo-mark {
+  width: 34px; height: 34px; border-radius: 10px; background: var(--glass3);
+  border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sb-brand { font-family: var(--ff); font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
+.sb-brand em { color: var(--accent); font-style: normal; }
+.sb-role-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; margin-top: 1px; }
+.role-admin { background: var(--red-g); color: var(--red); border: 1px solid rgba(255,107,122,0.2); }
+.role-employee { background: var(--purple-g); color: var(--purple); border: 1px solid rgba(196,181,253,0.2); }
+.role-client { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(107,184,255,0.2); }
+.sb-nav { flex: 1; overflow-y: auto; padding: 12px 10px; }
+.nav-section { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text3); padding: 12px 10px 5px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--r3);
+  cursor: pointer; color: var(--text2); font-size: 0.84rem; font-weight: 500;
+  transition: all 0.18s; margin-bottom: 1px; user-select: none; position: relative;
+}
+.nav-item:hover { background: var(--glass2); color: var(--text); }
+.nav-item.active { background: rgba(107,184,255,0.1); color: var(--accent); }
+.nav-item .ni-icon { width: 18px; text-align: center; font-size: 0.9rem; flex-shrink: 0; }
+.nav-item .ni-badge {
+  margin-left: auto; font-size: 0.62rem; font-weight: 700; padding: 1px 6px;
+  border-radius: 100px; background: var(--red-g); color: var(--red); min-width: 18px; text-align: center;
+}
+.ni-badge.info { background: var(--accent-glow); color: var(--accent); }
+.sb-user { padding: 14px 16px; border-top: 1px solid var(--border); }
+.sb-user-row { display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-family: var(--ff); font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+}
+.av-blue { background: rgba(107,184,255,0.15); color: var(--accent); border: 1px solid rgba(107,184,255,0.25); }
+.av-green { background: rgba(95,255,192,0.12); color: var(--green); border: 1px solid rgba(95,255,192,0.2); }
+.av-orange { background: rgba(255,179,71,0.12); color: var(--orange); border: 1px solid rgba(255,179,71,0.2); }
+.av-red { background: rgba(255,107,122,0.12); color: var(--red); border: 1px solid rgba(255,107,122,0.2); }
+.av-purple { background: rgba(196,181,253,0.12); color: var(--purple); border: 1px solid rgba(196,181,253,0.2); }
+.av-gold { background: rgba(255,209,102,0.12); color: var(--gold); border: 1px solid rgba(255,209,102,0.2); }
+.av-lg { width: 42px; height: 42px; font-size: 0.9rem; border-radius: 12px; }
+.sb-uname { font-size: 0.82rem; font-weight: 600; }
+.sb-uemail { font-size: 0.7rem; color: var(--text3); }
+.sb-logout { margin-left: auto; font-size: 0.75rem; color: var(--text3); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
+.sb-logout:hover { color: var(--red); background: var(--red-g); }
+
+/* ── MAIN AREA ── */
+.main-area { margin-left: var(--nav-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+.topbar {
+  height: var(--top-h); border-bottom: 1px solid var(--border); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: sticky; top: 0; z-index: 50;
+  background: rgba(7,9,15,0.85); backdrop-filter: blur(24px);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-title { font-family: var(--ff); font-size: 0.95rem; font-weight: 700; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.page-content { padding: 24px; flex: 1; }
+.page-view { display: none; }
+.page-view.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+/* ── BUTTONS ── */
+.btn { font-family: var(--fb); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; padding: 8px 16px; border-radius: 100px; cursor: pointer; transition: all 0.18s; border: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: var(--accent); color: #07090f; box-shadow: 0 0 20px var(--accent-glow); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 36px rgba(107,184,255,0.45); }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text2); }
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); background: var(--glass); }
+.btn-green { background: var(--green-g); border: 1px solid rgba(95,255,192,0.25); color: var(--green); }
+.btn-green:hover { background: rgba(95,255,192,0.2); }
+.btn-red { background: var(--red-g); border: 1px solid rgba(255,107,122,0.25); color: var(--red); }
+.btn-red:hover { background: rgba(255,107,122,0.2); }
+.btn-orange { background: var(--orange-g); border: 1px solid rgba(255,179,71,0.25); color: var(--orange); }
+.btn-sm { padding: 6px 12px; font-size: 0.74rem; }
+.btn-xs { padding: 4px 9px; font-size: 0.68rem; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--glass); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 20px; transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border2); }
+.card-title { font-family: var(--ff); font-size: 0.92rem; font-weight: 700; margin-bottom: 3px; }
+.card-sub { font-size: 0.76rem; color: var(--text2); margin-bottom: 16px; }
+
+/* ── PILLS / BADGES ── */
+.pill { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+.pill-green { background: var(--green-g); color: var(--green); }
+.pill-orange { background: var(--orange-g); color: var(--orange); }
+.pill-red { background: var(--red-g); color: var(--red); }
+.pill-blue { background: var(--accent-glow); color: var(--accent); }
+.pill-purple { background: var(--purple-g); color: var(--purple); }
+.pill-gray { background: var(--glass2); color: var(--text2); }
+
+/* ── GRID ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.gc2 { grid-column: span 2; }
+.gc3 { grid-column: span 3; }
+.mb16 { margin-bottom: 16px; }
+.mb24 { margin-bottom: 24px; }
+
+/* ── STATS ── */
+.stat-card { background: var(--glass); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; }
+.stat-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; }
+.stat-val { font-family: var(--ff); font-size: 1.9rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.stat-change { font-size: 0.72rem; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+.stat-change.up { color: var(--green); }
+.stat-change.down { color: var(--red); }
+.stat-change.neutral { color: var(--text2); }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--border); }
+.data-table td { padding: 11px 13px; font-size: 0.83rem; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* ── PROGRESS ── */
+.prog-bar { background: rgba(255,255,255,0.06); border-radius: 100px; height: 4px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 100px; background: linear-gradient(to right, var(--accent2), var(--accent)); }
+.prog-fill-green { background: linear-gradient(to right, #2dd4a0, var(--green)); }
+
+/* ── FORM ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fg { display: flex; flex-direction: column; gap: 7px; }
+.fg.full { grid-column: 1/-1; }
+.fg label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); }
+.fi {
+  background: var(--glass2); border: 1px solid var(--border); border-radius: var(--r2);
+  padding: 11px 14px; color: var(--text); font-size: 0.86rem; outline: none; width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.fi:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent-glow); }
+.fi::placeholder { color: var(--text3); }
+.fi option { background: #0f1220; }
+textarea.fi { min-height: 90px; resize: vertical; }
+
+/* ── CHIPS ── */
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip { padding: 6px 14px; border-radius: 100px; font-size: 0.76rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--text2); transition: all 0.18s; user-select: none; }
+.chip:hover { border-color: var(--border2); color: var(--text); }
+.chip.on { background: rgba(107,184,255,0.1); border-color: rgba(107,184,255,0.3); color: var(--accent); }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(16px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #0f1220; border: 1px solid var(--border2); border-radius: 22px;
+  padding: 32px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+  animation: modalIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.modal.wide { max-width: 800px; }
+@keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.modal-title { font-family: var(--ff); font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+.modal-sub { font-size: 0.78rem; color: var(--text2); margin-bottom: 24px; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; flex-direction: column; }
+.tl-item { display: flex; gap: 14px; padding-bottom: 18px; position: relative; }
+.tl-item:not(:last-child)::before { content: ''; position: absolute; left: 14px; top: 30px; bottom: 0; width: 1px; background: var(--border); }
+.tl-dot { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border: 1px solid var(--border); }
+.tl-done { background: var(--green-g); border-color: rgba(95,255,192,0.3); color: var(--green); }
+.tl-active { background: var(--accent-glow); border-color: rgba(107,184,255,0.3); color: var(--accent); }
+.tl-pending { background: var(--glass); }
+.tl-body { flex: 1; }
+.tl-title { font-size: 0.84rem; font-weight: 600; margin-bottom: 2px; }
+.tl-sub { font-size: 0.72rem; color: var(--text2); }
+
+/* ── DELIVERABLE CARDS ── */
+.del-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.del-card {
+  background: var(--glass); border: 1px solid var(--border); border-radius: var(--r2);
+  overflow: hidden; cursor: pointer; transition: all 0.25s;
+}
+.del-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.del-thumb {
+  aspect-ratio: 16/9; background: var(--glass2); display: flex; align-items: center;
+  justify-content: center; font-size: 1.8rem; position: relative; overflow: hidden;
+}
+.del-status-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; border-radius: 50%; }
+.dot-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.dot-orange { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+.del-info { padding: 12px; }
+.del-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.del-meta { font-size: 0.7rem; color: var(--text2); display: flex; justify-content: space-between; }
+
+/* ── COMMENT THREAD ── */
+.comment-thread { display: flex; flex-direction: column; gap: 10px; }
+.comment { display: flex; gap: 10px; }
+.comment-body { flex: 1; background: var(--glass2); border-radius: 0 12px 12px 12px; padding: 10px 13px; }
+.comment.self .comment-body { border-radius: 12px 0 12px 12px; background: rgba(107,184,255,0.07); }
+.comment-author { font-size: 0.72rem; font-weight: 700; margin-bottom: 3px; }
+.comment-text { font-size: 0.82rem; line-height: 1.5; color: var(--text2); }
+.comment-time { font-size: 0.66rem; color: var(--text3); margin-top: 4px; }
+
+/* ── AI RESULT CARDS ── */
+.ai-option { border: 1px solid var(--border); border-radius: var(--r2); padding: 18px; position: relative; cursor: pointer; transition: all 0.2s; }
+.ai-option:hover { border-color: var(--border2); }
+.ai-option.recommended { border-color: rgba(107,184,255,0.3); background: rgba(107,184,255,0.04); }
+.ai-opt-rec-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 100px; background: var(--accent); color: #07090f; white-space: nowrap; }
+.ai-opt-name { font-family: var(--ff); font-size: 0.88rem; font-weight: 700; margin-bottom: 5px; }
+.ai-opt-price { font-family: var(--ff); font-size: 1.5rem; font-weight: 800; color: var(--accent); letter-spacing: -0.04em; margin-bottom: 10px; }
+.ai-opt-items { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.ai-opt-items li { font-size: 0.76rem; color: var(--text2); display: flex; align-items: flex-start; gap: 5px; }
+.ai-opt-items li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ── ANALYTICS CHART BARS ── */
+.bar-chart { display: flex; flex-direction: column; gap: 11px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-lbl { font-size: 0.75rem; color: var(--text2); width: 70px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: var(--glass2); border-radius: 100px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(to right, var(--accent2), var(--accent)); transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+.bar-val { font-size: 0.75rem; font-weight: 600; width: 55px; text-align: right; flex-shrink: 0; }
+
+/* ── ACTIVITY FEED ── */
+.act-feed { display: flex; flex-direction: column; gap: 8px; }
+.act-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px; background: var(--glass); border-radius: var(--r3); }
+.act-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+.act-text { font-size: 0.8rem; line-height: 1.4; }
+.act-time { font-size: 0.67rem; color: var(--text3); margin-top: 1px; }
+
+/* ── EMPLOYEE CARDS ── */
+.emp-card {
+  background: var(--glass); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 18px; cursor: pointer; transition: all 0.22s;
+}
+.emp-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.emp-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.emp-name { font-size: 0.88rem; font-weight: 700; }
+.emp-role { font-size: 0.7rem; color: var(--text2); margin-top: 1px; }
+.emp-role-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.emp-role-tag { font-size: 0.62rem; font-weight: 600; padding: 2px 7px; border-radius: 100px; background: var(--glass2); border: 1px solid var(--border); color: var(--text2); }
+.emp-stats { display: flex; gap: 0; border-top: 1px solid var(--border); padding-top: 12px; }
+.emp-stat { flex: 1; text-align: center; }
+.emp-stat:not(:last-child) { border-right: 1px solid var(--border); }
+.emp-stat-val { font-family: var(--ff); font-size: 1.1rem; font-weight: 700; }
+.emp-stat-lbl { font-size: 0.62rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+
+/* ── CONTRACT CARDS ── */
+.contract-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; background: var(--glass); border: 1px solid var(--border); border-radius: var(--r2); cursor: pointer; transition: all 0.2s; }
+.contract-item:hover { border-color: var(--border2); background: var(--glass2); }
+.ci-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+
+/* ── NOTIFICATION TOAST ── */
+#toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast {
+  background: #0f1220; border: 1px solid var(--border2); border-radius: 14px; padding: 14px 18px;
+  min-width: 280px; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: toastIn 0.3s cubic-bezier(0.16,1,0.3,1); pointer-events: auto;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+.toast-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+.toast-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 2px; }
+.toast-msg { font-size: 0.76rem; color: var(--text2); }
+.toast.success .toast-icon { background: var(--green-g); }
+.toast.error .toast-icon { background: var(--red-g); }
+.toast.info .toast-icon { background: var(--accent-glow); }
+
+/* ── LOADING SPINNER ── */
+.spinner { width: 18px; height: 18px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-row { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 0.84rem; padding: 16px; }
+
+/* ── ANALYTICS SPECIFIC ── */
+.metric-card { background: var(--glass); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+.metric-platform { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.metric-number { font-family: var(--ff); font-size: 1.6rem; font-weight: 800; letter-spacing: -0.04em; }
+.metric-change { font-size: 0.72rem; margin-top: 4px; }
+.metric-change.up { color: var(--green); }
+.metric-change.down { color: var(--red); }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(95,255,192,0.5); } 50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(95,255,192,0); } }
+
+/* ── WELCOME BANNER ── */
+.welcome-banner {
+  background: linear-gradient(135deg, rgba(107,184,255,0.07) 0%, rgba(80,100,255,0.04) 100%);
+  border: 1px solid rgba(107,184,255,0.12); border-radius: var(--r); padding: 22px 26px; margin-bottom: 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.wb-title { font-family: var(--ff); font-size: 1.25rem; font-weight: 800; margin-bottom: 4px; }
+.wb-sub { font-size: 0.82rem; color: var(--text2); }
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- ============================================================
+     LOGIN SCREEN
+     ============================================================ -->
+<div id="screen-login" class="screen active">
+  <div class="login-bg-orb orb1"></div>
+  <div class="login-bg-orb orb2"></div>
+  <div class="login-wrap">
+    <div class="brand-header">
+      <div class="brand-logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="11" stroke="rgba(184,228,255,0.6)" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="5" fill="rgba(184,228,255,0.15)" stroke="rgba(184,228,255,0.5)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="brand-name">YOUR<em>BRAND</em></div>
+      <div class="brand-tagline">Project Portal</div>
+    </div>
+    <div class="login-card">
+      <div class="login-tabs">
+        <div class="ltab active" data-tab="client" onclick="setLoginTab('client')">Kunde</div>
+        <div class="ltab" data-tab="employee" onclick="setLoginTab('employee')">Mitarbeiter</div>
+        <div class="ltab" data-tab="admin" onclick="setLoginTab('admin')">Admin</div>
+      </div>
+      <div id="login-error" class="error-banner">Ungültige Zugangsdaten.</div>
+      <div class="fgroup"><label>E-Mail</label><input id="l-email" class="finput" type="email" placeholder="name@example.com"></div>
+      <div class="fgroup"><label>Passwort</label><input id="l-pw" class="finput" type="password" placeholder="••••••••"></div>
+      <button class="btn-login" onclick="doLogin()">Anmelden</button>
+      <div class="demo-row">
+        <div class="demo-btn" onclick="quickLogin('client')"><div class="demo-label">Demo</div>👤 Kunde</div>
+        <div class="demo-btn" onclick="quickLogin('employee')"><div class="demo-label">Demo</div>⚡ Mitarbeiter</div>
+        <div class="demo-btn" onclick="quickLogin('admin')"><div class="demo-label">Demo</div>🔑 Admin</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DASHBOARD SCREEN
+     ============================================================ -->
+<div id="screen-dashboard" class="screen">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-mark">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="rgba(184,228,255,0.5)" stroke-width="1.2"/><circle cx="9" cy="9" r="3" fill="rgba(184,228,255,0.2)" stroke="rgba(184,228,255,0.5)" stroke-width="1.2"/></svg>
+      </div>
+      <div>
+        <div class="sb-brand">YOUR<em>BRAND</em></div>
+        <div id="sb-role-badge" class="sb-role-badge role-client">Kunde</div>
+      </div>
+    </div>
+    <nav class="sb-nav" id="sb-nav"><!-- Populated by JS --></nav>
+    <div class="sb-user">
+      <div class="sb-user-row">
+        <div class="avatar av-blue av-lg" id="sb-avatar">?</div>
+        <div>
+          <div class="sb-uname" id="sb-uname">User</div>
+          <div class="sb-uemail" id="sb-uemail">user@example.com</div>
+        </div>
+        <div class="sb-logout" onclick="logout()">⏻</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+      </div>
+      <div class="topbar-right" id="topbar-actions"></div>
+    </div>
+    <div class="page-content" id="page-content"><!-- Pages rendered here --></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+<!-- Generic modal container -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box" onclick="e=>e.stopPropagation()">
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT APPLICATION
+     ============================================================ -->
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const STATE = {
+  user: null,
+  currentPage: null,
+  employees: [
+    { id:'e1', name:'Lisa Kern', email:'lisa@yourbrand.com', initials:'LK', avClass:'av-green', roles:['Editor','Social Media Manager'], rate:80, tasks:3, projects:2, active:true },
+    { id:'e2', name:'Markus Braun', email:'markus@yourbrand.com', initials:'MB', avClass:'av-orange', roles:['Videograf','Fotograf'], rate:90, tasks:1, projects:1, active:true },
+    { id:'e3', name:'Sophie Müller', email:'sophie@yourbrand.com', initials:'SM', avClass:'av-red', roles:['Fotografin'], rate:75, tasks:0, projects:1, active:true },
+    { id:'e4', name:'Tom Weber', email:'tom@yourbrand.com', initials:'TW', avClass:'av-blue', roles:['Webdesigner','Grafiker'], rate:95, tasks:2, projects:1, active:true },
+    { id:'e5', name:'Kai Fischer', email:'kai@yourbrand.com', initials:'KF', avClass:'av-purple', roles:['Grafiker'], rate:70, tasks:1, projects:2, active:false },
+  ],
+  clients: [
+    { id:'c1', name:'Max Mustermann', email:'max@demo.com', company:'MM Studio', revenue:4800, projects:3, status:'active' },
+    { id:'c2', name:'Anna Schmidt', email:'anna@schmidt.de', company:'Schmidt GmbH', revenue:1200, projects:1, status:'done' },
+    { id:'c3', name:'BrandX KG', email:'info@brandx.de', company:'BrandX KG', revenue:0, projects:1, status:'negotiation' },
+  ],
+  projects: [
+    { id:'p1', name:'Brand Video – Summer Campaign', client:'Max Mustermann', team:['Lisa Kern','Markus Braun'], status:'production', progress:70, deadline:'10. Sept 2025', budget:3200 },
+    { id:'p2', name:'Instagram Reels – September', client:'Max Mustermann', team:['Lisa Kern'], status:'review', progress:40, deadline:'15. Sept 2025', budget:1800 },
+    { id:'p3', name:'Brand Package – BrandX', client:'BrandX KG', team:['Tom Weber','Kai Fischer'], status:'planning', progress:15, deadline:'30. Okt 2025', budget:8200 },
+    { id:'p4', name:'E-Commerce Fotos', client:'Anna Schmidt', team:['Sophie Müller'], status:'done', progress:100, deadline:'Fertig', budget:1200 },
+  ],
+  tasks: [
+    { id:'t1', title:'Schnitt Hero Video v3', employee:'Lisa Kern', project:'Brand Video – Summer Campaign', priority:'high', due:'5. Sept', status:'in-progress', client:'Max Mustermann' },
+    { id:'t2', title:'Color Grading Reels', employee:'Lisa Kern', project:'Instagram Reels – September', priority:'medium', due:'12. Sept', status:'open', client:'Max Mustermann' },
+    { id:'t3', title:'RAWs sortieren & exportieren', employee:'Sophie Müller', project:'E-Commerce Fotos', priority:'low', due:'Fertig', status:'done', client:'Anna Schmidt' },
+    { id:'t4', title:'Website Konzept BrandX', employee:'Tom Weber', project:'Brand Package – BrandX', priority:'high', due:'1. Sept', status:'open', client:'BrandX KG' },
+    { id:'t5', title:'Logo Varianten erstellen', employee:'Kai Fischer', project:'Brand Package – BrandX', priority:'medium', due:'8. Sept', status:'open', client:'BrandX KG' },
+  ],
+  deliverables: [
+    { id:'d1', name:'Hero_Brand_v3_final.mp4', type:'video', emoji:'🎬', project:'Brand Video – Summer Campaign', client:'Max Mustermann', date:'12. Aug 2025', status:'delivered', url:'#', version:3, comments:[{author:'Lisa Kern',text:'Finaler Cut v3 mit Color Grading',time:'12. Aug, 14:20',self:true},{author:'Max Mustermann',text:'Sieht super aus! Eine kleine Änderung: Kann das Outro 1 Sek kürzer?',time:'12. Aug, 17:05',self:false}] },
+    { id:'d2', name:'ProductShoot_A.zip', type:'photo', emoji:'📸', project:'E-Commerce Fotos', client:'Max Mustermann', date:'10. Aug 2025', status:'delivered', url:'#', version:1, comments:[] },
+    { id:'d3', name:'Social_Templates_v2.ai', type:'graphic', emoji:'🎨', project:'Brand Package – BrandX', client:'BrandX KG', date:'5. Aug 2025', status:'review', url:'#', version:2, comments:[{author:'Tom Weber',text:'Version 2 mit angepassten Farben',time:'5. Aug, 10:00',self:true}] },
+    { id:'d4', name:'yourbrand.de/client/brandx', type:'web', emoji:'🌐', project:'Brand Package – BrandX', client:'BrandX KG', date:'Live', status:'live', url:'#', version:1, comments:[] },
+    { id:'d5', name:'Reel_Summer_v1.mp4', type:'video', emoji:'🎬', project:'Instagram Reels – September', client:'Max Mustermann', date:'Draft', status:'draft', url:'#', version:1, comments:[{author:'Lisa Kern',text:'Erster Entwurf – bitte Feedback!',time:'Heute, 09:15',self:true}] },
+  ],
+  offers: [
+    { id:'of1', client:'Max Mustermann', title:'Social Media Reels – Herbst', budget:'1.000–2.500€', submitted:'Heute', status:'pending', services:['Reels/TikTok','Video Editing'], analysis:'Der Kunde möchte professionelle Reels für Herbst-Kampagne. Budget realistisch für 3–5 Reels.', options:[{name:'Basic',price:'€950',items:['2 Reels (60s)','1 Revision','Stock Musik']},{name:'Standard',price:'€1.800',recommended:true,items:['4 Reels (30–60s)','3 Revisionen','Musik-Lizenz','Untertitel DE/EN','Thumbnail-Design']},{name:'Premium',price:'€2.800',items:['6 Reels + 2 Stories','Unbegrenzt Revisionen','Custom Musik','Content-Kalender','1 Monat Support']}] },
+    { id:'of2', client:'BrandX KG', title:'Full Brand Package', budget:'5.000–10.000€', submitted:'Gestern', status:'pending', services:['Video Production','Fotografie','Webdesign','Brand Package'], analysis:'BrandX sucht ein komplettes Brand-Paket. Großes Budget, hohe Qualitätserwartungen.', options:[{name:'Standard',price:'€5.500',items:['1 Brand Video (2min)','20 Produktfotos','Landing Page']},{name:'Premium',price:'€8.200',recommended:true,items:['2 Brand Videos','50 Produktfotos','Full Website','5 Reels','Lizenzvertrag']},{name:'Enterprise',price:'€13.500',items:['Alles in Premium','3 Monate Content','Media Management','Priority Support']}] },
+    { id:'of3', client:'Anna Schmidt', title:'E-Commerce Fotoproduktion', budget:'1.000–2.500€', submitted:'10. Jul 2025', status:'confirmed', price:'€1.200', options:[] },
+  ],
+  analytics: {
+    'Max Mustermann': {
+      ig_followers: 8420, ig_change: +342, ig_posts: 47,
+      tiktok_followers: 12800, tiktok_change: +1240, tiktok_views: 284000,
+      website_visits: 3420, conversions: 87, revenue_impact: '€4.200',
+      since: '1. Jun 2025',
+    }
+  },
+  contracts: [
+    { id:'ct1', name:'Werkvertrag (Standard)', icon:'📄', desc:'Video & Fotoproduktionen – Übergabe, Nutzungsrecht, Zahlungsplan', template:'werkvertrag' },
+    { id:'ct2', name:'Model Release Formular', icon:'👤', desc:'Einwilligung zur Nutzung von Persönlichkeitsrechten', template:'model' },
+    { id:'ct3', name:'Lizenzvertrag – Bildmaterial', icon:'🏛️', desc:'Nutzungsrechte für Fotos und Videos (exklusiv/nicht-exklusiv)', template:'lizenz' },
+    { id:'ct4', name:'Anzahlung / Auftragsbestätigung', icon:'💳', desc:'50% Anzahlung vor Produktionsbeginn', template:'anzahlung' },
+    { id:'ct5', name:'Webdesign-Vertrag', icon:'🌐', desc:'Erstellung, Übergabe und Support für Webprojekte', template:'web' },
+    { id:'ct6', name:'Event-Vertrag (Drehtag)', icon:'🎬', desc:'Buchung Drehtag inkl. Storno & Mehraufwand', template:'event' },
+    { id:'ct7', name:'Location-Nutzungsvertrag', icon:'📍', desc:'Nutzungsrecht für Drehorte und Locations', template:'location' },
+  ],
+  messages: {
+    'Max Mustermann': [{from:'YourBrand',text:'Hallo! Preview von Reel v1 hochgeladen.',time:'Heute 9:15',self:false},{from:'Max Mustermann',text:'Super! Erstes Feedback: Musik etwas leiser?',time:'Heute 11:30',self:true}],
+    'BrandX KG': [{from:'YourBrand',text:'Willkommen! Ihr Angebot ist in Prüfung.',time:'Gestern 14:00',self:false}],
+  }
+};
+
+const CONTRACT_TEMPLATES = {
+  werkvertrag: `WERKVERTRAG\n\nZwischen YourBrand (Auftragnehmer)\nund {{CLIENT_NAME}} (Auftraggeber)\n\n§ 1 Vertragsgegenstand\n{{LEISTUNGEN}}\n\n§ 2 Vergütung\nGesamtbetrag: {{PREIS}} EUR\nAnzahlung 50% bei Auftragserteilung, Rest bei Übergabe.\n\n§ 3 Liefertermin\nFertigstellung bis: {{LIEFERDATUM}}\n\n§ 4 Nutzungsrechte\nNach vollständiger Zahlung erhält der Auftraggeber das einfache,\nzeitlich unbegrenzte Nutzungsrecht für die vereinbarten Zwecke.\n\n§ 5 Revisionen\nIm Vertrag enthalten: {{REVISIONEN}} Überarbeitungsrunden.\n\n§ 6 Gewährleistung\nGemäß §§ 633 ff. BGB.\n\nUnterschrift Auftragnehmer: ___________________\nUnterschrift Auftraggeber: ___________________\nDatum: ___________________`,
+  model: `MODEL RELEASE FORMULAR\n\nIch, {{MODEL_NAME}}, geb. {{GEBURTSDATUM}},\nwohnhaft: {{ADRESSE}}\n\nwillige hiermit ein, dass die am {{DREHTAG}} entstandenen\nFoto- und Videoaufnahmen durch YourBrand für folgende\nZwecke genutzt werden dürfen:\n{{VERWENDUNGSZWECKE}}\n\nDiese Einwilligung gilt zeitlich und räumlich unbegrenzt,\neinschließlich digitaler Medien, Social Media, Print und Werbung.\n\nVergütung: {{HONORAR}} EUR\n\nDatum: ___________________\nUnterschrift: ___________________`,
+  lizenz: `LIZENZVERTRAG – BILDMATERIAL\n\nLizenzgeber: YourBrand\nLizenznehmer: {{CLIENT_NAME}}\n\n§ 1 Lizenzgegenstand\n{{MATERIALIEN}}\n\n§ 2 Lizenzart\n{{LIZENZART}} (einfach / ausschließlich)\n\n§ 3 Nutzungsbereich\nZweck: {{NUTZUNGSZWECK}}\nTerritorium: {{TERRITORIUM}}\nLaufzeit: {{LAUFZEIT}}\n\n§ 4 Vergütung\nLizenzgebühr: {{LIZENZGEBUEHR}} EUR\n\n§ 5 Urheberrecht\nDas Urheberrecht verbleibt beim Lizenzgeber.\nWeiterlizenzierung ohne Genehmigung untersagt.`,
+  anzahlung: `AUFTRAGSBESTÄTIGUNG MIT ANZAHLUNG\n\nAuftragnehmer: YourBrand\nAuftraggeber: {{CLIENT_NAME}}\n\nLeistungen: {{LEISTUNGEN}}\nGesamtpreis: {{PREIS}} EUR\nAnzahlung (50%): {{ANZAHLUNG}} EUR\nFälligkeit Anzahlung: sofort nach Unterzeichnung\nRestbetrag: {{REST}} EUR – fällig bei Übergabe\n\nStornierung nach Anzahlung: 50% Aufwandsentschädigung.\nStornierung nach Produktionsbeginn: 100% des Gesamtpreises.`,
+  web: `WEBDESIGN-VERTRAG\n\nAuftragnehmer: YourBrand\nAuftraggeber: {{CLIENT_NAME}}\n\n§ 1 Leistungsumfang\n{{LEISTUNGEN}}\n\n§ 2 Technologie & Hosting\nCMS/Framework: {{TECHNOLOGIE}}\nHosting: Eigenverantwortung des Auftraggebers\n\n§ 3 Übergabe\nVollständige Website + Login-Zugänge nach Zahlung.\n\n§ 4 Support\nKostenloser Support: 30 Tage nach Launch.\nWeitere Wartung: {{STUNDENSATZ}} EUR/h`,
+  event: `EVENT-VERTRAG – DREHTAG\n\nAuftragnehmer: YourBrand\nAuftraggeber: {{CLIENT_NAME}}\n\nDrehtag: {{DATUM}}, {{BEGINN}}–{{ENDE}} Uhr\nOrt: {{ORT}}\n\nLeistungen: {{LEISTUNGEN}}\nGesamtpreis: {{PREIS}} EUR\n\nStornobedingungen:\n– Bis 14 Tage vorher: kostenlos\n– Bis 7 Tage vorher: 50% Ausfallhonorar\n– Unter 7 Tage: 100% Ausfallhonorar\n\nMehraufwand: {{STUNDENRATE}} EUR / angefangene Stunde`,
+  location: `LOCATION-NUTZUNGSVERTRAG\n\nZwischen {{EIGENTUEMER}} (Eigentümer/Verwalter)\nund YourBrand im Auftrag von {{CLIENT_NAME}}\n\n§ 1 Nutzungsgegenstand\nAdresse / Beschreibung: {{LOCATION}}\n\n§ 2 Nutzungszeitraum\n{{DATUM}} von {{BEGINN}} bis {{ENDE}} Uhr\n\n§ 3 Nutzungszweck\nFoto- und/oder Videoproduktion für {{ZWECK}}\n\n§ 4 Vergütung\nNutzungsgebühr: {{PREIS}} EUR\n\n§ 5 Haftung\nYourBrand haftet für Schäden durch fahrlässiges Handeln.`,
+};
+
+// ============================================================
+// LOGIN
+// ============================================================
+let loginTab = 'client';
+const DEMO_USERS = {
+  client:   { email:'kunde@demo.com', pw:'demo123', role:'client', name:'Max Mustermann', company:'MM Studio', initials:'MM', avClass:'av-blue' },
+  employee: { email:'lisa@yourbrand.com', pw:'demo123', role:'employee', name:'Lisa Kern', initials:'LK', avClass:'av-green' },
+  admin:    { email:'admin@yourbrand.com', pw:'admin123', role:'admin', name:'Admin', initials:'AD', avClass:'av-red' },
+};
+
+function setLoginTab(t) {
+  loginTab = t;
+  document.querySelectorAll('.ltab').forEach(el => el.classList.toggle('active', el.dataset.tab === t));
+}
+function quickLogin(role) {
+  const u = DEMO_USERS[role];
+  document.getElementById('l-email').value = u.email;
+  document.getElementById('l-pw').value = u.pw;
+  setLoginTab(role);
+  doLogin();
+}
+function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pw = document.getElementById('l-pw').value;
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+  const match = Object.values(DEMO_USERS).find(u => u.email === email && u.pw === pw);
+  if (!match) { err.style.display = 'block'; err.textContent = 'Ungültige Zugangsdaten.'; return; }
+  STATE.user = match;
+  localStorage.setItem('yb_session', JSON.stringify(match));
+  initDashboard();
+}
+function logout() {
+  STATE.user = null; localStorage.removeItem('yb_session');
+  document.getElementById('screen-dashboard').classList.remove('active');
+  document.getElementById('screen-login').classList.add('active');
+}
+
+// ============================================================
+// DASHBOARD INIT
+// ============================================================
+function initDashboard() {
+  const u = STATE.user;
+  document.getElementById('screen-login').classList.remove('active');
+  document.getElementById('screen-dashboard').classList.add('active');
+  // User info in sidebar
+  document.getElementById('sb-uname').textContent = u.name;
+  document.getElementById('sb-uemail').textContent = u.email;
+  document.getElementById('sb-avatar').textContent = u.initials;
+  document.getElementById('sb-avatar').className = `avatar av-lg ${u.avClass}`;
+  const badge = document.getElementById('sb-role-badge');
+  badge.textContent = { client:'Kunde', employee:'Mitarbeiter', admin:'Administrator' }[u.role];
+  badge.className = `sb-role-badge role-${u.role}`;
+  buildNav(u.role);
+  navigateTo(getDefaultPage(u.role));
+}
+
+function getDefaultPage(role) {
+  return { client:'overview', employee:'my-tasks', admin:'overview' }[role];
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const NAV_CONFIG = {
+  client: [
+    { section: 'Übersicht', items: [
+      { id:'overview', icon:'◈', label:'Dashboard' },
+      { id:'deliverables', icon:'📁', label:'Meine Dateien', badge:1 },
+      { id:'projects', icon:'◎', label:'Projekte' },
+    ]},
+    { section: 'Angebote & Verträge', items: [
+      { id:'request', icon:'✦', label:'Angebot anfragen' },
+      { id:'my-offers', icon:'📄', label:'Meine Angebote', badge:1 },
+      { id:'my-contracts', icon:'📝', label:'Verträge' },
+    ]},
+    { section: 'Kommunikation', items: [
+      { id:'messages', icon:'💬', label:'Nachrichten', badge:2 },
+      { id:'analytics-client', icon:'📊', label:'Performance' },
+      { id:'invoices', icon:'💳', label:'Rechnungen' },
+    ]},
+  ],
+  employee: [
+    { section: 'Mein Bereich', items: [
+      { id:'my-tasks', icon:'✓', label:'Meine Aufgaben', badge:3 },
+      { id:'my-projects', icon:'◎', label:'Meine Projekte' },
+      { id:'deliverables-emp', icon:'📁', label:'Deliverables', badge:1 },
+    ]},
+    { section: 'Kommunikation', items: [
+      { id:'messages', icon:'💬', label:'Nachrichten' },
+      { id:'my-profile', icon:'👤', label:'Mein Profil' },
+    ]},
+  ],
+  admin: [
+    { section: 'Übersicht', items: [
+      { id:'overview', icon:'◈', label:'Dashboard' },
+      { id:'analytics', icon:'📊', label:'Statistiken & Analytics' },
+    ]},
+    { section: 'Kunden & Projekte', items: [
+      { id:'offers', icon:'✦', label:'Angebote', badge:2 },
+      { id:'clients', icon:'👥', label:'Kunden' },
+      { id:'projects-admin', icon:'◎', label:'Projekte' },
+      { id:'tasks-admin', icon:'✓', label:'Aufgaben' },
+      { id:'deliverables-admin', icon:'📁', label:'Deliverables' },
+    ]},
+    { section: 'Team', items: [
+      { id:'employees', icon:'⚡', label:'Mitarbeiter' },
+      { id:'messages', icon:'💬', label:'Nachrichten', badge:3 },
+    ]},
+    { section: 'Dokumente', items: [
+      { id:'contracts', icon:'📝', label:'Verträge' },
+      { id:'invoices-admin', icon:'💳', label:'Rechnungen' },
+    ]},
+  ],
+};
+
+function buildNav(role) {
+  const nav = document.getElementById('sb-nav');
+  const config = NAV_CONFIG[role] || [];
+  nav.innerHTML = config.map(section => `
+    <div class="nav-section">${section.section}</div>
+    ${section.items.map(item => `
+      <div class="nav-item" data-page="${item.id}" onclick="navigateTo('${item.id}')">
+        <span class="ni-icon">${item.icon}</span>
+        ${item.label}
+        ${item.badge ? `<span class="ni-badge">${item.badge}</span>` : ''}
+      </div>
+    `).join('')}
+  `).join('');
+}
+
+function navigateTo(pageId) {
+  STATE.currentPage = pageId;
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === pageId));
+  const container = document.getElementById('page-content');
+  const page = buildPage(pageId);
+  container.innerHTML = `<div class="page-view active">${page}</div>`;
+  const titles = {
+    overview:'Dashboard', analytics:'Statistiken & Analytics', offers:'Angebote – Prüfung',
+    clients:'Kunden', 'projects-admin':'Projekte', 'tasks-admin':'Aufgaben',
+    'deliverables-admin':'Deliverables verwalten', employees:'Mitarbeiter', contracts:'Vertragsvorlagen',
+    messages:'Nachrichten', 'invoices-admin':'Rechnungen', 'analytics-client':'Performance Analytics',
+    deliverables:'Meine Dateien', projects:'Projekte', request:'Angebot anfragen',
+    'my-offers':'Meine Angebote', 'my-contracts':'Verträge', invoices:'Rechnungen',
+    'my-tasks':'Meine Aufgaben', 'my-projects':'Meine Projekte', 'deliverables-emp':'Deliverables',
+    'my-profile':'Mein Profil',
+  };
+  document.getElementById('topbar-title').textContent = titles[pageId] || pageId;
+  buildTopbarActions(pageId);
+  initPageLogic(pageId);
+}
+
+function buildTopbarActions(pageId) {
+  const el = document.getElementById('topbar-actions');
+  const map = {
+    employees: `<button class="btn btn-primary btn-sm" onclick="openModal('new-employee')">+ Mitarbeiter</button>`,
+    'deliverables-admin': `<button class="btn btn-primary btn-sm" onclick="openModal('new-deliverable')">+ Deliverable</button>`,
+    'tasks-admin': `<button class="btn btn-primary btn-sm" onclick="openModal('new-task')">+ Aufgabe</button>`,
+    request: '',
+    clients: `<button class="btn btn-primary btn-sm" onclick="openModal('new-client')">+ Kunde</button>`,
+  };
+  el.innerHTML = map[pageId] || '';
+}
+
+// ============================================================
+// PAGE BUILDERS
+// ============================================================
+function buildPage(id) {
+  const builders = {
+    overview: buildOverviewPage,
+    analytics: buildAnalyticsPage,
+    'analytics-client': buildClientAnalyticsPage,
+    offers: buildOffersPage,
+    clients: buildClientsPage,
+    'projects-admin': buildProjectsAdminPage,
+    'tasks-admin': buildTasksAdminPage,
+    'deliverables-admin': buildDeliverablesAdminPage,
+    deliverables: buildClientDeliverablesPage,
+    employees: buildEmployeesPage,
+    contracts: buildContractsPage,
+    messages: buildMessagesPage,
+    'invoices-admin': buildInvoicesAdminPage,
+    invoices: buildClientInvoicesPage,
+    projects: buildClientProjectsPage,
+    request: buildRequestPage,
+    'my-offers': buildMyOffersPage,
+    'my-contracts': buildMyContractsPage,
+    'my-tasks': buildMyTasksPage,
+    'my-projects': buildMyProjectsPage,
+    'deliverables-emp': buildEmpDeliverablesPage,
+    'my-profile': buildMyProfilePage,
+  };
+  return builders[id] ? builders[id]() : `<p style="color:var(--text2)">Seite wird geladen…</p>`;
+}
+
+// ── OVERVIEW (Admin) ──
+function buildOverviewPage() {
+  const pendingOffers = STATE.offers.filter(o => o.status === 'pending').length;
+  return `
+  <div class="welcome-banner">
+    <div><div class="wb-title">Guten Morgen 👋</div><div class="wb-sub">${pendingOffers} offene Angebote · 4 aktive Projekte · 5 Mitarbeiter online</div></div>
+    <button class="btn btn-primary btn-sm" onclick="navigateTo('offers')">⚡ Angebote prüfen (${pendingOffers})</button>
+  </div>
+  <div class="g5 mb24">
+    <div class="stat-card"><div class="stat-label">Umsatz (Aug)</div><div class="stat-val" style="color:var(--green)">€18.4k</div><div class="stat-change up">↑ +22% vs Vormonat</div></div>
+    <div class="stat-card"><div class="stat-label">Aktive Projekte</div><div class="stat-val" style="color:var(--accent)">4</div><div class="stat-change neutral">2 Kunden</div></div>
+    <div class="stat-card"><div class="stat-label">Offene Angebote</div><div class="stat-val" style="color:var(--orange)">${pendingOffers}</div><div class="stat-change neutral">Bestätigung nötig</div></div>
+    <div class="stat-card"><div class="stat-label">Team aktiv</div><div class="stat-val" style="color:var(--purple)">3</div><div class="stat-change neutral">von 5 Mitarbeitern</div></div>
+    <div class="stat-card"><div class="stat-label">Offene Rechnungen</div><div class="stat-val" style="color:var(--red)">€3.2k</div><div class="stat-change neutral">2 fällig</div></div>
+  </div>
+  <div class="g2 mb24">
+    <div class="card">
+      <div class="card-title">⚡ Angebote – Aktion erforderlich</div>
+      <div class="card-sub">${pendingOffers} Anfragen warten auf Bestätigung</div>
+      ${STATE.offers.filter(o=>o.status==='pending').map(o=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:13px;background:rgba(255,179,71,0.04);border:1px solid rgba(255,179,71,0.14);border-radius:var(--r2);margin-bottom:8px">
+          <div style="flex:1"><div style="font-size:0.84rem;font-weight:600">${o.client} – ${o.title}</div><div style="font-size:0.72rem;color:var(--text2)">Budget: ${o.budget} · ${o.submitted}</div></div>
+          <button class="btn btn-green btn-xs" onclick="navigateTo('offers')">Prüfen →</button>
+        </div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="card-title">Letzte Aktivitäten</div>
+      <div class="card-sub">Team & System Updates</div>
+      <div class="act-feed">
+        <div class="act-item"><div class="act-icon" style="background:var(--green-g)">✓</div><div><div class="act-text"><strong>Lisa</strong> hat Video Preview hochgeladen</div><div class="act-time">Heute 10:32</div></div></div>
+        <div class="act-item"><div class="act-icon" style="background:var(--accent-glow)">📄</div><div><div class="act-text">Neue Anfrage von <strong>Max Mustermann</strong></div><div class="act-time">Heute 9:18</div></div></div>
+        <div class="act-item"><div class="act-icon" style="background:var(--orange-g)">📸</div><div><div class="act-text"><strong>Jan</strong> hat 48 RAWs hochgeladen</div><div class="act-time">Gestern 16:44</div></div></div>
+        <div class="act-item"><div class="act-icon" style="background:var(--purple-g)">💳</div><div><div class="act-text">Rechnung RE-042 erstellt – €1.600</div><div class="act-time">Gestern 11:00</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card mb24">
+    <div class="card-title">Projektübersicht</div>
+    <div class="card-sub">Status aller aktiven Aufträge</div>
+    <table class="data-table">
+      <thead><tr><th>Projekt</th><th>Kunde</th><th>Team</th><th>Status</th><th>Fortschritt</th><th>Deadline</th></tr></thead>
+      <tbody>
+        ${STATE.projects.map(p=>`
+          <tr>
+            <td style="font-weight:600">${p.name}</td>
+            <td><span style="font-size:0.8rem">${p.client}</span></td>
+            <td><div style="display:flex;gap:3px">${p.team.map(t=>`<div class="avatar av-green" style="width:24px;height:24px;font-size:0.58rem;border-radius:50%">${t.split(' ').map(n=>n[0]).join('')}</div>`).join('')}</div></td>
+            <td>${pillStatus(p.status)}</td>
+            <td><div style="min-width:90px"><div class="prog-bar"><div class="prog-fill ${p.progress===100?'prog-fill-green':''}" style="width:${p.progress}%"></div></div><div style="font-size:0.68rem;color:var(--text2);margin-top:3px">${p.progress}%</div></div></td>
+            <td style="font-size:0.78rem;color:var(--text2)">${p.deadline}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ── ANALYTICS (Admin) ──
+function buildAnalyticsPage() {
+  return `
+  <div class="g5 mb24">
+    <div class="stat-card"><div class="stat-label">Jahresumsatz 2025</div><div class="stat-val" style="color:var(--green)">€91.2k</div><div class="stat-change up">↑ +34% vs 2024</div></div>
+    <div class="stat-card"><div class="stat-label">Abgeschl. Projekte</div><div class="stat-val" style="color:var(--accent)">28</div><div class="stat-change neutral">Seit Jan 2025</div></div>
+    <div class="stat-card"><div class="stat-label">Ø Projektvolumen</div><div class="stat-val">€3.2k</div><div class="stat-change neutral">Pro Auftrag</div></div>
+    <div class="stat-card"><div class="stat-label">Wiederkehrende Kunden</div><div class="stat-val" style="color:var(--orange)">68%</div><div class="stat-change up">↑ +8%</div></div>
+    <div class="stat-card"><div class="stat-label">Avg. Projektdauer</div><div class="stat-val">18d</div><div class="stat-change down">↓ -2d besser</div></div>
+  </div>
+  <div class="g2 mb24">
+    <div class="card">
+      <div class="card-title">Monatlicher Umsatz 2025</div>
+      <div class="card-sub">Alle Services kombiniert</div>
+      <div class="bar-chart">
+        ${[['Jan','€6.2k',55],['Feb','€5.4k',48],['Mär','€8.1k',72],['Apr','€7.3k',65],['Mai','€9.0k',80],['Jun','€7.9k',70],['Jul','€9.6k',85],['Aug','€11.2k',100]].map(([l,v,p])=>`
+          <div class="bar-row"><div class="bar-lbl">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><div class="bar-val">${v}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Service-Verteilung Umsatz</div>
+      <div class="card-sub">Aug 2025 – nach Kategorie</div>
+      <div class="bar-chart">
+        ${[['Videoprod.','42%',42],['Fotografie','24%',24],['Reels / SM','16%',16],['Webdesign','10%',10],['Grafik','8%',8]].map(([l,v,p])=>`
+          <div class="bar-row"><div class="bar-lbl">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><div class="bar-val">${v}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card mb24">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div class="card-title" style="margin:0">Social Media Performance – Alle Kunden</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--green)"><div class="live-dot"></div> Live Tracking</div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Kunde</th><th>Instagram</th><th>TikTok</th><th>Website Visits</th><th>Conversions</th><th>Umsatz-Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div style="font-weight:600">Max Mustermann</div><div style="font-size:0.7rem;color:var(--text2)">seit 1. Jun 2025</div></td>
+          <td><div style="font-weight:700">8.420</div><div style="font-size:0.72rem;color:var(--green)">+342 ↑</div></td>
+          <td><div style="font-weight:700">12.800</div><div style="font-size:0.72rem;color:var(--green)">+1.240 ↑</div></td>
+          <td><div style="font-weight:700">3.420</div><div style="font-size:0.72rem;color:var(--text2)">/Monat</div></td>
+          <td><div style="font-weight:700">87</div><div style="font-size:0.72rem;color:var(--green)">+34% ↑</div></td>
+          <td style="font-weight:700;color:var(--green)">€4.200</td>
+        </tr>
+        <tr>
+          <td><div style="font-weight:600">Anna Schmidt GmbH</div><div style="font-size:0.7rem;color:var(--text2)">seit 1. Jul 2025</div></td>
+          <td><div style="font-weight:700">3.240</div><div style="font-size:0.72rem;color:var(--green)">+128 ↑</div></td>
+          <td><div style="font-weight:700">—</div></td>
+          <td><div style="font-weight:700">1.820</div></td>
+          <td><div style="font-weight:700">34</div><div style="font-size:0.72rem;color:var(--green)">+12% ↑</div></td>
+          <td style="font-weight:700;color:var(--green)">€1.800</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px 14px;background:rgba(107,184,255,0.04);border:1px solid rgba(107,184,255,0.1);border-radius:var(--r2);font-size:0.78rem;color:var(--text2)">
+      💡 <strong>Hinweis:</strong> Für Echtzeit-Tracking gib deinen Kunden die Möglichkeit, ihre Social-Accounts zu verknüpfen. Die API-Integration (Instagram Business, TikTok Analytics) muss mit deinen API-Keys konfiguriert werden — siehe ANLEITUNG.md.
+    </div>
+  </div>`;
+}
+
+// ── CLIENT ANALYTICS ──
+function buildClientAnalyticsPage() {
+  const d = STATE.analytics['Max Mustermann'];
+  return `
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+    <div style="font-family:var(--ff);font-size:1.1rem;font-weight:700">Performance seit ${d.since}</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--green);background:var(--green-g);padding:3px 10px;border-radius:100px"><div class="live-dot"></div> Live</div>
+  </div>
+  <div class="g4 mb24">
+    <div class="metric-card"><div class="metric-platform">📸 Instagram Follower</div><div class="metric-number">${d.ig_followers.toLocaleString()}</div><div class="metric-change up">+${d.ig_change} seit Start ↑</div></div>
+    <div class="metric-card"><div class="metric-platform">🎵 TikTok Follower</div><div class="metric-number">${d.tiktok_followers.toLocaleString()}</div><div class="metric-change up">+${d.tiktok_change} seit Start ↑</div></div>
+    <div class="metric-card"><div class="metric-platform">👁️ TikTok Views</div><div class="metric-number">${(d.tiktok_views/1000).toFixed(0)}k</div><div class="metric-change up">↑ Gesamt</div></div>
+    <div class="metric-card"><div class="metric-platform">🌐 Website Visits</div><div class="metric-number">${d.website_visits.toLocaleString()}</div><div class="metric-change neutral">/Monat</div></div>
+  </div>
+  <div class="g2 mb24">
+    <div class="card">
+      <div class="card-title">Conversions & Umsatz-Impact</div>
+      <div class="card-sub">Durch unseren Content generierte Ergebnisse</div>
+      <div class="g2">
+        <div style="background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center">
+          <div style="font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--green)">${d.conversions}</div>
+          <div style="font-size:0.72rem;color:var(--text2)">Neue Leads / Käufer</div>
+          <div style="font-size:0.7rem;color:var(--green);margin-top:4px">+34% vs vorher ↑</div>
+        </div>
+        <div style="background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center">
+          <div style="font-family:var(--ff);font-size:2rem;font-weight:800;color:var(--gold)">${d.revenue_impact}</div>
+          <div style="font-size:0.72rem;color:var(--text2)">Geschätzter Umsatz</div>
+          <div style="font-size:0.7rem;color:var(--gold);margin-top:4px">Durch Content ↑</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Instagram Posts Performance</div>
+      <div class="card-sub">Letzte ${d.ig_posts} Posts</div>
+      <div class="bar-chart">
+        ${[['Reach','284k',90],['Impressions','342k',100],['Likes','12.4k',40],['Comments','842',28],['Saves','2.1k',68],['Shares','1.4k',45]].map(([l,v,p])=>`
+          <div class="bar-row"><div class="bar-lbl">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><div class="bar-val" style="font-size:0.72rem">${v}</div></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card" style="padding:16px 18px;background:rgba(107,184,255,0.04);border-color:rgba(107,184,255,0.12)">
+    <div style="font-size:0.78rem;color:var(--text2)">🔗 <strong>Accounts verknüpfen:</strong> Um deine echten Live-Daten zu sehen, verknüpfe deine Instagram- und TikTok-Business-Accounts in den <strong>Einstellungen</strong>. Wir tracken dann automatisch Follower-Wachstum, Reichweite und Conversions seit Beginn unserer Zusammenarbeit.</div>
+  </div>`;
+}
+
+// ── OFFERS (Admin) ──
+function buildOffersPage() {
+  return `
+  <div style="margin-bottom:20px">
+    <div style="font-family:var(--ff);font-size:0.88rem;font-weight:700;color:var(--text2);margin-bottom:4px">KI-generierte Angebote prüfen, anpassen und bestätigen</div>
+  </div>
+  ${STATE.offers.map(o=>`
+    <div style="background:var(--glass);border:1px solid ${o.status==='pending'?'rgba(255,179,71,0.2)':o.status==='confirmed'?'rgba(95,255,192,0.15)':'var(--border)'};border-radius:var(--r);overflow:hidden;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;flex-wrap:wrap">
+        <div class="avatar av-blue" style="font-size:0.72rem">${o.client.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+        <div style="flex:1;min-width:200px"><div style="font-size:0.88rem;font-weight:700">${o.client} – ${o.title}</div><div style="font-size:0.72rem;color:var(--text2)">Budget: ${o.budget} · Eingereicht: ${o.submitted}${o.price?' · Bestätigt: '+o.price:''}</div></div>
+        ${pillStatus2(o.status)}
+        ${o.status==='pending'?`
+          <button class="btn btn-ghost btn-xs" onclick="toggleOfferDetails('od-${o.id}')">Details ▾</button>
+          <button class="btn btn-green btn-xs" onclick="openConfirmOfferModal('${o.id}')">✓ Bestätigen</button>
+          <button class="btn btn-red btn-xs" onclick="rejectOffer('${o.id}')">Ablehnen</button>
+        `:`<button class="btn btn-ghost btn-xs">PDF ansehen</button>`}
+      </div>
+      <div id="od-${o.id}" style="display:none;border-top:1px solid var(--border);padding:20px">
+        <div style="background:rgba(255,255,255,0.02);border-radius:var(--r2);padding:14px;margin-bottom:16px">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px">🤖 KI-Analyse</div>
+          <p style="font-size:0.83rem;line-height:1.65;color:var(--text)">${o.analysis}</p>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">${o.services.map(s=>`<span class="pill pill-blue">${s}</span>`).join('')}</div>
+        </div>
+        <div class="g3" style="margin-bottom:16px">
+          ${o.options.map(opt=>`
+            <div class="ai-option ${opt.recommended?'recommended':''}">
+              ${opt.recommended?'<div class="ai-opt-rec-badge">⭐ KI-Empfehlung</div>':''}
+              <div class="ai-opt-name">${opt.name}</div>
+              <div class="ai-opt-price">${opt.price}</div>
+              <ul class="ai-opt-items">${opt.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`).join('')}`;
+}
+
+// ── CLIENTS ──
+function buildClientsPage() {
+  return `
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Kunde</th><th>Unternehmen</th><th>Projekte</th><th>Umsatz</th><th>Status</th><th>Aktionen</th></tr></thead>
+      <tbody>
+        ${STATE.clients.map(c=>`
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:9px"><div class="avatar av-blue" style="font-size:0.72rem">${c.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div><div><div style="font-weight:600;font-size:0.84rem">${c.name}</div><div style="font-size:0.7rem;color:var(--text2)">${c.email}</div></div></div></td>
+            <td style="font-size:0.82rem">${c.company}</td>
+            <td style="font-size:0.82rem">${c.projects}</td>
+            <td style="font-weight:700">€${c.revenue.toLocaleString()}</td>
+            <td>${pillStatus3(c.status)}</td>
+            <td><button class="btn btn-ghost btn-xs">Details</button></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ── PROJECTS ADMIN ──
+function buildProjectsAdminPage() {
+  return `
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Projekt</th><th>Kunde</th><th>Team</th><th>Budget</th><th>Status</th><th>Fortschritt</th><th>Deadline</th></tr></thead>
+      <tbody>
+        ${STATE.projects.map(p=>`
+          <tr>
+            <td style="font-weight:600;font-size:0.84rem">${p.name}</td>
+            <td style="font-size:0.8rem">${p.client}</td>
+            <td><div style="display:flex;gap:3px">${p.team.map(t=>`<div class="avatar av-blue" style="width:24px;height:24px;font-size:0.58rem;border-radius:50%">${t.split(' ').map(n=>n[0]).join('')}</div>`).join('')}</div></td>
+            <td style="font-weight:600">€${p.budget.toLocaleString()}</td>
+            <td>${pillStatus(p.status)}</td>
+            <td><div style="min-width:80px"><div class="prog-bar"><div class="prog-fill" style="width:${p.progress}%"></div></div><div style="font-size:0.67rem;color:var(--text2);margin-top:2px">${p.progress}%</div></div></td>
+            <td style="font-size:0.76rem;color:var(--text2)">${p.deadline}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ── TASKS ADMIN ──
+function buildTasksAdminPage() {
+  return `
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Aufgabe</th><th>Mitarbeiter</th><th>Kunde</th><th>Projekt</th><th>Priorität</th><th>Fällig</th><th>Status</th></tr></thead>
+      <tbody id="tasks-table-body">
+        ${STATE.tasks.map(t=>renderTaskRow(t)).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderTaskRow(t) {
+  const emp = STATE.employees.find(e=>e.name===t.employee);
+  return `<tr>
+    <td style="font-weight:600;font-size:0.84rem">${t.title}</td>
+    <td><div style="display:flex;align-items:center;gap:7px"><div class="avatar ${emp?.avClass||'av-blue'}" style="width:26px;height:26px;font-size:0.6rem">${emp?.initials||'?'}</div><span style="font-size:0.8rem">${t.employee}</span></div></td>
+    <td style="font-size:0.78rem;color:var(--text2)">${t.client}</td>
+    <td style="font-size:0.76rem;color:var(--text2)">${t.project}</td>
+    <td>${pillPriority(t.priority)}</td>
+    <td style="font-size:0.76rem">${t.due}</td>
+    <td>${pillTaskStatus(t.status)}</td>
+  </tr>`;
+}
+
+// ── DELIVERABLES ADMIN ──
+function buildDeliverablesAdminPage() {
+  return `
+  <div class="card mb24">
+    <div class="card-title mb16">Deliverables & Dateien verwalten</div>
+    <div style="background:rgba(107,184,255,0.04);border:1px solid rgba(107,184,255,0.12);border-radius:var(--r2);padding:12px 15px;margin-bottom:18px;font-size:0.78rem;color:var(--text2)">
+      💡 <strong>Empfohlene Implementierung:</strong> Für große Dateien (Videos, RAWs) nutze <strong>Google Drive oder Dropbox Links</strong> – keine Performance-Einbußen, unbegrenzter Speicher. Für kleine Previews/Thumbnails direkt hochladen.
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Datei / Link</th><th>Kunde</th><th>Typ</th><th>Projekt</th><th>Version</th><th>Status</th><th>Kommentare</th><th>Aktionen</th></tr></thead>
+      <tbody>
+        ${STATE.deliverables.map(d=>`
+          <tr>
+            <td><div style="font-weight:600;font-size:0.84rem">${d.emoji} ${d.name}</div></td>
+            <td style="font-size:0.78rem">${d.client}</td>
+            <td><span class="pill ${delTypePill(d.type)}">${d.type}</span></td>
+            <td style="font-size:0.76rem;color:var(--text2)">${d.project}</td>
+            <td style="font-size:0.78rem">v${d.version}</td>
+            <td>${pillDelStatus(d.status)}</td>
+            <td style="font-size:0.78rem">${d.comments.length} 💬</td>
+            <td><button class="btn btn-ghost btn-xs" onclick="openDeliverableModal('${d.id}')">Öffnen</button></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ── CLIENT DELIVERABLES ──
+function buildClientDeliverablesPage() {
+  const myDels = STATE.deliverables.filter(d => d.client === 'Max Mustermann');
+  return `
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="chip on" onclick="filterDels(this,'all')">Alle (${myDels.length})</button>
+    <button class="chip" onclick="filterDels(this,'video')">🎬 Videos</button>
+    <button class="chip" onclick="filterDels(this,'photo')">📸 Fotos</button>
+    <button class="chip" onclick="filterDels(this,'graphic')">🎨 Grafiken</button>
+    <button class="chip" onclick="filterDels(this,'web')">🌐 Weblinks</button>
+  </div>
+  <div class="del-grid" id="del-client-grid">
+    ${myDels.map(d=>`
+      <div class="del-card" data-type="${d.type}" onclick="openDeliverableModal('${d.id}')">
+        <div class="del-thumb" style="background:linear-gradient(135deg,${delBg(d.type)})">
+          <span style="font-size:2rem">${d.emoji}</span>
+          <div class="del-status-dot ${d.status==='delivered'||d.status==='live'?'dot-green':'dot-orange'}"></div>
+          ${d.comments.length?`<div style="position:absolute;bottom:8px;left:8px;font-size:0.65rem;background:rgba(0,0,0,0.5);padding:2px 7px;border-radius:100px;backdrop-filter:blur(8px)">💬 ${d.comments.length}</div>`:''}
+        </div>
+        <div class="del-info">
+          <div class="del-name">${d.name}</div>
+          <div class="del-meta"><span>${pillDelStatus(d.status)}</span><span style="font-size:0.69rem">v${d.version} · ${d.date}</span></div>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── EMPLOYEES ──
+function buildEmployeesPage() {
+  return `
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px">
+    ${STATE.employees.map(e=>`
+      <div class="emp-card" onclick="openEmpModal('${e.id}')">
+        <div class="emp-top">
+          <div class="avatar av-lg ${e.avClass}">${e.initials}</div>
+          <div>
+            <div class="emp-name">${e.name}</div>
+            <div class="emp-role">${e.active?'🟢 Aktiv':'⚫ Inaktiv'}</div>
+          </div>
+        </div>
+        <div class="emp-role-tags">${e.roles.map(r=>`<span class="emp-role-tag">${r}</span>`).join('')}</div>
+        <div class="emp-stats">
+          <div class="emp-stat"><div class="emp-stat-val">${e.tasks}</div><div class="emp-stat-lbl">Tasks</div></div>
+          <div class="emp-stat"><div class="emp-stat-val">${e.projects}</div><div class="emp-stat-lbl">Projekte</div></div>
+          <div class="emp-stat"><div class="emp-stat-val" style="font-size:0.88rem">€${e.rate}/h</div><div class="emp-stat-lbl">Rate</div></div>
+        </div>
+      </div>`).join('')}
+    <div class="emp-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:140px" onclick="openModal('new-employee')">
+      <div style="text-align:center;color:var(--text3)"><div style="font-size:2rem;margin-bottom:6px">+</div><div style="font-size:0.8rem;font-weight:600">Mitarbeiter anlegen</div></div>
+    </div>
+  </div>`;
+}
+
+// ── CONTRACTS ──
+function buildContractsPage() {
+  return `
+  <div style="margin-bottom:16px;font-size:0.82rem;color:var(--text2)">Vertragsvorlagen werden bei Angebotsbestätigung automatisch befüllt und an den Kunden gesendet.</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    ${STATE.contracts.map(c=>`
+      <div class="contract-item" onclick="openContractView('${c.template}','${c.name}')">
+        <div class="ci-icon" style="background:var(--glass2)">${c.icon}</div>
+        <div style="flex:1"><div style="font-size:0.88rem;font-weight:600">${c.name}</div><div style="font-size:0.72rem;color:var(--text2);margin-top:2px">${c.desc}</div></div>
+        <span class="pill pill-green">Aktiv</span>
+        <button class="btn btn-ghost btn-xs">Ansehen</button>
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── MESSAGES ──
+function buildMessagesPage() {
+  const convs = Object.keys(STATE.messages);
+  const firstConv = convs[0];
+  return `
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 120px)">
+    <div class="card" style="overflow-y:auto;padding:12px">
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:10px">Konversationen</div>
+      ${convs.map(name=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:11px;border-radius:var(--r2);cursor:pointer;background:rgba(107,184,255,0.06);border:1px solid rgba(107,184,255,0.12);margin-bottom:6px" onclick="loadConversation('${name}')">
+          <div class="avatar av-blue" style="font-size:0.7rem">${name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+          <div style="flex:1;overflow:hidden"><div style="font-size:0.83rem;font-weight:600">${name}</div><div style="font-size:0.7rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${STATE.messages[name].slice(-1)[0]?.text||''}</div></div>
+        </div>`).join('')}
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;padding:0" id="chat-area">
+      ${buildChatView(firstConv)}
+    </div>
+  </div>`;
+}
+
+function buildChatView(name) {
+  const msgs = STATE.messages[name] || [];
+  return `
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-family:var(--ff);font-size:0.88rem;font-weight:700">${name}</div>
+    <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px" id="chat-messages">
+      ${msgs.map(m=>`
+        <div class="comment ${m.self?'self':''}">
+          <div class="avatar ${m.self?'av-red':'av-blue'}" style="font-size:0.7rem;flex-shrink:0">${m.from.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+          <div class="comment-body">
+            <div class="comment-author">${m.from}</div>
+            <div class="comment-text">${m.text}</div>
+            <div class="comment-time">${m.time}</div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div style="padding:14px;border-top:1px solid var(--border);display:flex;gap:10px">
+      <input class="fi" id="chat-input" placeholder="Nachricht schreiben…" style="border-radius:100px;padding:10px 16px" onkeydown="if(event.key==='Enter')sendMsg('${name}')">
+      <button class="btn btn-primary btn-sm" onclick="sendMsg('${name}')">→</button>
+    </div>`;
+}
+
+// ── INVOICES ──
+function buildInvoicesAdminPage() {
+  return `<div class="card">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px"><button class="btn btn-primary btn-sm">+ Rechnung erstellen</button></div>
+    <table class="data-table">
+      <thead><tr><th>Rechnung</th><th>Kunde</th><th>Betrag</th><th>Fällig</th><th>Status</th><th>Aktionen</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">RE-2025-042</td><td>Max Mustermann</td><td style="font-weight:700;color:var(--orange)">€1.600</td><td>30. Aug 2025</td><td><span class="pill pill-orange">Offen</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-xs">Mahnen</button><button class="btn btn-ghost btn-xs">PDF</button></div></td></tr>
+        <tr><td style="font-weight:600">RE-2025-031</td><td>Max Mustermann</td><td style="font-weight:700;color:var(--green)">€1.200</td><td>15. Jul 2025</td><td><span class="pill pill-green">Bezahlt</span></td><td><button class="btn btn-ghost btn-xs">PDF</button></td></tr>
+        <tr><td style="font-weight:600">RE-2025-028</td><td>Anna Schmidt GmbH</td><td style="font-weight:700;color:var(--green)">€1.200</td><td>20. Jul 2025</td><td><span class="pill pill-green">Bezahlt</span></td><td><button class="btn btn-ghost btn-xs">PDF</button></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function buildClientInvoicesPage() {
+  return `<div class="card">
+    <table class="data-table">
+      <thead><tr><th>Rechnung</th><th>Leistung</th><th>Betrag</th><th>Fällig</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600">RE-2025-042</td><td>Brand Video (50% Anzahlung)</td><td style="font-weight:700;color:var(--orange)">€1.600</td><td>30. Aug 2025</td><td><span class="pill pill-orange">Offen</span></td><td><button class="btn btn-primary btn-xs">Bezahlen</button></td></tr>
+        <tr><td style="font-weight:600">RE-2025-031</td><td>Fotoproduktion</td><td style="font-weight:700;color:var(--green)">€1.200</td><td>15. Jul 2025</td><td><span class="pill pill-green">Bezahlt</span></td><td><button class="btn btn-ghost btn-xs">PDF</button></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ── CLIENT PROJECTS ──
+function buildClientProjectsPage() {
+  const myProjects = STATE.projects.filter(p => p.client === 'Max Mustermann');
+  return `
+  <div style="display:flex;flex-direction:column;gap:14px">
+    ${myProjects.map(p=>`
+      <div class="card" style="border-color:${p.status==='done'?'rgba(95,255,192,0.15)':'var(--border)'}">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="flex:1">
+            <div style="font-family:var(--ff);font-size:0.95rem;font-weight:700;margin-bottom:4px">${p.name}</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              ${pillStatus(p.status)}
+              <span style="font-size:0.75rem;color:var(--text2)">Deadline: ${p.deadline}</span>
+              <span style="font-size:0.75rem;color:var(--text2)">Team: ${p.team.join(', ')}</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--ff);font-size:1.2rem;font-weight:700">${p.progress}%</div>
+            <div style="font-size:0.7rem;color:var(--text2)">Fortschritt</div>
+          </div>
+        </div>
+        <div style="margin-top:14px"><div class="prog-bar" style="height:6px"><div class="prog-fill ${p.progress===100?'prog-fill-green':''}" style="width:${p.progress}%"></div></div></div>
+        ${p.status !== 'done' ? `
+        <div style="margin-top:16px">
+          <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);margin-bottom:10px">Meilensteine</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot tl-done">✓</div><div class="tl-body"><div class="tl-title">Briefing & Konzept</div><div class="tl-sub">Abgeschlossen</div></div></div>
+            <div class="tl-item"><div class="tl-dot tl-done">✓</div><div class="tl-body"><div class="tl-title">Drehtag / Shooting</div><div class="tl-sub">Abgeschlossen</div></div></div>
+            <div class="tl-item"><div class="tl-dot tl-active">▶</div><div class="tl-body"><div class="tl-title">Postproduktion</div><div class="tl-sub">In Bearbeitung</div></div></div>
+            <div class="tl-item"><div class="tl-dot tl-pending">○</div><div class="tl-body"><div class="tl-title">Review & Feedback</div><div class="tl-sub">Ausstehend</div></div></div>
+            <div class="tl-item"><div class="tl-dot tl-pending">○</div><div class="tl-body"><div class="tl-title">Finale Übergabe</div><div class="tl-sub">Ausstehend</div></div></div>
+          </div>
+        </div>` : ''}
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── REQUEST PAGE (Client) ──
+function buildRequestPage() {
+  return `
+  <div style="max-width:760px">
+    <div style="margin-bottom:22px">
+      <div style="font-family:var(--ff);font-size:1.05rem;font-weight:700;margin-bottom:4px">KI-gestützte Preiskalkulation</div>
+      <div style="font-size:0.82rem;color:var(--text2)">Beschreib dein Projekt – Claude analysiert und erstellt drei maßgeschneiderte Optionen.</div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="form-grid" id="req-form">
+        <div class="fg"><label>Website / URL</label><input class="fi" id="r-url" type="url" placeholder="https://deine-website.de"></div>
+        <div class="fg"><label>Referenz-Kanäle</label><input class="fi" id="r-ref" placeholder="@dein_handle, TikTok-Link, etc."></div>
+        <div class="fg full"><label>Gewünschte Dienstleistungen</label>
+          <div class="chips" id="service-chips">
+            ${['🎬 Video Production','📸 Fotografie','🎥 Reels / TikTok','🎨 Grafik / Design','🌐 Webdesign','✂️ Video Editing','📦 Brand Package','📱 Social Media Set'].map(s=>`<span class="chip" onclick="this.classList.toggle('on')">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="fg full"><label>Was ist dein Problem / Vorhaben?</label><textarea class="fi" id="r-problem" placeholder="Ich brauche... / Wir haben das Problem dass... / Das Ziel ist..."></textarea></div>
+        <div class="fg full"><label>Wie stellst du dir die Lösung vor?</label><textarea class="fi" id="r-vision" placeholder="Ich stelle mir vor... / Inspirationen: ... / Das Ergebnis soll sein..."></textarea></div>
+        <div class="fg"><label>Budget (ungefähr)</label>
+          <select class="fi" id="r-budget">
+            <option value="">— Budget wählen —</option>
+            <option>500 – 1.000 €</option><option>1.000 – 2.500 €</option>
+            <option>2.500 – 5.000 €</option><option>5.000 – 10.000 €</option><option>10.000 € +</option>
+          </select>
+        </div>
+        <div class="fg"><label>Wunschdatum</label><input class="fi" id="r-date" type="date"></div>
+        <div class="fg full">
+          <div class="loading-row" id="ai-loading" style="display:none"><div class="spinner"></div>KI analysiert dein Projekt und erstellt individuelle Optionen…</div>
+          <button class="btn btn-primary" style="width:100%;padding:13px;font-size:0.88rem" onclick="runAIQuote()">✦ KI-Analyse starten & Optionen generieren</button>
+        </div>
+      </div>
+      <div id="ai-quote-result" style="display:none"></div>
+    </div>
+  </div>`;
+}
+
+// ── MY OFFERS ──
+function buildMyOffersPage() {
+  return `<div style="display:flex;flex-direction:column;gap:12px">
+    ${STATE.offers.map(o=>`
+      <div class="card" style="border-color:${o.status==='pending'?'rgba(255,179,71,0.18)':o.status==='confirmed'?'rgba(95,255,192,0.15)':'var(--border)'}">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="flex:1"><div style="font-family:var(--ff);font-size:0.9rem;font-weight:700;margin-bottom:3px">${o.title}</div><div style="font-size:0.74rem;color:var(--text2)">Budget: ${o.budget} · ${o.submitted}${o.price?' · Bestätigt: '+o.price:''}</div></div>
+          ${pillStatus2(o.status)}
+          ${o.status==='confirmed'?`<button class="btn btn-ghost btn-xs">📄 PDF herunterladen</button>`:''}
+        </div>
+        ${o.status==='pending'?`<div style="margin-top:12px;padding:10px 13px;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.12);border-radius:var(--r2);font-size:0.78rem;color:var(--text2)">⏳ Dein Angebot wird von unserem Team geprüft. Du erhältst eine Benachrichtigung sobald es bestätigt wird.</div>`:''}
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── MY CONTRACTS ──
+function buildMyContractsPage() {
+  return `<div style="display:flex;flex-direction:column;gap:10px">
+    <div class="contract-item"><div class="ci-icon" style="background:var(--green-g)">📄</div><div style="flex:1"><div style="font-size:0.88rem;font-weight:600">Werkvertrag – Brand Video 2025</div><div style="font-size:0.72rem;color:var(--text2)">Unterzeichnet · 12. Jul 2025</div></div><span class="pill pill-green">Unterzeichnet</span><button class="btn btn-ghost btn-xs">Download</button></div>
+    <div class="contract-item"><div class="ci-icon" style="background:var(--green-g)">👤</div><div style="flex:1"><div style="font-size:0.88rem;font-weight:600">Model Release – Drehtag Aug. 2025</div><div style="font-size:0.72rem;color:var(--text2)">Unterzeichnet · 22. Aug 2025</div></div><span class="pill pill-green">Unterzeichnet</span><button class="btn btn-ghost btn-xs">Download</button></div>
+    <div class="contract-item" style="border-color:rgba(255,179,71,0.2)"><div class="ci-icon" style="background:var(--orange-g)">🏛️</div><div style="flex:1"><div style="font-size:0.88rem;font-weight:600">Lizenzvertrag – Bildmaterial</div><div style="font-size:0.72rem;color:var(--text2)">Ausstehend – bitte unterzeichnen</div></div><span class="pill pill-orange">Ausstehend</span><button class="btn btn-primary btn-xs">Unterzeichnen</button></div>
+  </div>`;
+}
+
+// ── EMPLOYEE PAGES ──
+function buildMyTasksPage() {
+  const myTasks = STATE.tasks.filter(t => t.employee === 'Lisa Kern');
+  return `
+  <div class="g2 mb24">
+    <div class="stat-card"><div class="stat-label">Offene Aufgaben</div><div class="stat-val" style="color:var(--orange)">${myTasks.filter(t=>t.status!=='done').length}</div></div>
+    <div class="stat-card"><div class="stat-label">Erledigt (Aug)</div><div class="stat-val" style="color:var(--green)">8</div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    ${myTasks.map(t=>`
+      <div class="card" style="border-color:${t.status==='in-progress'?'rgba(107,184,255,0.2)':'var(--border)'}">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="flex:1"><div style="font-weight:700;font-size:0.88rem">${t.title}</div><div style="font-size:0.74rem;color:var(--text2);margin-top:2px">${t.project} · Kunde: ${t.client}</div></div>
+          ${pillPriority(t.priority)}
+          ${pillTaskStatus(t.status)}
+          <span style="font-size:0.76rem;color:var(--text2)">📅 ${t.due}</span>
+          ${t.status!=='done'?`<button class="btn btn-green btn-xs" onclick="markTaskDone('${t.id}')">✓ Erledigt</button>`:''}
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function buildMyProjectsPage() {
+  const myProjects = STATE.projects.filter(p => p.team.includes('Lisa Kern'));
+  return buildClientProjectsPage(); // Reuse with different filter
+}
+
+function buildEmpDeliverablesPage() {
+  const empDels = STATE.deliverables.filter(d => true); // All for employee
+  return `
+  <div style="margin-bottom:16px;font-size:0.82rem;color:var(--text2)">Dateien die du aktualisieren, hochladen oder kommentieren kannst</div>
+  <div class="del-grid">
+    ${empDels.map(d=>`
+      <div class="del-card" onclick="openDeliverableModal('${d.id}')">
+        <div class="del-thumb" style="background:linear-gradient(135deg,${delBg(d.type)})">
+          <span style="font-size:2rem">${d.emoji}</span>
+          <div class="del-status-dot ${d.status==='delivered'||d.status==='live'?'dot-green':'dot-orange'}"></div>
+        </div>
+        <div class="del-info">
+          <div class="del-name">${d.name}</div>
+          <div class="del-meta"><span>${pillDelStatus(d.status)}</span><span style="font-size:0.69rem">${d.client} · v${d.version}</span></div>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function buildMyProfilePage() {
+  const emp = STATE.employees.find(e => e.name === 'Lisa Kern');
+  return `
+  <div class="g2">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+        <div class="avatar av-green av-lg" style="width:60px;height:60px;font-size:1.1rem;border-radius:16px">${emp.initials}</div>
+        <div><div style="font-family:var(--ff);font-size:1.1rem;font-weight:800">${emp.name}</div><div style="font-size:0.78rem;color:var(--text2);margin-top:2px">${emp.email}</div></div>
+      </div>
+      <div style="margin-bottom:16px"><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px">Meine Rollen</div><div class="chips">${emp.roles.map(r=>`<span class="chip on">${r}</span>`).join('')}</div></div>
+      <div class="g2"><div class="stat-card"><div class="stat-label">Aktive Aufgaben</div><div class="stat-val" style="color:var(--orange)">${emp.tasks}</div></div><div class="stat-card"><div class="stat-label">Projekte</div><div class="stat-val" style="color:var(--accent)">${emp.projects}</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Meine aktuellen Aufgaben</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        ${STATE.tasks.filter(t=>t.employee===emp.name).map(t=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--glass2);border-radius:var(--r3)">
+            ${pillTaskStatus(t.status)}
+            <span style="font-size:0.82rem;flex:1">${t.title}</span>
+            ${pillPriority(t.priority)}
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// MODAL SYSTEM
+// ============================================================
+function openModal(type) {
+  const box = document.getElementById('modal-box');
+  const content = document.getElementById('modal-content');
+  box.className = 'modal';
+
+  const modals = {
+    'new-employee': buildNewEmployeeModal,
+    'new-task': buildNewTaskModal,
+    'new-deliverable': buildNewDeliverableModal,
+    'new-client': buildNewClientModal,
+  };
+
+  if (modals[type]) {
+    content.innerHTML = modals[type]();
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+function buildNewEmployeeModal() {
+  return `
+    <div class="modal-title">Mitarbeiter anlegen</div>
+    <div class="modal-sub">Neues Profil erstellen und bis zu 5 Rollen zuweisen</div>
+    <div class="form-grid">
+      <div class="fg"><label>Vorname</label><input class="fi" id="em-fn" placeholder="Max"></div>
+      <div class="fg"><label>Nachname</label><input class="fi" id="em-ln" placeholder="Mustermann"></div>
+      <div class="fg"><label>E-Mail</label><input class="fi" id="em-email" type="email" placeholder="max@yourbrand.com"></div>
+      <div class="fg"><label>Stundensatz (€)</label><input class="fi" id="em-rate" type="number" placeholder="80"></div>
+      <div class="fg full"><label>Rollen (max. 5 auswählbar)</label>
+        <div class="chips" id="role-chips">
+          ${['🎬 Videograf','📸 Fotograf','✂️ Editor','🎨 Grafiker','🌐 Webdesigner','📱 Social Media Manager','📋 Projektmanager','🤝 Assistent','🎵 Musiker / Tontechniker','💡 Creative Director'].map(r=>`<span class="chip" onclick="toggleRoleChip(this)">${r}</span>`).join('')}
+        </div>
+      </div>
+      <div class="fg full"><label>Bio / Notizen</label><textarea class="fi" id="em-bio" placeholder="Skills, Portfolio-Link, Besonderheiten..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveNewEmployee()">Anlegen</button>
+    </div>`;
+}
+
+function buildNewTaskModal() {
+  return `
+    <div class="modal-title">Aufgabe zuweisen</div>
+    <div class="modal-sub">Task einem Mitarbeiter und Projekt/Kunden zuteilen</div>
+    <div class="form-grid">
+      <div class="fg full"><label>Aufgabentitel</label><input class="fi" id="nt-title" placeholder="z.B. Reel schneiden – Herbst Kampagne"></div>
+      <div class="fg"><label>Mitarbeiter</label>
+        <select class="fi" id="nt-emp">
+          ${STATE.employees.map(e=>`<option value="${e.id}">${e.name} (${e.roles[0]})</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg"><label>Kunde</label>
+        <select class="fi" id="nt-client">
+          ${STATE.clients.map(c=>`<option>${c.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg full"><label>Projekt</label>
+        <select class="fi" id="nt-proj">
+          ${STATE.projects.map(p=>`<option>${p.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg"><label>Fällig am</label><input class="fi" id="nt-due" type="date"></div>
+      <div class="fg"><label>Priorität</label>
+        <select class="fi" id="nt-prio">
+          <option value="high">🔴 Hoch</option>
+          <option value="medium" selected>🟡 Mittel</option>
+          <option value="low">🟢 Niedrig</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Standard-Aufgaben Vorlagen</label>
+        <div class="chips">
+          ${['Video schneiden','Color Grading','Sound Design','Thumbnail erstellen','Reels schneiden','RAWs sortieren','Social Post gestalten','Website-Seite bauen','Logo erstellen','Texte schreiben'].map(t=>`<span class="chip" onclick="document.getElementById('nt-title').value='${t}'">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="fg full"><label>Beschreibung</label><textarea class="fi" id="nt-desc" placeholder="Details, Briefing, Links..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveNewTask()">Zuweisen</button>
+    </div>`;
+}
+
+function buildNewDeliverableModal() {
+  return `
+    <div class="modal-title">Deliverable hinzufügen</div>
+    <div class="modal-sub">Datei verlinken oder Status aktualisieren – Google Drive/Dropbox empfohlen für große Dateien</div>
+    <div class="form-grid">
+      <div class="fg"><label>Kunde</label>
+        <select class="fi" id="nd-client">
+          ${STATE.clients.map(c=>`<option>${c.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg"><label>Projekt</label>
+        <select class="fi" id="nd-proj">
+          ${STATE.projects.map(p=>`<option>${p.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg"><label>Dateiname / Titel</label><input class="fi" id="nd-name" placeholder="Hero_Video_v1.mp4"></div>
+      <div class="fg"><label>Typ</label>
+        <select class="fi" id="nd-type">
+          <option value="video">🎬 Video</option>
+          <option value="photo">📸 Foto / Fotos</option>
+          <option value="graphic">🎨 Grafik / Design</option>
+          <option value="web">🌐 Weblink</option>
+          <option value="doc">📄 Dokument</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Link (Google Drive, Dropbox, WeTransfer, Vimeo...)</label><input class="fi" id="nd-url" type="url" placeholder="https://drive.google.com/file/..."></div>
+      <div class="fg"><label>Status</label>
+        <select class="fi" id="nd-status">
+          <option value="draft">📝 Entwurf</option>
+          <option value="review">🔍 Zur Überprüfung</option>
+          <option value="delivered">✅ Übergeben</option>
+          <option value="live">🟢 Live</option>
+        </select>
+      </div>
+      <div class="fg"><label>Version</label><input class="fi" id="nd-ver" type="number" value="1" min="1"></div>
+      <div class="fg full"><label>Kommentar / Beschreibung</label><textarea class="fi" id="nd-comment" placeholder="z.B. Erster Entwurf – bitte Feedback bis Freitag. Hauptänderung: neues Outro."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveNewDeliverable()">Hinzufügen</button>
+    </div>`;
+}
+
+function buildNewClientModal() {
+  return `
+    <div class="modal-title">Neuer Kunde</div>
+    <div class="form-grid">
+      <div class="fg"><label>Name</label><input class="fi" id="nc-name" placeholder="Max Mustermann"></div>
+      <div class="fg"><label>E-Mail</label><input class="fi" id="nc-email" type="email" placeholder="max@example.com"></div>
+      <div class="fg full"><label>Unternehmen</label><input class="fi" id="nc-co" placeholder="Company GmbH"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveNewClient()">Anlegen</button>
+    </div>`;
+}
+
+function openDeliverableModal(id) {
+  const d = STATE.deliverables.find(x => x.id === id);
+  if (!d) return;
+  const box = document.getElementById('modal-box');
+  box.className = 'modal wide';
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title">${d.emoji} ${d.name}</div>
+    <div class="modal-sub">${d.project} · Kunde: ${d.client} · ${pillDelStatus(d.status)} · Version ${d.version}</div>
+    <div style="background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);padding:20px;display:flex;align-items:center;justify-content:center;min-height:140px;margin-bottom:20px;font-size:3rem">
+      ${d.emoji}
+      <div style="margin-left:20px">
+        <div style="font-size:0.88rem;font-weight:600;margin-bottom:8px">${d.name}</div>
+        <a href="${d.url}" style="color:var(--accent);font-size:0.8rem">🔗 Datei öffnen / herunterladen</a>
+        ${STATE.user?.role !== 'client' ? `<div style="margin-top:8px"><button class="btn btn-ghost btn-xs" onclick="updateDeliverableVersion('${id}')">+ Neue Version hochladen</button></div>` : ''}
+      </div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);margin-bottom:12px">💬 Kommentare & Feedback</div>
+      <div class="comment-thread" id="comment-thread-${id}" style="margin-bottom:14px;max-height:200px;overflow-y:auto">
+        ${d.comments.length === 0 ? `<div style="font-size:0.8rem;color:var(--text3);text-align:center;padding:20px">Noch keine Kommentare</div>` :
+          d.comments.map(c=>`
+            <div class="comment ${c.self?'self':''}">
+              <div class="avatar av-${c.self?'green':'blue'}" style="font-size:0.68rem;width:28px;height:28px;flex-shrink:0">${c.author.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+              <div class="comment-body">
+                <div class="comment-author">${c.author}</div>
+                <div class="comment-text">${c.text}</div>
+                <div class="comment-time">${c.time}</div>
+              </div>
+            </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px">
+        <input class="fi" id="new-comment-${id}" placeholder="Kommentar oder Feedback hinzufügen…" style="border-radius:100px;padding:9px 15px;font-size:0.83rem">
+        <button class="btn btn-primary btn-sm" onclick="addComment('${id}')">Senden</button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost btn-sm" onclick="closeModal()">Schließen</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openConfirmOfferModal(offerId) {
+  const o = STATE.offers.find(x => x.id === offerId);
+  const box = document.getElementById('modal-box');
+  box.className = 'modal wide';
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title">Angebot bestätigen</div>
+    <div class="modal-sub">${o.client} – ${o.title}</div>
+    <div class="g3 mb24">
+      ${o.options.map(opt=>`
+        <div class="ai-option ${opt.recommended?'recommended':''}" onclick="document.getElementById('sel-opt').value='${opt.name}'">
+          ${opt.recommended?'<div class="ai-opt-rec-badge">⭐ KI-Empfehlung</div>':''}
+          <div class="ai-opt-name">${opt.name}</div>
+          <div class="ai-opt-price">${opt.price}</div>
+          <ul class="ai-opt-items">${opt.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+        </div>`).join('')}
+    </div>
+    <div class="form-grid">
+      <div class="fg"><label>Ausgewählte Option</label>
+        <select class="fi" id="sel-opt">
+          ${o.options.map(opt=>`<option ${opt.recommended?'selected':''}>${opt.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fg"><label>Finaler Preis (€)</label><input class="fi" id="conf-price" placeholder="${o.options.find(x=>x.recommended)?.price?.replace('€','').trim()||'2500'}"></div>
+      <div class="fg"><label>Anzahlung %</label><input class="fi" id="conf-deposit" value="50" type="number"></div>
+      <div class="fg"><label>Vertragstyp</label>
+        <select class="fi" id="conf-contract">
+          <option>Werkvertrag</option><option>Lizenzvertrag</option><option>Event-Vertrag</option>
+        </select>
+      </div>
+      <div class="fg"><label>Model Release nötig?</label>
+        <select class="fi" id="conf-release"><option value="no">Nein</option><option value="yes">Ja</option></select>
+      </div>
+      <div class="fg full"><label>Anmerkung zum Angebot</label><textarea class="fi" id="conf-note" placeholder="Individuelle Ergänzungen..."></textarea></div>
+    </div>
+    <div style="padding:12px 14px;background:rgba(95,255,192,0.04);border:1px solid rgba(95,255,192,0.12);border-radius:var(--r2);font-size:0.78rem;color:var(--text2);margin-bottom:16px">
+      ✅ Bei Bestätigung wird automatisch: <strong>PDF-Angebot</strong> generiert · <strong>Vertrag</strong> vorbereitet · Kunde per <strong>Dashboard benachrichtigt</strong>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-red btn-sm" onclick="rejectOffer('${offerId}')">Ablehnen</button>
+      <button class="btn btn-green btn-sm" onclick="confirmOffer('${offerId}')">✓ Bestätigen & PDF senden</button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openEmpModal(id) {
+  const e = STATE.employees.find(x => x.id === id);
+  const myTasks = STATE.tasks.filter(t => t.employee === e.name);
+  document.getElementById('modal-box').className = 'modal wide';
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+      <div class="avatar av-lg ${e.avClass}" style="width:56px;height:56px;font-size:1rem;border-radius:14px">${e.initials}</div>
+      <div><div class="modal-title" style="margin:0">${e.name}</div><div style="font-size:0.78rem;color:var(--text2)">${e.email}</div></div>
+      <span class="pill ${e.active?'pill-green':'pill-gray'}" style="margin-left:auto">${e.active?'Aktiv':'Inaktiv'}</span>
+    </div>
+    <div style="margin-bottom:16px"><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text2);margin-bottom:8px">Rollen</div><div class="chips">${e.roles.map(r=>`<span class="chip on">${r}</span>`).join('')}</div></div>
+    <div class="g3 mb24">
+      <div class="stat-card"><div class="stat-label">Aufgaben</div><div class="stat-val" style="color:var(--orange)">${e.tasks}</div></div>
+      <div class="stat-card"><div class="stat-label">Projekte</div><div class="stat-val" style="color:var(--accent)">${e.projects}</div></div>
+      <div class="stat-card"><div class="stat-label">Stundensatz</div><div class="stat-val" style="font-size:1.2rem">€${e.rate}/h</div></div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);margin-bottom:10px">Aktuelle Aufgaben</div>
+      ${myTasks.length === 0 ? '<div style="font-size:0.8rem;color:var(--text3)">Keine aktuellen Aufgaben</div>' :
+        myTasks.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--glass2);border-radius:var(--r3);margin-bottom:6px">${pillTaskStatus(t.status)}<span style="font-size:0.82rem;flex:1">${t.title}</span>${pillPriority(t.priority)}</div>`).join('')}
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal()">Schließen</button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal();openModal('new-task')">+ Aufgabe zuweisen</button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function openContractView(template, name) {
+  document.getElementById('modal-box').className = 'modal wide';
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-title">${name}</div>
+    <div class="modal-sub">Vorlage – wird bei Bestätigung automatisch mit Kundendaten befüllt</div>
+    <pre style="background:var(--glass2);border:1px solid var(--border);border-radius:var(--r2);padding:20px;font-size:0.78rem;line-height:1.75;color:var(--text);white-space:pre-wrap;font-family:var(--fb);max-height:420px;overflow-y:auto">${CONTRACT_TEMPLATES[template]||'Vorlage nicht gefunden.'}</pre>
+    <div class="modal-footer"><button class="btn btn-ghost btn-sm" onclick="closeModal()">Schließen</button><button class="btn btn-primary btn-sm" onclick="toast('success','Vorlage bearbeiten','Öffne die Datei im Editor, um die Vorlage anzupassen.')">Bearbeiten</button></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+// ============================================================
+// AI QUOTE
+// ============================================================
+async function runAIQuote() {
+  const problem = document.getElementById('r-problem')?.value || '';
+  const vision = document.getElementById('r-vision')?.value || '';
+  const budget = document.getElementById('r-budget')?.value || '';
+  const services = Array.from(document.querySelectorAll('#service-chips .chip.on')).map(c => c.textContent.trim());
+  const url = document.getElementById('r-url')?.value || '';
+  const ref = document.getElementById('r-ref')?.value || '';
+
+  if (!problem && !vision) { toast('error', 'Fehlende Angaben', 'Bitte beschreibe dein Vorhaben.'); return; }
+
+  const loading = document.getElementById('ai-loading');
+  const result = document.getElementById('ai-quote-result');
+  if (loading) loading.style.display = 'flex';
+  if (result) result.style.display = 'none';
+
+  const prompt = `Du bist ein erfahrener Medienproduktions-Berater für eine professionelle Foto & Video Agentur. Analysiere diese Kundenanfrage und erstelle drei konkrete Angebotsoptionen.
+
+Kundeninfo:
+- Website: ${url || 'Nicht angegeben'}
+- Referenzkanäle: ${ref || 'Nicht angegeben'}
+- Gewünschte Services: ${services.join(', ') || 'Nicht spezifiziert'}
+- Problem/Vorhaben: ${problem}
+- Lösungsvorstellung: ${vision || 'Nicht angegeben'}
+- Budget: ${budget || 'Nicht angegeben'}
+
+Antworte NUR mit einem JSON-Objekt (kein Markdown, keine Backticks):
+{"analysis":"2-3 Sätze Analyse und Empfehlung","options":[{"name":"Basic","price":"€ X.XXX","items":["Leistung 1","Leistung 2","Leistung 3"],"recommended":false},{"name":"Standard","price":"€ X.XXX","items":["Leistung 1","Leistung 2","Leistung 3","Leistung 4"],"recommended":true},{"name":"Premium","price":"€ X.XXX","items":["Leistung 1","Leistung 2","Leistung 3","Leistung 4","Leistung 5"],"recommended":false}]}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    let txt = data.content.map(b => b.text || '').join('').trim();
+    const m = txt.match(/\{[\s\S]*\}/);
+    const parsed = JSON.parse(m ? m[0] : txt);
+
+    if (loading) loading.style.display = 'none';
+    if (result) {
+      result.style.display = 'block';
+      result.innerHTML = `
+        <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:22px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <div style="font-family:var(--ff);font-size:0.95rem;font-weight:700">🤖 KI-Analyse</div>
+            <span class="pill pill-orange">Vorläufig – Bestätigung durch Team erforderlich</span>
+          </div>
+          <p style="font-size:0.84rem;color:var(--text2);line-height:1.65;margin-bottom:20px">${parsed.analysis}</p>
+          <div class="g3 mb24">
+            ${parsed.options.map(opt=>`
+              <div class="ai-option ${opt.recommended?'recommended':''}">
+                ${opt.recommended?'<div class="ai-opt-rec-badge">⭐ Empfohlen</div>':''}
+                <div class="ai-opt-name">${opt.name}</div>
+                <div class="ai-opt-price">${opt.price}</div>
+                <ul class="ai-opt-items">${opt.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+              </div>`).join('')}
+          </div>
+          <div style="padding:12px 14px;background:rgba(255,179,71,0.05);border:1px solid rgba(255,179,71,0.15);border-radius:var(--r2);font-size:0.78rem;color:var(--text2);margin-bottom:16px">
+            ⚠️ Dieses Angebot ist <strong>vorläufig</strong> und wird erst nach Prüfung und Bestätigung durch unser Team gültig. Du wirst benachrichtigt.
+          </div>
+          <button class="btn btn-primary" style="width:100%" onclick="submitQuoteRequest()">Anfrage absenden →</button>
+        </div>`;
+    }
+  } catch (e) {
+    if (loading) loading.style.display = 'none';
+    toast('error', 'KI-Fehler', 'Analyse fehlgeschlagen. Bitte erneut versuchen.');
+  }
+}
+
+function submitQuoteRequest() {
+  const result = document.getElementById('ai-quote-result');
+  if (result) result.innerHTML = `
+    <div style="margin-top:24px;border-top:1px solid var(--border);padding-top:22px;text-align:center">
+      <div style="font-size:2.5rem;margin-bottom:12px">✓</div>
+      <div style="font-family:var(--ff);font-size:1rem;font-weight:700;color:var(--green);margin-bottom:8px">Anfrage erfolgreich eingereicht!</div>
+      <p style="font-size:0.82rem;color:var(--text2)">Unser Team prüft dein Angebot und meldet sich innerhalb von 24h. Bei Bestätigung erhältst du automatisch das offizielle PDF und einen Vertragsentwurf auf deinem Dashboard.</p>
+    </div>`;
+  toast('success', 'Anfrage eingereicht', 'Wir melden uns innerhalb von 24h!');
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function saveNewEmployee() {
+  const fn = document.getElementById('em-fn')?.value?.trim();
+  const ln = document.getElementById('em-ln')?.value?.trim();
+  const email = document.getElementById('em-email')?.value?.trim();
+  const rate = parseInt(document.getElementById('em-rate')?.value) || 75;
+  const roles = Array.from(document.querySelectorAll('#role-chips .chip.on')).map(c => c.textContent.trim().replace(/^[^\w]+/, '').trim());
+
+  if (!fn || !roles.length) { toast('error', 'Fehler', 'Name und mindestens eine Rolle sind erforderlich.'); return; }
+
+  const colors = ['av-blue','av-green','av-orange','av-red','av-purple','av-gold'];
+  const newEmp = {
+    id: 'e' + Date.now(), name: `${fn} ${ln}`, email: email || `${fn.toLowerCase()}@yourbrand.com`,
+    initials: (fn[0] + (ln?ln[0]:'')).toUpperCase(),
+    avClass: colors[Math.floor(Math.random() * colors.length)],
+    roles: roles.slice(0, 5), rate, tasks: 0, projects: 0, active: true
+  };
+  STATE.employees.push(newEmp);
+  closeModal();
+  navigateTo('employees');
+  toast('success', 'Mitarbeiter angelegt', `${fn} ${ln} wurde erfolgreich hinzugefügt.`);
+}
+
+function saveNewTask() {
+  const title = document.getElementById('nt-title')?.value?.trim();
+  const empId = document.getElementById('nt-emp')?.value;
+  const emp = STATE.employees.find(e => e.id === empId);
+  const client = document.getElementById('nt-client')?.value;
+  const project = document.getElementById('nt-proj')?.value;
+  const due = document.getElementById('nt-due')?.value || '—';
+  const prio = document.getElementById('nt-prio')?.value || 'medium';
+
+  if (!title) { toast('error', 'Fehler', 'Bitte Aufgabentitel eingeben.'); return; }
+
+  STATE.tasks.push({ id: 't' + Date.now(), title, employee: emp?.name || '—', project, priority: prio, due, status: 'open', client });
+  if (emp) emp.tasks++;
+  closeModal();
+  navigateTo('tasks-admin');
+  toast('success', 'Aufgabe zugewiesen', `"${title}" wurde ${emp?.name} zugewiesen.`);
+}
+
+function saveNewDeliverable() {
+  const name = document.getElementById('nd-name')?.value?.trim();
+  const client = document.getElementById('nd-client')?.value;
+  const type = document.getElementById('nd-type')?.value || 'video';
+  const project = document.getElementById('nd-proj')?.value;
+  const url = document.getElementById('nd-url')?.value || '#';
+  const status = document.getElementById('nd-status')?.value || 'draft';
+  const version = parseInt(document.getElementById('nd-ver')?.value) || 1;
+  const comment = document.getElementById('nd-comment')?.value?.trim();
+
+  if (!name) { toast('error', 'Fehler', 'Bitte Dateiname eingeben.'); return; }
+
+  const emojiMap = { video:'🎬', photo:'📸', graphic:'🎨', web:'🌐', doc:'📄' };
+  STATE.deliverables.push({
+    id: 'd' + Date.now(), name, type, emoji: emojiMap[type] || '📄', project, client, url,
+    date: new Date().toLocaleDateString('de-DE', { day:'numeric', month:'short', year:'numeric' }),
+    status, version,
+    comments: comment ? [{ author: STATE.user?.name || 'Admin', text: comment, time: 'Soeben', self: true }] : []
+  });
+  closeModal();
+  navigateTo('deliverables-admin');
+  toast('success', 'Deliverable hinzugefügt', `"${name}" für ${client} ist jetzt verfügbar.`);
+}
+
+function saveNewClient() {
+  const name = document.getElementById('nc-name')?.value?.trim();
+  const email = document.getElementById('nc-email')?.value?.trim();
+  const co = document.getElementById('nc-co')?.value?.trim();
+  if (!name) { toast('error', 'Fehler', 'Name erforderlich.'); return; }
+  STATE.clients.push({ id: 'c' + Date.now(), name, email: email || '', company: co || name, revenue: 0, projects: 0, status: 'new' });
+  closeModal();
+  navigateTo('clients');
+  toast('success', 'Kunde angelegt', `${name} wurde hinzugefügt.`);
+}
+
+function confirmOffer(id) {
+  const o = STATE.offers.find(x => x.id === id);
+  if (o) o.status = 'confirmed';
+  const price = document.getElementById('conf-price')?.value;
+  if (price && o) o.price = '€' + price;
+  closeModal();
+  toast('success', 'Angebot bestätigt!', 'PDF-Angebot + Vertrag wurde an den Kunden gesendet.');
+  navigateTo('offers');
+}
+
+function rejectOffer(id) {
+  const o = STATE.offers.find(x => x.id === id);
+  if (o) o.status = 'rejected';
+  closeModal();
+  toast('info', 'Angebot abgelehnt', 'Kunde wird benachrichtigt.');
+  navigateTo('offers');
+}
+
+function toggleOfferDetails(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function addComment(delId) {
+  const d = STATE.deliverables.find(x => x.id === delId);
+  const input = document.getElementById(`new-comment-${delId}`);
+  if (!d || !input?.value?.trim()) return;
+  const comment = { author: STATE.user?.name || 'User', text: input.value.trim(), time: 'Soeben', self: STATE.user?.role !== 'client' };
+  d.comments.push(comment);
+  const thread = document.getElementById(`comment-thread-${delId}`);
+  if (thread) {
+    const div = document.createElement('div');
+    div.className = `comment ${comment.self ? 'self' : ''}`;
+    div.innerHTML = `<div class="avatar ${comment.self?'av-green':'av-blue'}" style="font-size:0.68rem;width:28px;height:28px;flex-shrink:0">${comment.author.split(' ').map(n=>n[0]).join('').slice(0,2)}</div><div class="comment-body"><div class="comment-author">${comment.author}</div><div class="comment-text">${comment.text}</div><div class="comment-time">${comment.time}</div></div>`;
+    thread.appendChild(div);
+    thread.scrollTop = thread.scrollHeight;
+  }
+  input.value = '';
+  toast('success', 'Kommentar gespeichert', '');
+}
+
+function updateDeliverableVersion(id) {
+  toast('info', 'Neue Version', 'Füge einen neuen Deliverable über "+Deliverable" hinzu und setze die Versionsnummer entsprechend.');
+}
+
+function markTaskDone(id) {
+  const t = STATE.tasks.find(x => x.id === id);
+  if (t) t.status = 'done';
+  navigateTo('my-tasks');
+  toast('success', 'Aufgabe erledigt', `"${t?.title}" als erledigt markiert.`);
+}
+
+function loadConversation(name) {
+  const area = document.getElementById('chat-area');
+  if (area) area.innerHTML = buildChatView(name);
+}
+
+function sendMsg(name) {
+  const input = document.getElementById('chat-input');
+  if (!input?.value?.trim()) return;
+  if (!STATE.messages[name]) STATE.messages[name] = [];
+  STATE.messages[name].push({ from: STATE.user?.name || 'User', text: input.value.trim(), time: 'Gerade eben', self: true });
+  loadConversation(name);
+}
+
+function toggleRoleChip(el) {
+  const selected = document.querySelectorAll('#role-chips .chip.on').length;
+  if (!el.classList.contains('on') && selected >= 5) { toast('info', 'Max. 5 Rollen', 'Du kannst maximal 5 Rollen zuweisen.'); return; }
+  el.classList.toggle('on');
+}
+
+function filterDels(btn, type) {
+  document.querySelectorAll('#del-client-grid .del-card').forEach(c => {
+    c.style.display = (type === 'all' || c.dataset.type === type) ? 'block' : 'none';
+  });
+  btn.closest('.page-view').querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function pillStatus(s) {
+  const map = { production:'<span class="pill pill-blue">Produktion</span>', review:'<span class="pill pill-orange">Review</span>', planning:'<span class="pill pill-gray">Planung</span>', done:'<span class="pill pill-green">Fertig</span>' };
+  return map[s] || `<span class="pill pill-gray">${s}</span>`;
+}
+function pillStatus2(s) {
+  const map = { pending:'<span class="pill pill-orange">Ausstehend</span>', confirmed:'<span class="pill pill-green">Bestätigt</span>', rejected:'<span class="pill pill-gray">Abgelehnt</span>' };
+  return map[s] || `<span class="pill pill-gray">${s}</span>`;
+}
+function pillStatus3(s) {
+  const map = { active:'<span class="pill pill-green">Aktiv</span>', done:'<span class="pill pill-blue">Abgeschlossen</span>', negotiation:'<span class="pill pill-orange">Verhandlung</span>', new:'<span class="pill pill-gray">Neu</span>' };
+  return map[s] || `<span class="pill pill-gray">${s}</span>`;
+}
+function pillPriority(p) {
+  const map = { high:'<span class="pill pill-red">Hoch</span>', medium:'<span class="pill pill-orange">Mittel</span>', low:'<span class="pill pill-green">Niedrig</span>' };
+  return map[p] || `<span class="pill pill-gray">${p}</span>`;
+}
+function pillTaskStatus(s) {
+  const map = { 'in-progress':'<span class="pill pill-blue">In Arbeit</span>', open:'<span class="pill pill-orange">Offen</span>', done:'<span class="pill pill-green">Erledigt</span>' };
+  return map[s] || `<span class="pill pill-gray">${s}</span>`;
+}
+function pillDelStatus(s) {
+  const map = { draft:'<span class="pill pill-gray">Entwurf</span>', review:'<span class="pill pill-orange">Review</span>', delivered:'<span class="pill pill-green">Übergeben</span>', live:'<span class="pill pill-blue">Live</span>' };
+  return map[s] || `<span class="pill pill-gray">${s}</span>`;
+}
+function delTypePill(t) {
+  const map = { video:'pill-blue', photo:'pill-green', graphic:'pill-purple', web:'pill-orange', doc:'pill-gray' };
+  return map[t] || 'pill-gray';
+}
+function delBg(t) {
+  const map = { video:'rgba(107,184,255,0.1),rgba(60,110,255,0.04)', photo:'rgba(95,255,192,0.08),rgba(50,200,150,0.03)', graphic:'rgba(196,181,253,0.1),rgba(150,80,255,0.04)', web:'rgba(255,179,71,0.08),rgba(255,120,50,0.03)', doc:'rgba(255,255,255,0.06),rgba(255,255,255,0.02)' };
+  return map[t] || 'rgba(255,255,255,0.06),rgba(255,255,255,0.02)';
+}
+
+// ============================================================
+// TOAST SYSTEM
+// ============================================================
+function toast(type, title, msg) {
+  const icons = { success:'✓', error:'✕', info:'ℹ' };
+  const colors = { success:'var(--green)', error:'var(--red)', info:'var(--accent)' };
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<div class="toast-icon" style="color:${colors[type]}">${icons[type]}</div><div><div class="toast-title">${title}</div>${msg?`<div class="toast-msg">${msg}</div>`:''}</div>`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.style.opacity = '0', 3500);
+  setTimeout(() => t.remove(), 4000);
+  t.style.transition = 'opacity 0.5s';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+const saved = localStorage.getItem('yb_session');
+if (saved) {
+  try {
+    STATE.user = JSON.parse(saved);
+    initDashboard();
+  } catch (e) { localStorage.removeItem('yb_session'); }
+}
+</script>
+</body>
+</html>
