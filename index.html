@@ -1,698 +1,454 @@
 <!DOCTYPE html>
-<html lang="de" id="html-root">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MBMP — We capture what others overlook.</title>
+<title>MBMP &mdash; We capture what others overlook.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-:root{--black:#000;--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--white:#fff;--off:#f0f0f0;--muted:#888;--dim:#444;--gold:#c8a96e;--gold2:#e2c98a;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.15);--gborder:rgba(200,169,110,.3);--ff:'Cormorant Garamond',Georgia,serif;--fb:'DM Sans',sans-serif}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--black);color:var(--white);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden}
-img{display:block;max-width:100%}a{color:inherit;text-decoration:none}video{display:block}
-::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--gold)}
-body::after{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-body.lang-en [data-de]{display:none!important}body.lang-en [data-en]{display:block}body:not(.lang-en) [data-en]{display:none!important}body:not(.lang-en) [data-de]{display:block}
-span[data-de],span[data-en]{display:inline}body.lang-en span[data-en]{display:inline}body.lang-en span[data-de]{display:none}body:not(.lang-en) span[data-de]{display:inline}body:not(.lang-en) span[data-en]{display:none}
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;transition:background .45s,border-color .45s}
-nav.scrolled{background:rgba(0,0,0,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;height:32px}.nav-logo img{height:26px;width:auto;filter:brightness(0) invert(1)}
-.nav-links{display:flex;gap:38px;list-style:none}.nav-links a{font-size:.68rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);transition:color .2s}.nav-links a:hover{color:var(--white)}
-.nav-right{display:flex;align-items:center;gap:14px}
-.lang-btn{font-size:.63rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:5px 10px;border:1px solid var(--border);background:none;transition:all .2s}.lang-btn:hover{color:var(--white);border-color:var(--border2)}
-.nav-cta{font-size:.66rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border:1px solid rgba(255,255,255,.25);color:var(--white);background:none;cursor:pointer;transition:all .25s;display:inline-block}.nav-cta:hover{background:var(--white);color:var(--black)}
-/* HERO */
-#hero{height:100vh;min-height:620px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 52px 80px}
-.hero-yt-wrap{position:absolute;inset:0;pointer-events:none;overflow:hidden;background:#000}
-.hero-yt-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.2) 55%,rgba(0,0,0,.5) 100%);z-index:1}
-.hero-yt-wrap iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:calc(100vw + 240px);height:calc(100vh + 240px);pointer-events:none;border:none;z-index:0}
-.hero-fallback{position:absolute;inset:0;background:#000;z-index:0}
-.hero-fallback-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:72px 72px}
-.hero-content{position:relative;z-index:2;max-width:960px;animation:heroIn 1.8s cubic-bezier(.16,1,.3,1) both}
-@keyframes heroIn{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}
-.hero-label{font-size:.6rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:16px}.hero-label::before{content:'';width:30px;height:1px;background:var(--gold);flex-shrink:0}
-.hero-h1{font-family:var(--ff);font-size:clamp(3rem,7.5vw,7rem);font-weight:300;line-height:.96;letter-spacing:-.025em;color:var(--white);margin-bottom:28px}.hero-h1 em{color:var(--gold);font-style:italic}
-.hero-sub{font-size:clamp(.93rem,1.5vw,1.08rem);font-weight:300;color:rgba(255,255,255,.55);max-width:480px;line-height:1.78;margin-bottom:44px}
-.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.hero-scroll{position:absolute;bottom:32px;right:52px;z-index:2;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);writing-mode:vertical-rl;display:flex;align-items:center;gap:12px;animation:breathe 3s infinite}.hero-scroll::after{content:'';width:1px;height:48px;background:var(--gold);opacity:.4}
-@keyframes breathe{0%,100%{opacity:.28}50%{opacity:.75}}
-/* BUTTONS */
-.btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:.68rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:13px 28px;background:var(--white);color:var(--black);border:1px solid var(--white);cursor:pointer;transition:all .28s;white-space:nowrap}.btn-primary:hover{background:transparent;color:var(--white)}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:.68rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:13px 28px;background:none;color:var(--white);border:1px solid rgba(255,255,255,.28);cursor:pointer;transition:all .28s;white-space:nowrap}.btn-outline:hover{border-color:var(--white);background:var(--white);color:var(--black)}
-.btn-gold-accent{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:.68rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:13px 28px;background:none;color:var(--gold);border:1px solid var(--gborder);cursor:pointer;transition:all .28s;white-space:nowrap}.btn-gold-accent:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
-.btn-arrow{font-family:var(--fb);font-size:.68rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;transition:color .2s;display:inline-flex;align-items:center;gap:7px}.btn-arrow:hover{color:rgba(255,255,255,.78)}.btn-arrow::after{content:'→';transition:transform .22s}.btn-arrow:hover::after{transform:translateX(5px)}
-/* STRUCTURE */
-.rule{height:1px;background:var(--border)}
-section{padding:116px 52px}.inner{max-width:1200px;margin:0 auto}
-.eyebrow{font-size:.58rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:12px}.eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
-.s-h2{font-family:var(--ff);font-size:clamp(2.1rem,5.5vw,4.3rem);font-weight:300;letter-spacing:-.02em;line-height:1.05;color:var(--white);margin-bottom:22px}.s-h2 em{color:var(--gold);font-style:italic}
-.s-body{font-size:.96rem;font-weight:300;line-height:1.85;color:rgba(255,255,255,.56);max-width:540px}.s-body strong{color:var(--white);font-weight:400}.s-body em{font-family:var(--ff);font-style:italic;color:var(--gold2);font-size:1.05em}
-.s-italic{font-family:var(--ff);font-size:clamp(1.05rem,1.9vw,1.45rem);font-weight:300;font-style:italic;color:var(--gold2);line-height:1.55;border-left:1px solid var(--gold);padding-left:20px;margin:28px 0}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:center}
-.two-col-top{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:start}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}.reveal.visible{opacity:1;transform:translateY(0)}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
-/* LOGOS STRIP */
-.logos-strip{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0;overflow:hidden}
-.logos-outer{overflow:hidden;position:relative}.logos-outer::before,.logos-outer::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:1;pointer-events:none}
-.logos-outer::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}.logos-outer::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
-.logos-track{display:flex;align-items:center;gap:52px;animation:scrollLogos 30s linear infinite;width:max-content}.logos-track:hover{animation-play-state:paused}
-@keyframes scrollLogos{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.logo-item{flex-shrink:0;height:26px;display:flex;align-items:center}.logo-item img{height:100%;width:auto;filter:brightness(0) invert(1);opacity:.45;transition:opacity .3s}.logo-item img:hover{opacity:.85}
-/* DASHBOARD TEASER */
-#dashboard-teaser{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:92px 52px}
-.dt-screen{aspect-ratio:16/10;background:var(--black);border:1px solid var(--border2);position:relative;overflow:hidden}
-.dt-topbar{height:32px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.025);display:flex;align-items:center;padding:0 12px;gap:6px}
-.dt-dot{width:6px;height:6px;border-radius:50%}.dt-url{font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.18);margin-left:8px}
-.dt-sidebar{position:absolute;left:0;top:32px;bottom:0;width:128px;border-right:1px solid var(--border);padding:12px 9px;display:flex;flex-direction:column;gap:5px}
-.dt-si{height:6px;background:rgba(255,255,255,.06)}.dt-si.act{background:rgba(200,169,110,.35);width:76%}
-.dt-main{position:absolute;left:128px;top:32px;right:0;bottom:0;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start}
-.dt-card{background:rgba(255,255,255,.025);border:1px solid var(--border);padding:9px 10px}
-.dt-val{font-family:var(--ff);font-size:1.05rem;font-weight:300;color:var(--gold);line-height:1}.dt-lbl{font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px}.dt-prog{height:1px;background:rgba(255,255,255,.06);margin-top:7px}.dt-prog-fill{height:100%;background:var(--gold)}
-.dt-steps{display:flex;flex-direction:column;gap:26px}.dt-step{display:flex;gap:16px;align-items:flex-start}.dt-step-n{font-family:var(--ff);font-size:1.9rem;font-weight:300;color:var(--gold);opacity:.18;line-height:1;flex-shrink:0;width:38px}.dt-step-title{font-family:var(--ff);font-size:.96rem;font-weight:300;color:var(--white);margin-bottom:3px}.dt-step-text{font-size:.78rem;color:var(--muted);line-height:1.65}
-/* EXPERTISE */
-#expertise{background:var(--black)}.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-left:1px solid var(--border);margin-top:44px}
-.exp-item{padding:30px 22px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .25s}.exp-item:hover{background:rgba(255,255,255,.022)}
-.exp-num{font-family:var(--ff);font-size:.68rem;color:var(--gold);letter-spacing:.1em;margin-bottom:10px}.exp-title{font-family:var(--ff);font-size:.98rem;font-weight:400;color:var(--white);margin-bottom:6px;line-height:1.25}.exp-body{font-size:.76rem;color:var(--muted);line-height:1.65}
-/* DIFFERENCE */
-#difference{background:var(--bg)}.diff-stats{display:flex;border-top:1px solid var(--border);margin:44px 0}
-.diff-stat{flex:1;padding:30px 22px;border-right:1px solid var(--border)}.diff-stat:last-child{border-right:none}
-.diff-val{font-family:var(--ff);font-size:clamp(2.3rem,4.8vw,4rem);font-weight:300;color:var(--white);line-height:1;margin-bottom:7px;letter-spacing:-.02em}.diff-lbl{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-/* PORTAL BAND */
-.portal-band{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:58px 52px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
-.pb-eyebrow{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}.pb-title{font-family:var(--ff);font-size:1.45rem;font-weight:300;color:var(--white);line-height:1.2}.pb-sub{font-size:.78rem;color:var(--muted);margin-top:5px}.pb-btns{display:flex;gap:10px;flex-shrink:0}
-/* PORTFOLIO */
-#portfolio{background:var(--black)}#portfolio-corporate{background:var(--bg);border-top:1px solid var(--border)}
-.showreel-wrap{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border);overflow:hidden;margin-top:36px}.showreel-wrap iframe{width:100%;height:100%;border:none}
-.playlist-embed{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid var(--border)}.playlist-embed iframe{width:100%;height:100%;border:none}
-.yt-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.94);align-items:center;justify-content:center;padding:20px}.yt-modal.open{display:flex}
-.yt-modal-inner{width:100%;max-width:960px;position:relative}.yt-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;border:1px solid var(--border)}
-.yt-close{position:absolute;top:-42px;right:0;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:color .2s;background:none;border:none;font-family:var(--fb)}.yt-close:hover{color:var(--white)}
-.corp-playlists{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:44px}
-.corp-pl-title{font-family:var(--ff);font-size:1.05rem;font-weight:300;color:var(--gold);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
-/* PHOTOS */
-#photos{background:var(--black);border-top:1px solid var(--border)}
-.photo-mosaic{columns:3;column-gap:3px;margin-top:36px}.photo-mosaic-item{break-inside:avoid;margin-bottom:3px;overflow:hidden;cursor:pointer;position:relative}.photo-mosaic-item img{width:100%;display:block;transition:transform .4s,opacity .3s}.photo-mosaic-item:hover img{transform:scale(1.03);opacity:.82}
-.lightbox{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.97);align-items:center;justify-content:center;flex-direction:column}.lightbox.open{display:flex}
-.lightbox img{max-height:88vh;max-width:92vw;object-fit:contain;transition:opacity .15s}
-.lb-close{position:absolute;top:18px;right:22px;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;background:none;border:none;font-family:var(--fb);padding:8px}.lb-close:hover{color:var(--white)}
-.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.55);font-size:1rem;width:42px;height:42px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}.lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,.08);color:var(--white)}.lb-prev{left:14px}.lb-next{right:14px}
-.lb-counter{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+:root{--k:#000;--bg:#0c0c0c;--bg2:#161616;--w:#fff;--t:rgba(255,255,255,.86);--m:rgba(255,255,255,.36);--g:#c8a96e;--b:rgba(255,255,255,.08);--b2:rgba(255,255,255,.18);--ff:"Cormorant Garamond",Georgia,serif;--fb:"DM Sans",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}html{font-size:16px;scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--k);color:var(--t);font-family:var(--fb);font-weight:300;line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}img,video{display:block;max-width:100%}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--g)}
+body.en [data-de]{display:none!important}body.en [data-en]{display:block}
+body:not(.en) [data-en]{display:none!important}body:not(.en) [data-de]{display:block}
+span[data-de],span[data-en]{display:inline}
+body.en span[data-en]{display:inline}body.en span[data-de]{display:none}
+body:not(.en) span[data-de]{display:inline}body:not(.en) span[data-en]{display:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;transition:background .4s}
+nav.s{background:rgba(0,0,0,.96);border-bottom:1px solid var(--b)}
+.nav-logo{height:20px;display:flex;align-items:center}
+.nav-logo img{height:18px;width:auto;filter:brightness(0) invert(1)}
+.nav-logo .nf{font-family:var(--ff);font-size:1.1rem;font-weight:300;letter-spacing:.2em;color:var(--w);display:none}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:.62rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.38);transition:color .2s}.nav-links a:hover{color:var(--w)}
+.nav-r{display:flex;align-items:center;gap:12px}
+.lang{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;padding:4px 9px;border:1px solid var(--b);background:none;transition:all .2s;font-family:var(--fb)}.lang:hover{color:var(--w);border-color:var(--b2)}
+.ncta{font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;padding:7px 15px;border:1px solid rgba(255,255,255,.18);color:var(--w);background:none;cursor:pointer;transition:all .25s}.ncta:hover{background:var(--w);color:var(--k)}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--fb);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;cursor:pointer;transition:all .25s;white-space:nowrap;border:none}
+.bw{background:var(--w);color:var(--k);border:1px solid var(--w)}.bw:hover{background:transparent;color:var(--w)}
+.bo{background:none;color:var(--w);border:1px solid rgba(255,255,255,.2)}.bo:hover{background:var(--w);color:var(--k);border-color:var(--w)}
+.bg_{background:none;color:var(--g);border:1px solid rgba(200,169,110,.22)}.bg_:hover{background:var(--g);color:var(--k);border-color:var(--g)}
+hr{border:none;border-top:1px solid var(--b)}
+section{padding:96px 48px}.wrap{max-width:1140px;margin:0 auto}
+.eye{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--g);margin-bottom:13px;display:flex;align-items:center;gap:10px}.eye::before{content:"";width:15px;height:1px;background:var(--g);flex-shrink:0}
+h2{font-family:var(--ff);font-size:clamp(1.9rem,4.5vw,3.6rem);font-weight:300;letter-spacing:-.02em;line-height:1.06;color:var(--w);margin-bottom:16px}h2 em{color:var(--g);font-style:italic}
+.body{font-size:.88rem;font-weight:300;line-height:1.85;color:var(--m);max-width:480px}.body strong{color:var(--w);font-weight:400}.body em{font-family:var(--ff);font-style:italic;color:var(--g);font-size:1.04em}
+.pull{font-family:var(--ff);font-size:clamp(.9rem,1.6vw,1.25rem);font-weight:300;font-style:italic;color:rgba(200,169,110,.68);line-height:1.55;border-left:1px solid var(--g);padding-left:16px;margin:20px 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.g2t{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.r{opacity:0;transform:translateY(18px);transition:opacity .78s cubic-bezier(.16,1,.3,1),transform .78s cubic-bezier(.16,1,.3,1)}.r.v{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+#hero{height:100vh;min-height:560px;position:relative;display:flex;align-items:flex-end;padding:0 48px 68px;overflow:hidden}
+.hbg{position:absolute;inset:0;overflow:hidden;background:#000}
+.hbg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.12) 55%,rgba(0,0,0,.5) 100%)}
+.hbg iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:calc(100vw + 200px);height:calc(100vh + 200px);pointer-events:none;border:none}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:64px 64px}
+.hc{position:relative;z-index:2;max-width:820px;animation:hIn 1.6s cubic-bezier(.16,1,.3,1) both}
+@keyframes hIn{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+.hlabel{font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;color:var(--g);margin-bottom:16px;display:flex;align-items:center;gap:12px}.hlabel::before{content:"";width:24px;height:1px;background:var(--g)}
+h1{font-family:var(--ff);font-size:clamp(2.5rem,6.5vw,5.8rem);font-weight:300;line-height:.97;letter-spacing:-.025em;color:var(--w);margin-bottom:22px}h1 em{color:var(--g);font-style:italic}
+.hsub{font-size:clamp(.84rem,1.35vw,.98rem);font-weight:300;color:rgba(255,255,255,.48);max-width:400px;line-height:1.78;margin-bottom:36px}
+.ha{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.scr{position:absolute;bottom:24px;right:48px;z-index:2;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.18);writing-mode:vertical-rl;display:flex;align-items:center;gap:9px;animation:pu 3s infinite}.scr::after{content:"";width:1px;height:40px;background:linear-gradient(var(--g),transparent)}
+@keyframes pu{0%,100%{opacity:.18}50%{opacity:.58}}
+.ls{background:var(--bg);border-top:1px solid var(--b);border-bottom:1px solid var(--b);padding:32px 0;overflow:hidden;position:relative}
+.ls::before,.ls::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:1;pointer-events:none}
+.ls::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}.ls::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.lt{display:flex;align-items:center;gap:50px;animation:sl 32s linear infinite;width:max-content}.lt:hover{animation-play-state:paused}
+@keyframes sl{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.li{flex-shrink:0;height:20px}.li img{height:100%;width:auto;filter:brightness(0) invert(1);opacity:.32;transition:opacity .3s}.li:hover img{opacity:.68}
+#exp{background:var(--bg)}
+.eg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--b);margin-top:32px}
+.ei{padding:24px 18px;border-right:1px solid var(--b);border-bottom:1px solid var(--b);transition:background .2s}.ei:hover{background:rgba(255,255,255,.016)}
+.en_{font-family:var(--ff);font-size:.64rem;color:var(--g);letter-spacing:.1em;margin-bottom:7px}
+.et{font-family:var(--ff);font-size:.9rem;font-weight:400;color:var(--w);margin-bottom:4px;line-height:1.25}
+.eb{font-size:.7rem;color:var(--m);line-height:1.6}
+.sr{display:flex;border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.si{flex:1;padding:28px 20px;border-right:1px solid var(--b)}.si:last-child{border-right:none}
+.sv{font-family:var(--ff);font-size:clamp(1.9rem,4vw,3.3rem);font-weight:300;color:var(--w);line-height:1;margin-bottom:4px;letter-spacing:-.02em}
+.sl_{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m)}
+/* VIDEO GALLERY */
+#videos{background:var(--bg2);border-top:1px solid var(--b)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px;margin-top:28px}
+.vc{position:relative;overflow:hidden;cursor:pointer;background:var(--bg);display:block}
+.vc .asp{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg)}
+.vc video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s ease,opacity .3s ease;opacity:.72}
+.vc:hover video{transform:scale(1.04);opacity:1}
+.vc .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.1) 55%,transparent 100%);opacity:0;transition:opacity .3s}
+.vc:hover .ov{opacity:1}
+.vc .pl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border:1px solid rgba(255,255,255,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:rgba(255,255,255,.7);opacity:0;transition:all .3s;pointer-events:none;background:rgba(0,0,0,.35)}
+.vc:hover .pl{opacity:1}
+.vc .mt{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;opacity:0;transform:translateY(4px);transition:all .3s}
+.vc:hover .mt{opacity:1;transform:none}
+.vc .mc{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g);margin-bottom:2px}
+.vc .mn{font-size:.68rem;font-weight:400;color:var(--w);line-height:1.3}
+.vm{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.97);align-items:center;justify-content:center;padding:16px;flex-direction:column}.vm.open{display:flex}
+.vmi{width:100%;max-width:1000px;position:relative}
+.vmi video{width:100%;aspect-ratio:16/9;background:#000;display:block;outline:none}
+.vmc{position:absolute;top:-36px;right:0;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.38);cursor:pointer;background:none;border:none;font-family:var(--fb);padding:4px;transition:color .2s}.vmc:hover{color:var(--w)}
 /* REELS */
-#reels{background:var(--bg);border-top:1px solid var(--border)}
-.reels-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--border)}
-.reel-tab{font-size:.66rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:9px 18px;cursor:pointer;color:var(--muted);border-bottom:1px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--fb)}.reel-tab.active{color:var(--white);border-bottom-color:var(--white)}.reel-tab:hover{color:var(--white)}
-.reels-panel{display:none}.reels-panel.active{display:block}
-.reels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:3px}
-.reel-card{position:relative;background:var(--bg3);cursor:pointer;overflow:hidden;border:1px solid var(--border);transition:border-color .25s}.reel-card:hover{border-color:var(--border2)}
-.reel-thumb{aspect-ratio:9/16;width:100%;object-fit:cover;display:block;transition:transform .4s,opacity .3s}.reel-card:hover .reel-thumb{transform:scale(1.04);opacity:.82}
-.reel-placeholder{aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center}
-.reel-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;background:rgba(0,0,0,.65);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;pointer-events:none;transition:all .25s}.reel-card:hover .reel-play{background:rgba(255,255,255,.88);color:#000}
-.reel-label{position:absolute;bottom:0;left:0;right:0;padding:9px;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,transparent 100%)}.reel-title{font-size:.62rem;color:var(--white);line-height:1.35}
-/* MARKETS */
-#markets{background:var(--black)}.market-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:22px}.market-tag{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 13px;border:1px solid var(--border);color:var(--muted);transition:all .2s}.market-tag:hover{border-color:var(--border2);color:var(--white)}
-/* PRICING */
-#pricing{background:var(--bg)}.pricing-statement{font-family:var(--ff);font-size:clamp(1.3rem,2.6vw,2.1rem);font-weight:300;color:var(--white);line-height:1.35;max-width:640px;margin:24px 0 36px}.pricing-statement em{color:var(--gold);font-style:italic}
-/* TEAM */
-#team{background:var(--black)}.team-list{margin-top:36px}.team-item{display:flex;align-items:flex-start;gap:22px;padding:18px 0;border-bottom:1px solid var(--border)}.team-item:first-child{border-top:1px solid var(--border)}.ti-dash{font-family:var(--ff);font-size:.68rem;color:var(--gold);width:16px;flex-shrink:0;padding-top:2px}.ti-title{font-family:var(--ff);font-size:.98rem;font-weight:400;color:var(--white);min-width:160px;flex-shrink:0}.ti-body{font-size:.78rem;color:var(--muted);line-height:1.65}
-/* CONTACT */
-#contact{background:var(--bg);border-top:1px solid var(--border);text-align:center;padding:136px 52px}
-.contact-inner{max-width:620px;margin:0 auto}
-.contact-h{font-family:var(--ff);font-size:clamp(2.4rem,6vw,5.2rem);font-weight:300;line-height:1.02;letter-spacing:-.025em;color:var(--white);margin-bottom:18px}.contact-h em{color:var(--gold);font-style:italic}
-.contact-sub{font-size:.95rem;color:rgba(255,255,255,.46);font-weight:300;line-height:1.78;max-width:380px;margin:0 auto 40px}
-.contact-form{display:flex;flex-direction:column;gap:0;max-width:420px;margin:0 auto 28px}.cf-row{display:grid;grid-template-columns:1fr 1fr}
-.cf-in{background:none;border:none;border-bottom:1px solid var(--border);padding:15px 0;color:var(--white);font-family:var(--fb);font-size:.82rem;font-weight:300;outline:none;width:100%;transition:border-color .2s}.cf-in:focus{border-color:rgba(255,255,255,.4)}.cf-in::placeholder{color:var(--dim)}
-.cf-row .cf-in:first-child{border-right:1px solid var(--border);padding-right:16px}.cf-row .cf-in:last-child{padding-left:16px}
-.cf-sel{background:none;border:none;border-bottom:1px solid var(--border);padding:15px 0;color:var(--dim);font-family:var(--fb);font-size:.82rem;font-weight:300;outline:none;width:100%;cursor:pointer;transition:border-color .2s;appearance:none}.cf-sel:focus{border-color:rgba(255,255,255,.4);color:var(--white)}.cf-sel option{background:#0a0a0a}
-.contact-btn{margin-top:28px;width:100%;padding:15px;background:none;border:1px solid rgba(255,255,255,.25);color:var(--white);font-family:var(--ff);font-size:.98rem;font-weight:300;font-style:italic;letter-spacing:.05em;cursor:pointer;transition:all .28s}.contact-btn:hover{background:var(--white);color:var(--black)}
-/* FOOTER */
-footer{padding:50px 52px;border-top:1px solid var(--border);background:var(--black)}
-.foot-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:32px;flex-wrap:wrap}
-.foot-logo img{height:22px;width:auto;filter:brightness(0) invert(1);opacity:.65}.foot-tagline{font-size:.66rem;color:var(--muted);margin-top:5px;letter-spacing:.05em}
-.foot-links{display:flex;gap:26px}.foot-links a{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .2s}.foot-links a:hover{color:var(--white)}
-.foot-bottom{max-width:1200px;margin:28px auto 0;padding-top:18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}.foot-copy{font-size:.64rem;color:var(--muted)}
-/* RESPONSIVE */
-@media(max-width:960px){nav{padding:0 20px}.nav-links{display:none}section,#dashboard-teaser,#portfolio,#portfolio-corporate,#reels,#photos,#contact{padding:68px 20px}#hero{padding:0 20px 68px}footer,.foot-inner{padding:36px 20px}.two-col,.two-col-top{grid-template-columns:1fr;gap:40px}.exp-grid{grid-template-columns:1fr 1fr}.diff-stats{flex-direction:column}.diff-stat{border-right:none;border-bottom:1px solid var(--border)}.portal-band{flex-direction:column;padding:40px 20px}.corp-playlists{grid-template-columns:1fr}.logos-strip{padding:32px 0}.hero-scroll{display:none}}
-@media(max-width:640px){.exp-grid{grid-template-columns:1fr}.reels-grid{grid-template-columns:repeat(2,1fr)}.photo-mosaic{columns:2}}
+#reels{background:var(--bg);border-top:1px solid var(--b)}
+.tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:1px solid var(--b)}
+.tab{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 15px;cursor:pointer;color:var(--m);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--fb)}.tab.on{color:var(--w);border-bottom-color:var(--w)}.tab:hover{color:var(--w)}
+.panel{display:none}.panel.on{display:block}
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:2px}
+.rc{position:relative;overflow:hidden;cursor:pointer;background:var(--bg2)}
+.rc .asp{position:relative;aspect-ratio:9/16;overflow:hidden;background:var(--bg2)}
+.rc video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s,opacity .3s;opacity:.7}
+.rc:hover video{transform:scale(1.04);opacity:1}
+.rc .ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,transparent 55%);opacity:0;transition:opacity .3s}
+.rc:hover .ov{opacity:1}
+.rc .pl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:rgba(255,255,255,.65);opacity:0;transition:all .3s;pointer-events:none;background:rgba(0,0,0,.3)}
+.rc:hover .pl{opacity:1}
+.rc .mt{position:absolute;bottom:0;left:0;right:0;padding:9px;opacity:0;transform:translateY(3px);transition:all .3s}
+.rc:hover .mt{opacity:1;transform:none}
+.rc .mn{font-size:.6rem;color:var(--w);line-height:1.3}
+.igg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;max-width:900px}
+/* PHOTOS */
+#photos{background:var(--k);border-top:1px solid var(--b)}
+.pg{columns:3;column-gap:2px;margin-top:24px}
+.pi{break-inside:avoid;margin-bottom:2px;overflow:hidden;cursor:pointer;position:relative;background:var(--bg)}
+.pi img{width:100%;display:block;transition:transform .5s ease,opacity .3s ease;opacity:0}
+.pi img.loaded{opacity:.78}
+.pi:hover img.loaded{transform:scale(1.03);opacity:1}
+.lb{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.98);align-items:center;justify-content:center;flex-direction:column}.lb.open{display:flex}
+.lb img{max-height:90vh;max-width:93vw;object-fit:contain;transition:opacity .15s}
+.lbc{position:absolute;top:14px;right:18px;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m);cursor:pointer;background:none;border:none;font-family:var(--fb);padding:5px}.lbc:hover{color:var(--w)}
+.lba{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid rgba(255,255,255,.1);color:var(--m);font-size:1rem;width:36px;height:36px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}.lba:hover{border-color:rgba(255,255,255,.3);color:var(--w)}
+#lbp{left:12px}#lbn{right:12px}
+.lbnum{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-top:8px}
+#markets{background:var(--bg)}.mtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:16px}.mtag{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--b);color:var(--m);transition:all .2s}.mtag:hover{border-color:var(--b2);color:var(--w)}
+#pricing{background:var(--k)}.pb{font-family:var(--ff);font-size:clamp(1.05rem,2.1vw,1.72rem);font-weight:300;color:var(--w);line-height:1.35;margin:18px 0 24px}.pb em{color:var(--g);font-style:italic}
+#team{background:var(--bg)}.tlist{margin-top:24px}
+.ti{display:flex;align-items:flex-start;gap:16px;padding:13px 0;border-bottom:1px solid var(--b)}.ti:first-child{border-top:1px solid var(--b)}
+.tid{font-family:var(--ff);font-size:.62rem;color:var(--g);width:12px;flex-shrink:0;padding-top:1px}.tit{font-family:var(--ff);font-size:.9rem;font-weight:400;color:var(--w);min-width:140px;flex-shrink:0}.tib{font-size:.72rem;color:var(--m);line-height:1.65}
+#contact{background:var(--bg);border-top:1px solid var(--b);text-align:center;padding:112px 48px}.cw{max-width:540px;margin:0 auto}
+.ch{font-family:var(--ff);font-size:clamp(1.9rem,5vw,4.2rem);font-weight:300;line-height:1.03;letter-spacing:-.022em;color:var(--w);margin-bottom:13px}.ch em{color:var(--g);font-style:italic}
+.cs{font-size:.86rem;color:var(--m);max-width:320px;margin:0 auto 28px;line-height:1.78}
+.form{display:flex;flex-direction:column;gap:0;max-width:360px;margin:0 auto 18px}.fr{display:grid;grid-template-columns:1fr 1fr}
+.fi{background:none;border:none;border-bottom:1px solid var(--b);padding:12px 0;color:var(--w);font-family:var(--fb);font-size:.78rem;font-weight:300;outline:none;width:100%;transition:border-color .2s}.fi:focus{border-color:rgba(255,255,255,.32)}.fi::placeholder{color:var(--m)}
+.fr .fi:first-child{border-right:1px solid var(--b);padding-right:12px}.fr .fi:last-child{padding-left:12px}
+.fsel{background:none;border:none;border-bottom:1px solid var(--b);padding:12px 0;color:var(--m);font-family:var(--fb);font-size:.78rem;outline:none;width:100%;cursor:pointer;appearance:none;transition:border-color .2s}.fsel:focus{border-color:rgba(255,255,255,.32);color:var(--w)}.fsel option{background:#0c0c0c}
+.fsub{margin-top:22px;width:100%;padding:12px;background:none;border:1px solid rgba(255,255,255,.18);color:var(--w);font-family:var(--ff);font-size:.9rem;font-weight:300;font-style:italic;cursor:pointer;letter-spacing:.04em;transition:all .28s}.fsub:hover{background:var(--w);color:var(--k)}
+.ca{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}.ca span{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m)}
+footer{padding:42px 48px;border-top:1px solid var(--b);background:var(--k)}
+.fi2{max-width:1140px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.fl img{height:17px;width:auto;filter:brightness(0) invert(1);opacity:.5}.fl .nf2{font-family:var(--ff);font-size:1rem;font-weight:300;letter-spacing:.18em;color:rgba(255,255,255,.5);display:none}
+.ftag{font-size:.58rem;color:var(--m);margin-top:4px}
+.flinks{display:flex;gap:20px;flex-wrap:wrap}.flinks a{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m);transition:color .2s}.flinks a:hover{color:var(--w)}
+.fb{max-width:1140px;margin:20px auto 0;padding-top:14px;border-top:1px solid var(--b);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}.fc{font-size:.56rem;color:var(--m)}
+@media(max-width:900px){nav{padding:0 18px}.nav-links{display:none}section,#contact{padding:60px 18px}#hero{padding:0 18px 60px}footer,.fi2{padding:28px 18px}.g2,.g2t{grid-template-columns:1fr;gap:36px}.eg{grid-template-columns:1fr 1fr}.sr{flex-wrap:wrap}.si{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--b)}.vgrid{grid-template-columns:1fr 1fr}.pg{columns:2}.scr{display:none}}
+@media(max-width:560px){.eg{grid-template-columns:1fr}.rg{grid-template-columns:repeat(2,1fr)}.pg{columns:2}.vgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="yt-modal" id="yt-modal" onclick="if(event.target===this)closeYTBtn()">
-  <div class="yt-modal-inner">
-    <button class="yt-close" onclick="closeYTBtn()">✕ Schließen</button>
-    <iframe id="yt-iframe" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+<div class="vm" id="vm" onclick="if(event.target===this)closeV()">
+  <div class="vmi">
+    <button class="vmc" onclick="closeV()">&#x2715; Schlie&#xDF;en</button>
+    <video id="vmv" controls playsinline></video>
   </div>
 </div>
-<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLBBtn()">
-  <button class="lb-close" onclick="closeLBBtn()">✕ Schließen</button>
-  <button class="lb-prev" onclick="lbNav(-1)">‹</button>
-  <img id="lb-img" src="" alt="" style="transition:opacity .15s">
-  <button class="lb-next" onclick="lbNav(1)">›</button>
-  <div class="lb-counter" id="lb-counter"></div>
+<div class="lb" id="lb" onclick="if(event.target===this)closeLb()">
+  <button class="lbc" onclick="closeLb()">&#x2715; Schlie&#xDF;en</button>
+  <button class="lba" id="lbp" onclick="lbNav(-1)">&#x2039;</button>
+  <img id="lbi" src="" alt="">
+  <button class="lba" id="lbn" onclick="lbNav(1)">&#x203A;</button>
+  <div class="lbnum" id="lbnum"></div>
 </div>
-
-<!-- NAV -->
-<nav id="main-nav">
+<nav id="nav">
   <a href="#" class="nav-logo">
-    <img src="Content/MBMP LOGO/MBMP schrift.svg" alt="MBMP" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;font-size:1.25rem;font-weight:300;letter-spacing:.18em;color:#fff\'>MBMP</span>')">
+    <img src="Content/MBMP LOGO/MBMP schrift.svg" alt="MBMP" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="nf">MBMP</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#positioning"><span data-de>Agentur</span><span data-en>Agency</span></a></li>
-    <li><a href="#expertise"><span data-de>Leistungen</span><span data-en>Services</span></a></li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a href="#photos"><span data-de>Fotografie</span><span data-en>Photography</span></a></li>
+    <li><a href="#pos"><span data-de>Agentur</span><span data-en>Agency</span></a></li>
+    <li><a href="#exp"><span data-de>Leistungen</span><span data-en>Services</span></a></li>
+    <li><a href="#videos"><span data-de>Video</span><span data-en>Video</span></a></li>
+    <li><a href="#photos"><span data-de>Foto</span><span data-en>Photo</span></a></li>
     <li><a href="#reels">Reels</a></li>
     <li><a href="#contact"><span data-de>Kontakt</span><span data-en>Contact</span></a></li>
   </ul>
-  <div class="nav-right">
-    <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
-    <a href="dashboard.html" class="nav-cta">Client Login →</a>
+  <div class="nav-r">
+    <button class="lang" id="lang-btn" onclick="toggleLang()">EN</button>
+    <a href="dashboard.html" class="ncta">Client Login &#x2192;</a>
   </div>
 </nav>
-
-<!-- HERO -->
 <section id="hero">
-  <div class="hero-yt-wrap">
-    <div class="hero-fallback" id="hero-fallback">
-      <div class="hero-fallback-grid"></div>
-    </div>
-    <iframe id="hero-yt"
-      src="https://www.youtube.com/embed/SMOFA8lZzms?autoplay=1&mute=1&loop=1&playlist=SMOFA8lZzms&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0"
-      allow="autoplay;encrypted-media" allowfullscreen
-      onload="document.getElementById('hero-fallback').style.opacity='0'"
-    ></iframe>
+  <div class="hbg">
+    <div class="hgrid" id="hgrid"></div>
+    <iframe src="https://www.youtube.com/embed/SMOFA8lZzms?autoplay=1&mute=1&loop=1&playlist=SMOFA8lZzms&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0&showinfo=0" allow="autoplay;encrypted-media" onload="document.getElementById('hgrid').style.opacity='0'" onerror="document.getElementById('hgrid').style.opacity='1'"></iframe>
   </div>
-  <div class="hero-content">
-    <div class="hero-label"><span data-de>MBMP — Medienproduktion</span><span data-en>MBMP — Media Production</span></div>
-    <h1 class="hero-h1">
-      <span data-de>Wir fangen ein,<br><em>was andere übersehen.</em></span>
-      <span data-en>We capture<br><em>what others overlook.</em></span>
-    </h1>
-    <p class="hero-sub">
-      <span data-de>Emotionen. Momente. Marken.<br>MBMP ist die Agentur für Unternehmen, die nicht zur Masse gehören wollen.</span>
-      <span data-en>Emotions. Moments. Brands.<br>MBMP is the agency for companies that don't want to blend in.</span>
-    </p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary"><span data-de>→ Erstgespräch sichern</span><span data-en>→ Book discovery call</span></a>
-      <a href="dashboard.html" class="btn-outline">Client Portal</a>
-      <a href="#portfolio" class="btn-arrow"><span data-de>Portfolio</span><span data-en>Portfolio</span></a>
+  <div class="hc">
+    <div class="hlabel"><span data-de>MBMP &mdash; Medienproduktion</span><span data-en>MBMP &mdash; Media Production</span></div>
+    <h1><span data-de>Wir fangen ein,<br><em>was andere &uuml;bersehen.</em></span><span data-en>We capture<br><em>what others overlook.</em></span></h1>
+    <p class="hsub"><span data-de>Emotionen. Momente. Marken. MBMP ist die Agentur f&uuml;r Unternehmen, die nicht zur Masse geh&ouml;ren wollen.</span><span data-en>Emotions. Moments. Brands. MBMP is the agency for companies that don&apos;t want to blend in.</span></p>
+    <div class="ha">
+      <a href="#contact" class="btn bw"><span data-de>&#x2192; Erstgespr&auml;ch sichern</span><span data-en>&#x2192; Book discovery call</span></a>
+      <a href="dashboard.html" class="btn bo">Client Portal</a>
     </div>
   </div>
-  <div class="hero-scroll">Scroll</div>
+  <div class="scr">Scroll</div>
 </section>
-
-<div class="rule"></div>
-
-<!-- LOGOS STRIP -->
-<div class="logos-strip">
-  <div class="logos-outer">
-    <div class="logos-track" id="logos-track">
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Adobe-logo.png" alt="Adobe"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Leica_Camera.svg" alt="Leica"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Ubisoft_logo.svg" alt="Ubisoft"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/ACTINDO_FULL_COLOUR-1.png" alt="Actindo"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/HMTM-Logo-2010.svg" alt="HMTM"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Freistil-Logo.png" alt="Freistil"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/wempe-logo-1.png" alt="Wempe"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Hamel logo.png" alt="Hamel"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Poveracci.png" alt="Poveracci"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.png" alt="Viltrox"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/BINSS.png" alt="BINSS"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/Dark/activision-blizzard-logo-18809.jpg" alt="Activision Blizzard" style="filter:brightness(0) invert(1)!important"></div>
-      <!-- duplicate for loop -->
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Adobe-logo.png" alt="Adobe"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Leica_Camera.svg" alt="Leica"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Ubisoft_logo.svg" alt="Ubisoft"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/ACTINDO_FULL_COLOUR-1.png" alt="Actindo"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/HMTM-Logo-2010.svg" alt="HMTM"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Freistil-Logo.png" alt="Freistil"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/wempe-logo-1.png" alt="Wempe"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Hamel logo.png" alt="Hamel"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Poveracci.png" alt="Poveracci"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.png" alt="Viltrox"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/White/BINSS.png" alt="BINSS"></div>
-      <div class="logo-item"><img src="Content/Kunden Logos/Dark/activision-blizzard-logo-18809.jpg" alt="Activision Blizzard" style="filter:brightness(0) invert(1)!important"></div>
-    </div>
+<hr>
+<div class="ls">
+  <div class="lt">
+    <div class="li"><img src="Content/Kunden Logos/White/Adobe-logo.png" alt="Adobe"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Leica_Camera.svg" alt="Leica"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Ubisoft_logo.svg" alt="Ubisoft"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/ACTINDO_FULL_COLOUR-1.png" alt="Actindo"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/HMTM-Logo-2010.svg" alt="HMTM"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Freistil-Logo.png" alt="Freistil"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/wempe-logo-1.png" alt="Wempe"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Hamel logo.png" alt="Hamel"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Poveracci.png" alt="Poveracci"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.png" alt="Viltrox"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/BINSS.png" alt="BINSS"></div>
+    <div class="li"><img src="Content/Kunden Logos/Dark/activision-blizzard-logo-18809.jpg" alt="Activision" style="filter:brightness(0) invert(1)!important"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Adobe-logo.png" alt="Adobe"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Leica_Camera.svg" alt="Leica"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Ubisoft_logo.svg" alt="Ubisoft"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/ACTINDO_FULL_COLOUR-1.png" alt="Actindo"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/HMTM-Logo-2010.svg" alt="HMTM"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Freistil-Logo.png" alt="Freistil"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/wempe-logo-1.png" alt="Wempe"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Hamel logo.png" alt="Hamel"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Poveracci.png" alt="Poveracci"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/Viltrox-logo-s-U-E--2a67fab9-1920w-2.png" alt="Viltrox"></div>
+    <div class="li"><img src="Content/Kunden Logos/White/BINSS.png" alt="BINSS"></div>
+    <div class="li"><img src="Content/Kunden Logos/Dark/activision-blizzard-logo-18809.jpg" alt="Activision" style="filter:brightness(0) invert(1)!important"></div>
   </div>
 </div>
-
-<div class="rule"></div>
-
-<!-- POSITIONING -->
-<section id="positioning">
-  <div class="inner">
-    <div class="two-col">
+<hr>
+<section id="pos">
+  <div class="wrap">
+    <div class="g2">
       <div>
-        <div class="eyebrow reveal"><span data-de>Positionierung</span><span data-en>Positioning</span></div>
-        <h2 class="s-h2 reveal"><span data-de>Nicht für jeden.<br><em>Genau für Sie.</em></span><span data-en>Not for everyone.<br><em>Precisely for you.</em></span></h2>
-        <div class="s-italic reveal d1"><span data-de>Wer billig kauft, kauft zweimal.<br>Wer MBMP kauft, kauft nie wieder woanders.</span><span data-en>Buy cheap, buy twice.<br>Invest in MBMP — never look elsewhere again.</span></div>
+        <div class="eye r"><span data-de>Positionierung</span><span data-en>Positioning</span></div>
+        <h2 class="r"><span data-de>Nicht f&uuml;r jeden.<br><em>Genau f&uuml;r Sie.</em></span><span data-en>Not for everyone.<br><em>Precisely for you.</em></span></h2>
+        <div class="pull r d1"><span data-de>Wer billig kauft, kauft zweimal. Wer MBMP kauft, kauft nie wieder woanders.</span><span data-en>Buy cheap, buy twice. Invest in MBMP &mdash; never look elsewhere again.</span></div>
       </div>
       <div>
-        <p class="s-body reveal d1" style="margin-bottom:18px"><span data-de>Wir sind keine Agentur von der Stange. MBMP steht für über ein Jahrzehnt konsequenter Selbstverbesserung, kompromissloser Qualität und einem Team, das Zuverlässigkeit nicht als Versprechen versteht — sondern als Grundhaltung.</span><span data-en>MBMP is not an off-the-shelf agency. We represent over a decade of relentless self-improvement, uncompromising quality, and a team that doesn't treat reliability as a promise — it's simply who we are.</span></p>
-        <p class="s-body reveal d2" style="margin-bottom:28px"><span data-de>Wer in MBMP investiert, kauft kein standardisiertes Produkt. Er investiert in das Fundament seiner eigenen Multimedia-Marke — und in die Fähigkeit, sich dauerhaft von der Masse abzuheben.</span><span data-en>Investing in MBMP means investing in the foundation of your own multimedia brand — and in the ability to stand apart from the market, automatically and authentically.</span></p>
-        <a href="#contact" class="btn-outline reveal d3"><span data-de>→ Jetzt anfragen</span><span data-en>→ Get in touch</span></a>
+        <p class="body r d1" style="margin-bottom:14px"><span data-de>Wir sind keine Agentur von der Stange. MBMP steht f&uuml;r &uuml;ber ein Jahrzehnt konsequenter Selbstverbesserung, kompromissloser Qualit&auml;t und einem Team, das Zuverl&auml;ssigkeit nicht als Versprechen versteht &mdash; sondern als Grundhaltung.</span><span data-en>MBMP is not an off-the-shelf agency. We represent over a decade of relentless self-improvement, uncompromising quality, and a team that doesn&apos;t treat reliability as a promise &mdash; it&apos;s simply who we are.</span></p>
+        <p class="body r d2" style="margin-bottom:24px"><span data-de>Wer in MBMP investiert, investiert in das Fundament seiner eigenen Multimedia-Marke &mdash; und in die F&auml;higkeit, sich dauerhaft von der Masse abzuheben.</span><span data-en>Investing in MBMP means investing in the foundation of your own multimedia brand &mdash; and in the sustained ability to stand apart from the market.</span></p>
+        <a href="#contact" class="btn bo r d3"><span data-de>&#x2192; Jetzt anfragen</span><span data-en>&#x2192; Get in touch</span></a>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- DASHBOARD TEASER -->
-<section id="dashboard-teaser">
-  <div class="inner">
-    <div class="two-col">
-      <div class="dt-screen reveal">
-        <div class="dt-topbar">
-          <div class="dt-dot" style="background:rgba(255,255,255,.28)"></div>
-          <div class="dt-dot" style="background:rgba(255,255,255,.14)"></div>
-          <div class="dt-dot" style="background:rgba(255,255,255,.07)"></div>
-          <span class="dt-url">MBMP — Client Portal</span>
-        </div>
-        <div class="dt-sidebar">
-          <div class="dt-si act" style="margin-bottom:3px"></div>
-          <div class="dt-si" style="width:72%"></div><div class="dt-si" style="width:86%"></div><div class="dt-si" style="width:56%"></div>
-          <div class="dt-si" style="width:76%;margin-top:12px"></div><div class="dt-si" style="width:62%"></div>
-        </div>
-        <div class="dt-main">
-          <div class="dt-card"><div class="dt-val">€ 3.200</div><div class="dt-lbl">Aktives Projekt</div><div class="dt-prog"><div class="dt-prog-fill" style="width:70%"></div></div></div>
-          <div class="dt-card"><div class="dt-val">+342</div><div class="dt-lbl">Follower / Monat</div><div class="dt-prog"><div class="dt-prog-fill" style="width:48%"></div></div></div>
-          <div class="dt-card"><div class="dt-val">v3</div><div class="dt-lbl">Aktueller Entwurf</div><div class="dt-prog"><div class="dt-prog-fill" style="width:85%"></div></div></div>
-          <div class="dt-card"><div class="dt-val">87</div><div class="dt-lbl">Conversions ↑34%</div><div class="dt-prog"><div class="dt-prog-fill" style="width:60%"></div></div></div>
-        </div>
+<hr>
+<section id="exp">
+  <div class="wrap">
+    <div class="g2">
+      <div>
+        <div class="eye r">Expertise</div>
+        <h2 class="r"><span data-de>Bild.<br>&Auml;sthetik.<br><em>Wirkung.</em></span><span data-en>Image.<br>Aesthetics.<br><em>Impact.</em></span></h2>
+        <p class="body r d1" style="margin-bottom:13px"><span data-de>&Uuml;ber mehr als zehn Jahre Interviewerfahrung: <em>Die st&auml;rksten Inhalte entstehen in dem Augenblick, in dem jemand vergisst, dass die Kamera l&auml;uft.</em></span><span data-en>More than a decade of interview experience: <em>The most powerful content happens the moment someone forgets the camera is rolling.</em></span></p>
+        <a href="#contact" class="btn bo r d2"><span data-de>&#x2192; Projekt starten</span><span data-en>&#x2192; Start a project</span></a>
       </div>
       <div>
-        <div class="eyebrow reveal"><span data-de>Ihr persönliches Dashboard</span><span data-en>Your personal dashboard</span></div>
-        <h2 class="s-h2 reveal" style="margin-bottom:28px"><span data-de>Volle Transparenz.<br><em>Jederzeit.</em></span><span data-en>Full transparency.<br><em>At all times.</em></span></h2>
-        <div class="dt-steps reveal d1">
-          <div class="dt-step"><div class="dt-step-n">01</div><div><div class="dt-step-title"><span data-de>KI-Preiskalkulation</span><span data-en>AI-powered quote</span></div><p class="dt-step-text"><span data-de>Beschreiben Sie Ihr Projekt — Claude analysiert und erstellt drei individuelle Optionen. Transparent. Ohne Überraschungen.</span><span data-en>Describe your project — Claude analyses and creates three tailored options. Transparent. No surprises.</span></p></div></div>
-          <div class="dt-step"><div class="dt-step-n">02</div><div><div class="dt-step-title"><span data-de>Echtzeit-Projektübersicht</span><span data-en>Real-time project status</span></div><p class="dt-step-text"><span data-de>Fortschritt, Entwürfe, Feedback — alles an einem Ort. Live.</span><span data-en>Progress, drafts, feedback — all in one place. Live.</span></p></div></div>
-          <div class="dt-step"><div class="dt-step-n">03</div><div><div class="dt-step-title"><span data-de>Messbare Ergebnisse</span><span data-en>Measurable results</span></div><p class="dt-step-text"><span data-de>Follower-Wachstum, Conversions — getrackt ab Tag 1.</span><span data-en>Follower growth, conversions — tracked from day one.</span></p></div></div>
-        </div>
-        <div style="margin-top:32px;display:flex;gap:10px;flex-wrap:wrap" class="reveal d2">
-          <a href="dashboard.html" class="btn-primary"><span data-de>→ Client Portal</span><span data-en>→ Client Portal</span></a>
-          <a href="dashboard.html" class="btn-outline">Demo</a>
+        <div class="eg r d1">
+          <div class="ei"><div class="en_">01</div><div class="et">Content &amp; Storytelling</div><div class="eb"><span data-de>Narrative, die bleiben.</span><span data-en>Narratives that last.</span></div></div>
+          <div class="ei"><div class="en_">02</div><div class="et"><span data-de>Interview &amp; Dokumentar</span><span data-en>Interview &amp; Documentary</span></div><div class="eb"><span data-de>Der Moment der Wahrheit.</span><span data-en>The moment of truth.</span></div></div>
+          <div class="ei"><div class="en_">03</div><div class="et">Visual Branding</div><div class="eb"><span data-de>&Auml;sthetik, die Haltung zeigt.</span><span data-en>Aesthetics that show character.</span></div></div>
+          <div class="ei"><div class="en_">04</div><div class="et">Employer Branding</div><div class="eb"><span data-de>Talente, die passen.</span><span data-en>Talent that truly fits.</span></div></div>
+          <div class="ei"><div class="en_">05</div><div class="et">Edutainment</div><div class="eb"><span data-de>Komplexes unverge&szlig;lich.</span><span data-en>Complex made unforgettable.</span></div></div>
+          <div class="ei"><div class="en_">06</div><div class="et">Multimedia-Strategie</div><div class="eb"><span data-de>Fundament der Differenzierung.</span><span data-en>Foundation of differentiation.</span></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- EXPERTISE -->
-<section id="expertise">
-  <div class="inner">
-    <div class="two-col">
-      <div>
-        <div class="eyebrow reveal">Expertise</div>
-        <h2 class="s-h2 reveal"><span data-de>Bild. Ästhetik.<br><em>Wirkung.</em></span><span data-en>Image. Aesthetics.<br><em>Impact.</em></span></h2>
-        <p class="s-body reveal d1" style="margin-bottom:18px"><span data-de>Unsere Kernkompetenz liegt dort, wo Inhalt und Emotion zusammenkommen. Wir produzieren visuell verblüffende, ehrliche Momente — aus jedem Gespräch, jedem Projekt, jedem Menschen.</span><span data-en>Our core competency lives at the intersection of content and emotion. We produce visually stunning, disarmingly honest moments — from every conversation, every project, every person.</span></p>
-        <p class="s-body reveal d2" style="margin-bottom:28px"><span data-de>Über mehr als zehn Jahre Interviewerfahrung haben wir gelernt: <em>Die stärksten Inhalte entstehen in dem Augenblick, in dem jemand vergisst, dass die Kamera läuft.</em></span><span data-en>More than a decade of interview experience has taught us: <em>The most powerful content happens the moment someone forgets the camera is rolling.</em></span></p>
-        <a href="#contact" class="btn-outline reveal d3"><span data-de>→ Projekt starten</span><span data-en>→ Start a project</span></a>
-      </div>
-      <div>
-        <div class="exp-grid reveal d1">
-          <div class="exp-item"><div class="exp-num">01</div><div class="exp-title">Content & Storytelling</div><div class="exp-body"><span data-de>Narrative, die bleiben.</span><span data-en>Narratives that last.</span></div></div>
-          <div class="exp-item"><div class="exp-num">02</div><div class="exp-title"><span data-de>Interview & Dokumentarfilm</span><span data-en>Interview & Documentary</span></div><div class="exp-body"><span data-de>Der Augenblick der Wahrheit.</span><span data-en>The moment of truth.</span></div></div>
-          <div class="exp-item"><div class="exp-num">03</div><div class="exp-title">Visual Branding</div><div class="exp-body"><span data-de>Ästhetik, die Haltung zeigt.</span><span data-en>Aesthetics that show character.</span></div></div>
-          <div class="exp-item"><div class="exp-num">04</div><div class="exp-title">Recruiting & Employer Branding</div><div class="exp-body"><span data-de>Talente, die wirklich passen.</span><span data-en>Talent that truly fits.</span></div></div>
-          <div class="exp-item"><div class="exp-num">05</div><div class="exp-title"><span data-de>Wissenstransfer & Edutainment</span><span data-en>Knowledge & Edutainment</span></div><div class="exp-body"><span data-de>Komplexes einfach. Einfaches unvergesslich.</span><span data-en>Complex made simple.</span></div></div>
-          <div class="exp-item"><div class="exp-num">06</div><div class="exp-title">Multimedia-Markenstrategie</div><div class="exp-body"><span data-de>Das Fundament dauerhafter Differenzierung.</span><span data-en>Foundation for lasting differentiation.</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="rule"></div>
-
-<!-- DIFFERENCE -->
-<section id="difference">
-  <div class="inner">
-    <div class="eyebrow reveal"><span data-de>Der MBMP-Unterschied</span><span data-en>The MBMP Difference</span></div>
-    <h2 class="s-h2 reveal" style="max-width:600px"><span data-de>Periphere Wahrnehmung.<br><em>Präzise Ausführung.</em></span><span data-en>Peripheral vision.<br><em>Precise execution.</em></span></h2>
-    <div class="diff-stats reveal d1">
-      <div class="diff-stat"><div class="diff-val">10+</div><div class="diff-lbl"><span data-de>Jahre Erfahrung</span><span data-en>Years of experience</span></div></div>
-      <div class="diff-stat"><div class="diff-val">1–2</div><div class="diff-lbl"><span data-de>Wochen Lieferzeit</span><span data-en>Weeks delivery</span></div></div>
-      <div class="diff-stat"><div class="diff-val">0</div><div class="diff-lbl"><span data-de>Kompromisse</span><span data-en>Compromises</span></div></div>
-      <div class="diff-stat"><div class="diff-val">∞</div><div class="diff-lbl"><span data-de>Anspruch ans Detail</span><span data-en>Attention to detail</span></div></div>
-    </div>
-    <div class="two-col reveal d2">
-      <p class="s-body"><span data-de>Wir sehen das Detail in der letzten Ecke des Raumes — bevor es irgendjemand anderem auffällt. Diese Sinne sind keine Methode. Sie sind eine Haltung.</span><span data-en>We see the detail in the far corner of the room — before anyone else notices. These senses are not a method. They are a mindset.</span></p>
-      <p class="s-body"><span data-de>Jedes Projekt durchläuft eine kalkulierte Findungsphase. <strong>Kein Template. Keine Abkürzung.</strong> In der Regel 1–2 Wochen. Qualitätsanspruch: kompromisslos.</span><span data-en>Every project begins with a dedicated discovery phase. <strong>No templates. No shortcuts.</strong> Typically 1–2 weeks. Quality standard: non-negotiable.</span></p>
-    </div>
-  </div>
-</section>
-
-<div class="rule"></div>
-
-<!-- PORTAL BAND -->
-<div class="portal-band reveal">
-  <div>
-    <div class="pb-eyebrow"><span data-de>Exklusiv für MBMP-Kunden</span><span data-en>Exclusively for MBMP clients</span></div>
-    <div class="pb-title"><span data-de>Ihr Projekt. Ihr Dashboard. Ihre Kontrolle.</span><span data-en>Your project. Your dashboard. Your control.</span></div>
-    <div class="pb-sub"><span data-de>Angebote anfragen, Fortschritt verfolgen, Ergebnisse messen — alles in einem Portal.</span><span data-en>Request quotes, track progress, measure results — all in one portal.</span></div>
-  </div>
-  <div class="pb-btns">
-    <a href="dashboard.html" class="btn-primary"><span data-de>→ Portal öffnen</span><span data-en>→ Open Portal</span></a>
-    <a href="dashboard.html" class="btn-outline">Demo</a>
-  </div>
+<div class="sr r">
+  <div class="si"><div class="sv">10+</div><div class="sl_"><span data-de>Jahre Erfahrung</span><span data-en>Years experience</span></div></div>
+  <div class="si d1"><div class="sv">1&ndash;2</div><div class="sl_"><span data-de>Wochen Lieferzeit</span><span data-en>Weeks delivery</span></div></div>
+  <div class="si d2"><div class="sv">0</div><div class="sl_"><span data-de>Kompromisse</span><span data-en>Compromises</span></div></div>
+  <div class="si d3"><div class="sv">&infin;</div><div class="sl_"><span data-de>Anspruch ans Detail</span><span data-en>Attention to detail</span></div></div>
 </div>
-
-<!-- PORTFOLIO -->
-<section id="portfolio">
-  <div class="inner">
-    <div class="eyebrow reveal">Portfolio</div>
-    <h2 class="s-h2 reveal" style="max-width:520px"><span data-de>Hoffnungen. Ängste.<br><em>Wahrheit.</em></span><span data-en>Hopes. Fears.<br><em>Truth.</em></span></h2>
-    <p class="s-body reveal d1" style="max-width:500px;margin-bottom:0"><span data-de>Wir sind Emotionsspezialisten — keine Branche, keine Nische, kein Format schränkt uns ein.</span><span data-en>We are emotion specialists — no industry, no niche, no format limits us.</span></p>
-
-    <!-- Featured Showreel (clickable, opens modal) -->
-    <div class="showreel-wrap reveal d2">
-      <iframe src="https://www.youtube.com/embed/SMOFA8lZzms?rel=0&modestbranding=1&color=white" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+<hr>
+<section id="videos">
+  <div class="wrap">
+    <div class="eye r"><span data-de>Videografie</span><span data-en>Videography</span></div>
+    <h2 class="r"><span data-de>Bewegtbild,<br><em>das bewegt.</em></span><span data-en>Moving images<br><em>that move.</em></span></h2>
+    <div class="vgrid r d1">
+      <div class="vc" onclick="openV('Content/Querformat video gallerie/Kann HR-Software Unternehmenskultur ver\u00e4ndern.mov')">
+        <div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Querformat video gallerie/Kann HR-Software Unternehmenskultur ver\u00e4ndern.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div>
+        <div class="mt"><div class="mc">Corporate &middot; HR</div><div class="mn">Kann HR-Software Unternehmenskultur ver&auml;ndern?</div></div>
+      </div>
+      <div class="vc" onclick="openV('Content/Querformat video gallerie/Sonntagsangst .mov')">
+        <div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Querformat video gallerie/Sonntagsangst .mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div>
+        <div class="mt"><div class="mc">Corporate &middot; HR</div><div class="mn">Sonntagsangst</div></div>
+      </div>
+      <div class="vc" onclick="openV('Content/Querformat video gallerie/Teilzeitkrankheit .mov')">
+        <div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Querformat video gallerie/Teilzeitkrankheit .mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div>
+        <div class="mt"><div class="mc">Corporate &middot; HR</div><div class="mn">Teilzeitkrankheit</div></div>
+      </div>
+      <div class="vc" onclick="openV('Content/Querformat video gallerie/was bedeuetet eine gute unternehmenskultur f\u00fcr dich.mov')">
+        <div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Querformat video gallerie/was bedeuetet eine gute unternehmenskultur f\u00fcr dich.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div>
+        <div class="mt"><div class="mc">Corporate &middot; HR</div><div class="mn">Was bedeutet eine gute Unternehmenskultur f&uuml;r dich?</div></div>
+      </div>
+      <div class="vc" onclick="openV('Content/Querformat video gallerie/wie einfach ist es in deutschland ki in den personalbereich zu bringen.mov')">
+        <div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Querformat video gallerie/wie einfach ist es in deutschland ki in den personalbereich zu bringen.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div>
+        <div class="mt"><div class="mc">Corporate &middot; KI</div><div class="mn">Wie einfach ist es in Deutschland, KI in den Personalbereich zu bringen?</div></div>
+      </div>
     </div>
-
-    <!-- Portfolio Playlist -->
-    <div style="margin-top:44px" class="reveal d2">
-      <div class="eyebrow" style="margin-bottom:12px"><span data-de>Alle Produktionen</span><span data-en>All Productions</span></div>
-      <div class="playlist-embed">
-        <iframe src="https://www.youtube.com/embed?listType=playlist&list=PLSZTwTHQ9B0lDSD37_niJvsZIuft06ZW9&rel=0&modestbranding=1&color=white" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen title="MBMP Portfolio"></iframe>
-      </div>
-      <div style="text-align:right;margin-top:8px">
-        <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0lDSD37_niJvsZIuft06ZW9" target="_blank" style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'"><span data-de>Auf YouTube ansehen →</span><span data-en>Watch on YouTube →</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="rule"></div>
-
-<!-- CORPORATE VIDEO -->
-<section id="portfolio-corporate" style="padding:88px 52px">
-  <div class="inner">
-    <div class="eyebrow reveal">Corporate</div>
-    <h2 class="s-h2 reveal" style="max-width:480px"><span data-de>Employer Branding &<br><em>HR-Dokumentationen</em></span><span data-en>Employer Branding &<br><em>HR Documentaries</em></span></h2>
-    <div class="corp-playlists reveal d1">
-      <div>
-        <div class="corp-pl-title"><span data-de>Interview-Serien</span><span data-en>Interview Series</span></div>
-        <div class="playlist-embed">
-          <iframe src="https://www.youtube.com/embed?listType=playlist&list=PLSZTwTHQ9B0mI0oV3qwhePxFqNO2p50cx&rel=0&modestbranding=1&color=white" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div style="text-align:right;margin-top:6px"><a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0mI0oV3qwhePxFqNO2p50cx" target="_blank" style="font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">YouTube →</a></div>
-      </div>
-      <div>
-        <div class="corp-pl-title"><span data-de>HR & Unternehmenskultur</span><span data-en>HR & Company Culture</span></div>
-        <div class="playlist-embed">
-          <iframe src="https://www.youtube.com/embed?listType=playlist&list=PLSZTwTHQ9B0n6tT2pCcnFOQsweF2nMCRh&rel=0&modestbranding=1&color=white" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div style="text-align:right;margin-top:6px"><a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0n6tT2pCcnFOQsweF2nMCRh" target="_blank" style="font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">YouTube →</a></div>
-      </div>
+    <div style="margin-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px" class="r d2">
+      <p class="body" style="font-size:.76rem;max-width:380px"><span data-de>Das vollst&auml;ndige Portfolio auf YouTube.</span><span data-en>The complete portfolio on YouTube.</span></p>
+      <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0lDSD37_niJvsZIuft06ZW9" target="_blank" class="btn bo"><span data-de>Alle Videos &#x2192;</span><span data-en>All Videos &#x2192;</span></a>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- PHOTO GALLERY -->
-<section id="photos">
-  <div class="inner">
-    <div class="eyebrow reveal"><span data-de>Fotografie</span><span data-en>Photography</span></div>
-    <h2 class="s-h2 reveal" style="max-width:440px"><span data-de>Bilder, die<br><em>bleiben.</em></span><span data-en>Images that<br><em>endure.</em></span></h2>
-    <div class="photo-mosaic reveal d1" id="photo-mosaic"></div>
-  </div>
-</section>
-
-<div class="rule"></div>
-
-<!-- REELS -->
+<hr>
 <section id="reels">
-  <div class="inner">
-    <div class="eyebrow reveal">Reels</div>
-    <h2 class="s-h2 reveal" style="max-width:460px"><span data-de>Vertical Content,<br><em>der stoppt.</em></span><span data-en>Vertical content<br><em>that stops the scroll.</em></span></h2>
-
-    <div class="reels-tabs reveal d1">
-      <button class="reel-tab active" onclick="switchReelTab('corporate',this)">Corporate</button>
-      <button class="reel-tab" onclick="switchReelTab('event',this)">Event</button>
-      <button class="reel-tab" onclick="switchReelTab('food',this)">Food</button>
-      <button class="reel-tab" onclick="switchReelTab('instagram',this)">Instagram</button>
+  <div class="wrap">
+    <div class="eye r">Reels</div>
+    <h2 class="r"><span data-de>Vertical Content,<br><em>der stoppt.</em></span><span data-en>Vertical content<br><em>that stops the scroll.</em></span></h2>
+    <div class="tabs r d1">
+      <button class="tab on" onclick="swTab('corp',this)">Corporate</button>
+      <button class="tab" onclick="swTab('event',this)">Event</button>
+      <button class="tab" onclick="swTab('food',this)">Food</button>
+      <button class="tab" onclick="swTab('ig',this)">Instagram</button>
     </div>
-
-    <!-- Corporate -->
-    <div class="reels-panel active" id="panel-corporate">
-      <div class="reels-grid">
-        <div class="reel-card" onclick="openYT('REEL_CORP_1')">
-          <div class="reel-placeholder"><img src="https://i.ytimg.com/vi/placeholder/mqdefault.jpg" class="reel-thumb" alt="" onerror="this.style.display='none'"><div class="reel-play" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Kann HR-Software Unternehmenskultur verändern?</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_CORP_2')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Sonntagsangst</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_CORP_3')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Teilzeitkrankheit</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_CORP_4')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Was bedeutet eine gute Unternehmenskultur für dich?</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_CORP_5')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Wie einfach ist es in Deutschland KI in den Personalbereich zu bringen?</div></div>
-        </div>
-      </div>
-      <div style="margin-top:16px;text-align:center">
-        <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz" target="_blank" class="btn-outline" style="font-size:.66rem;padding:8px 18px"><span data-de>Alle Reels auf YouTube →</span><span data-en>All Reels on YouTube →</span></a>
-      </div>
-    </div>
-
-    <!-- Event -->
-    <div class="reels-panel" id="panel-event">
-      <div class="reels-grid">
-        <div class="reel-card" onclick="openYT('REEL_EVENT_1')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Adobe Leipzig Recap</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_EVENT_2')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Adobe 9×16 Recap Export</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_EVENT_3')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Adobe Frankfurt</div></div>
-        </div>
-      </div>
-      <div style="margin-top:16px;text-align:center">
-        <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz" target="_blank" class="btn-outline" style="font-size:.66rem;padding:8px 18px"><span data-de>Alle Reels auf YouTube →</span><span data-en>All Reels on YouTube →</span></a>
-      </div>
-    </div>
-
-    <!-- Food -->
-    <div class="reels-panel" id="panel-food">
-      <div class="reels-grid">
-        <div class="reel-card" onclick="openYT('REEL_FOOD_1')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Poveracci Video 02 V2</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_FOOD_2')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Poveracci Video 03</div></div>
-        </div>
-        <div class="reel-card" onclick="openYT('REEL_FOOD_3')">
-          <div class="reel-placeholder" style="aspect-ratio:9/16;background:var(--bg3);display:flex;align-items:center;justify-content:center"><div style="width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem">▶</div></div>
-          <div class="reel-label"><div class="reel-title">Oysters & Pearls</div></div>
-        </div>
-      </div>
-      <div style="margin-top:16px;text-align:center">
-        <a href="https://www.youtube.com/playlist?list=PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz" target="_blank" class="btn-outline" style="font-size:.66rem;padding:8px 18px"><span data-de>Alle Reels auf YouTube →</span><span data-en>All Reels on YouTube →</span></a>
-      </div>
-    </div>
-
-    <!-- Instagram -->
-    <div class="reels-panel" id="panel-instagram">
-      <p style="font-size:.8rem;color:var(--muted);margin-bottom:24px">
-        <span data-de>Unsere neuesten Instagram Reels</span>
-        <span data-en>Our latest Instagram Reels</span>
-      </p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:980px">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DH6PgvJI2Fc/?igsh=aGpzcmRqcmQxZHVj" data-instgrm-version="14" style="background:#000!important;border:1px solid var(--border)!important;border-radius:0!important;margin:0!important;max-width:100%!important;width:100%!important"></blockquote>
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DH05lurIhhx/?igsh=bjBtMTQzanJ2OHlt" data-instgrm-version="14" style="background:#000!important;border:1px solid var(--border)!important;border-radius:0!important;margin:0!important;max-width:100%!important;width:100%!important"></blockquote>
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DDpGvkAoTW2/?igsh=MWFkZjcxc2lzcWpieQ==" data-instgrm-version="14" style="background:#000!important;border:1px solid var(--border)!important;border-radius:0!important;margin:0!important;max-width:100%!important;width:100%!important"></blockquote>
+    <div class="panel on" id="panel-corp"><div class="rg">
+      <div class="rc" onclick="openV('Content/Reels/Corporate/Kann HR-Software Unternehmenskultur ver\u00e4ndern Vertical.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Corporate/Kann HR-Software Unternehmenskultur ver\u00e4ndern Vertical.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Kann HR-Software Unternehmenskultur ver&auml;ndern?</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Corporate/Sonntagsangst Vertical.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Corporate/Sonntagsangst Vertical.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Sonntagsangst</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Corporate/Teilzeitkrankheit vertical.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Corporate/Teilzeitkrankheit vertical.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Teilzeitkrankheit</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Corporate/was bedeuetet eine gute unternehmenskultur f\u00fcr dich Vertical.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Corporate/was bedeuetet eine gute unternehmenskultur f\u00fcr dich Vertical.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Was bedeutet eine gute Unternehmenskultur?</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Corporate/wie einfach ist es in deutschland ki in den personalbereich zu bringen vertical.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Corporate/wie einfach ist es in deutschland ki in den personalbereich zu bringen vertical.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">KI im Personalbereich</div></div></div>
+    </div></div>
+    <div class="panel" id="panel-event"><div class="rg">
+      <div class="rc" onclick="openV('Content/Reels/Event/Adobe Leipzig Recap.mov')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Event/Adobe Leipzig Recap.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Adobe Leipzig Recap</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Event/ENG_Adobe 9by16 Recap Export.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Event/ENG_Adobe 9by16 Recap Export.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Adobe 9&times;16 Recap</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Event/adobe ffm.mov')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Event/adobe ffm.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Adobe Frankfurt</div></div></div>
+    </div></div>
+    <div class="panel" id="panel-food"><div class="rg">
+      <div class="rc" onclick="openV('Content/Reels/Food/Poveracci _Video_02 V2.mp4')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Food/Poveracci _Video_02 V2.mp4" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Poveracci &mdash; Video 02</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Food/Poveracci _Video_03.mov')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Food/Poveracci _Video_03.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Poveracci &mdash; Video 03</div></div></div>
+      <div class="rc" onclick="openV('Content/Reels/Food/oysters &amp; Pearls vertical.mov')"><div class="asp"><video muted loop playsinline preload="metadata" onmouseenter="hoverPlay(this)" onmouseleave="hoverStop(this)"><source src="Content/Reels/Food/oysters &amp; Pearls vertical.mov" type="video/mp4"></video><div class="ov"></div><div class="pl">&#x25BA;</div></div><div class="mt"><div class="mn">Oysters &amp; Pearls</div></div></div>
+    </div></div>
+    <div class="panel" id="panel-ig">
+      <div class="igg">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DH6PgvJI2Fc/?igsh=aGpzcmRqcmQxZHVj" data-instgrm-version="14" style="background:#000!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:0!important;margin:0!important;width:100%!important"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DH05lurIhhx/?igsh=bjBtMTQzanJ2OHlt" data-instgrm-version="14" style="background:#000!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:0!important;margin:0!important;width:100%!important"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DDpGvkAoTW2/?igsh=MWFkZjcxc2lzcWpieQ==" data-instgrm-version="14" style="background:#000!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:0!important;margin:0!important;width:100%!important"></blockquote>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- MARKETS -->
+<hr>
+<section id="photos">
+  <div class="wrap">
+    <div class="eye r"><span data-de>Fotografie</span><span data-en>Photography</span></div>
+    <h2 class="r"><span data-de>Bilder, die<br><em>bleiben.</em></span><span data-en>Images that<br><em>endure.</em></span></h2>
+    <div class="pg r d1" id="pgrid"></div>
+  </div>
+</section>
+<hr>
 <section id="markets">
-  <div class="inner">
-    <div class="two-col">
+  <div class="wrap">
+    <div class="g2">
       <div>
-        <div class="eyebrow reveal"><span data-de>Märkte</span><span data-en>Markets</span></div>
-        <h2 class="s-h2 reveal"><span data-de>Made in Germany.<br><em>Wirksam global.</em></span><span data-en>Made in Germany.<br><em>Built for the world.</em></span></h2>
+        <div class="eye r"><span data-de>M&auml;rkte</span><span data-en>Markets</span></div>
+        <h2 class="r"><span data-de>Made in Germany.<br><em>Wirksam global.</em></span><span data-en>Made in Germany.<br><em>Built for the world.</em></span></h2>
       </div>
       <div>
-        <p class="s-body reveal d1" style="margin-bottom:18px"><span data-de>Wir kommen aus Deutschland — geprägt von Präzision, Verlässlichkeit und dem Anspruch, Dinge beim ersten Mal richtig zu machen. Mit einem klaren Fokus auf Europa und dem asiatisch-pazifischen Raum.</span><span data-en>We come from Germany — shaped by precision, reliability, and the conviction that things should be done right the first time. With a clear focus on Europe and the Asia-Pacific region.</span></p>
-        <div class="market-tags reveal d2">
-          <span class="market-tag">Germany</span><span class="market-tag">Austria</span><span class="market-tag">Switzerland</span><span class="market-tag">Europe</span><span class="market-tag">Asia-Pacific</span><span class="market-tag">Remote Global</span>
-        </div>
+        <p class="body r d1" style="margin-bottom:14px"><span data-de>Wir kommen aus Deutschland &mdash; gepr&auml;gt von Pr&auml;zision, Zuverl&auml;ssigkeit und dem Anspruch, Dinge beim ersten Mal richtig zu machen.</span><span data-en>We come from Germany &mdash; shaped by precision, reliability, and the conviction that things should be done right the first time.</span></p>
+        <div class="mtags r d2"><span class="mtag">Germany</span><span class="mtag">Austria</span><span class="mtag">Switzerland</span><span class="mtag">Europe</span><span class="mtag">Asia-Pacific</span><span class="mtag">Remote Global</span></div>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- PRICING -->
+<hr>
 <section id="pricing">
-  <div class="inner">
-    <div class="two-col">
+  <div class="wrap">
+    <div class="g2">
       <div>
-        <div class="eyebrow reveal"><span data-de>Preisphilosophie</span><span data-en>Pricing</span></div>
-        <h2 class="s-h2 reveal"><span data-de>Maßgeschneidert.<br><em>Ohne Kompromiss.</em></span><span data-en>Bespoke.<br><em>No compromise.</em></span></h2>
+        <div class="eye r"><span data-de>Preisphilosophie</span><span data-en>Pricing</span></div>
+        <h2 class="r"><span data-de>Ma&szlig;geschneidert.<br><em>Ohne Kompromiss.</em></span><span data-en>Bespoke.<br><em>No compromise.</em></span></h2>
       </div>
-      <div class="reveal d2">
-        <div class="pricing-statement"><span data-de>Bei MBMP gibt es <em>keine Preislisten</em>. Jedes Projekt ist so individuell wie Ihr Unternehmen.</span><span data-en>At MBMP, there are <em>no price lists</em>. Every project is as individual as your business.</span></div>
-        <p class="s-body" style="margin-bottom:18px"><span data-de>Was wir garantieren: deutsche Qualitätsarbeit, transparente Kommunikation und eine Lösung, die sitzt. Das ist kein Hindernis. Das ist unser Qualitätsversprechen.</span><span data-en>What we guarantee: German-standard quality work, transparent communication, and a solution built to last. This isn't a barrier. It's our quality promise.</span></p>
-        <a href="dashboard.html" class="btn-primary"><span data-de>→ Angebot im Dashboard anfragen</span><span data-en>→ Request quote via dashboard</span></a>
+      <div class="r d1">
+        <div class="pb"><span data-de>Bei MBMP gibt es <em>keine Preislisten</em>. Jedes Projekt ist so individuell wie Ihr Unternehmen.</span><span data-en>At MBMP, there are <em>no price lists</em>. Every project is as individual as your business.</span></div>
+        <p class="body" style="margin-bottom:20px"><span data-de>Was wir garantieren: deutsche Qualit&auml;tsarbeit, transparente Kommunikation und eine L&ouml;sung, die sitzt.</span><span data-en>What we guarantee: German-standard quality work, transparent communication, and a solution built to last.</span></p>
+        <a href="dashboard.html" class="btn bw"><span data-de>&#x2192; Angebot anfragen</span><span data-en>&#x2192; Request a quote</span></a>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- TEAM -->
+<hr>
 <section id="team">
-  <div class="inner">
-    <div class="two-col-top">
+  <div class="wrap">
+    <div class="g2t">
       <div>
-        <div class="eyebrow reveal"><span data-de>Das Team</span><span data-en>The Team</span></div>
-        <h2 class="s-h2 reveal"><span data-de>Jung.<br>Diszipliniert.<br><em>Krankhaft zuverlässig.</em></span><span data-en>Young.<br>Disciplined.<br><em>Pathologically reliable.</em></span></h2>
-        <p class="s-body reveal d1" style="margin-bottom:18px"><span data-de>MBMP ist kein Kollektiv von Freelancern. Wir sind ein eingespieltes, hungriges Team mit einem gemeinsamen Anspruch: jeden Tag besser zu werden als gestern.</span><span data-en>MBMP is not a group of freelancers. We are a tight, driven team with one shared standard: be better today than yesterday.</span></p>
-        <p class="s-body reveal d2"><span data-de><strong>Ambition. Gewissenhaftigkeit ohne Marke. Talent, das sich nicht selbst genug ist.</strong><br>Das ist kein Slogan. Das ist der einzige Modus, den wir kennen.</span><span data-en><strong>Ambition. Boundless conscientiousness. Talent that refuses to be satisfied with itself.</strong><br>That's not a slogan. It's the only mode we operate in.</span></p>
+        <div class="eye r"><span data-de>Das Team</span><span data-en>The Team</span></div>
+        <h2 class="r"><span data-de>Jung.<br>Diszipliniert.<br><em>Krankhaft zuverl&auml;ssig.</em></span><span data-en>Young.<br>Disciplined.<br><em>Pathologically reliable.</em></span></h2>
+        <p class="body r d1"><span data-de>MBMP ist kein Kollektiv von Freelancern. Wir sind ein eingespieltes, hungriges Team mit einem gemeinsamen Anspruch: jeden Tag besser zu werden als gestern.</span><span data-en>MBMP is not a group of freelancers. We are a tight, driven team with one shared standard: be better today than yesterday.</span></p>
       </div>
-      <div>
-        <div class="team-list reveal d1">
-          <div class="team-item"><div class="ti-dash">—</div><div class="ti-title"><span data-de>Zuverlässigkeit</span><span data-en>Reliability</span></div><div class="ti-body"><span data-de>Keine Versprechen. Nur Liefern.</span><span data-en>No promises. Only delivery.</span></div></div>
-          <div class="team-item"><div class="ti-dash">—</div><div class="ti-title"><span data-de>Qualität</span><span data-en>Quality</span></div><div class="ti-body"><span data-de>Kompromisslos. Immer.</span><span data-en>Non-negotiable. Always.</span></div></div>
-          <div class="team-item"><div class="ti-dash">—</div><div class="ti-title"><span data-de>Ambition</span><span data-en>Ambition</span></div><div class="ti-body"><span data-de>Jeden Tag besser als gestern.</span><span data-en>Better every day than the last.</span></div></div>
-          <div class="team-item"><div class="ti-dash">—</div><div class="ti-title"><span data-de>Periphere Wahrnehmung</span><span data-en>Peripheral Vision</span></div><div class="ti-body"><span data-de>Wir sehen, was andere übersehen.</span><span data-en>We see what others overlook.</span></div></div>
-        </div>
+      <div class="tlist r d1">
+        <div class="ti"><div class="tid">&mdash;</div><div class="tit"><span data-de>Zuverl&auml;ssigkeit</span><span data-en>Reliability</span></div><div class="tib"><span data-de>Keine Versprechen. Nur Liefern.</span><span data-en>No promises. Only delivery.</span></div></div>
+        <div class="ti"><div class="tid">&mdash;</div><div class="tit"><span data-de>Qualit&auml;t</span><span data-en>Quality</span></div><div class="tib"><span data-de>Kompromisslos. Immer.</span><span data-en>Non-negotiable. Always.</span></div></div>
+        <div class="ti"><div class="tid">&mdash;</div><div class="tit">Ambition</div><div class="tib"><span data-de>Jeden Tag besser als gestern.</span><span data-en>Better every day than the last.</span></div></div>
+        <div class="ti"><div class="tid">&mdash;</div><div class="tit"><span data-de>Periphere Wahrnehmung</span><span data-en>Peripheral Vision</span></div><div class="tib"><span data-de>Wir sehen, was andere &uuml;bersehen.</span><span data-en>We see what others overlook.</span></div></div>
       </div>
     </div>
   </div>
 </section>
-
-<div class="rule"></div>
-
-<!-- CONTACT -->
+<hr>
 <section id="contact">
-  <div class="contact-inner">
-    <div class="eyebrow reveal" style="justify-content:center"><span data-de>Erstgespräch</span><span data-en>Discovery Call</span></div>
-    <h2 class="contact-h reveal"><span data-de>Bereit, Glück aus<br>der Gleichung zu <em>streichen?</em></span><span data-en>Ready to remove luck<br>from the <em>equation?</em></span></h2>
-    <p class="contact-sub reveal d1"><span data-de>MBMP macht keine halben Sachen. Begrenzte Kapazitäten. Volle Aufmerksamkeit. Immer.</span><span data-en>MBMP doesn't do things halfway. Limited availability. Full attention. Always.</span></p>
-    <div class="contact-form reveal d2">
-      <div class="cf-row"><input class="cf-in" id="cf-name" type="text" placeholder="Name"><input class="cf-in" id="cf-company" type="text" placeholder="Unternehmen"></div>
-      <input class="cf-in" id="cf-email" type="email" placeholder="E-Mail">
-      <input class="cf-in" id="cf-website" type="url" placeholder="Website (optional)">
-      <select class="cf-sel" id="cf-service">
-        <option value="" disabled selected>Leistung wählen</option>
-        <option>Content & Storytelling</option><option>Interview & Documentary</option><option>Visual Branding</option><option>Recruiting Content</option><option>Edutainment</option><option>Brand Strategy</option><option>Erstgespräch / Discovery Call</option>
-      </select>
-      <button class="contact-btn" onclick="submitContact()"><span data-de>→ Erstgespräch sichern</span><span data-en>→ Secure your slot now</span></button>
+  <div class="cw">
+    <div class="eye r" style="justify-content:center"><span data-de>Erstgespr&auml;ch</span><span data-en>Discovery Call</span></div>
+    <h2 class="ch r"><span data-de>Bereit, Gl&uuml;ck aus<br>der Gleichung zu <em>streichen?</em></span><span data-en>Ready to remove luck<br>from the <em>equation?</em></span></h2>
+    <p class="cs r d1"><span data-de>MBMP macht keine halben Sachen. Begrenzte Kapazit&auml;ten. Volle Aufmerksamkeit.</span><span data-en>MBMP doesn&apos;t do things halfway. Limited availability. Full attention.</span></p>
+    <div class="form r d2">
+      <div class="fr"><input class="fi" id="cn" type="text" placeholder="Name"><input class="fi" id="cc" type="text" placeholder="Unternehmen"></div>
+      <input class="fi" id="ce" type="email" placeholder="E-Mail">
+      <input class="fi" id="cw_" type="url" placeholder="Website (optional)">
+      <select class="fsel"><option value="" disabled selected>Leistung w&auml;hlen</option><option>Content &amp; Storytelling</option><option>Interview &amp; Documentary</option><option>Visual Branding</option><option>Recruiting Content</option><option>Edutainment</option><option>Brand Strategy</option><option>Erstgespr&auml;ch</option></select>
+      <button class="fsub" onclick="submitForm()"><span data-de>&#x2192; Erstgespr&auml;ch sichern</span><span data-en>&#x2192; Secure your slot</span></button>
     </div>
-    <div style="margin-top:14px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap" class="reveal d3">
-      <span style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)"><span data-de>Bereits Kunde?</span><span data-en>Already a client?</span></span>
-      <a href="dashboard.html" class="btn-gold-accent" style="padding:8px 18px;font-size:.64rem">→ Client Portal</a>
-    </div>
+    <div class="ca r d3"><span><span data-de>Bereits Kunde?</span><span data-en>Already a client?</span></span><a href="dashboard.html" class="btn bg_" style="padding:7px 15px;font-size:.6rem">&#x2192; Client Portal</a></div>
   </div>
 </section>
-
-<!-- FOOTER -->
 <footer>
-  <div class="foot-inner">
+  <div class="fi2">
     <div>
-      <div class="foot-logo"><img src="Content/MBMP LOGO/MBMP schrift.svg" alt="MBMP" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=\'font-family:Georgia,serif;font-size:1.1rem;font-weight:300;letter-spacing:.16em;color:rgba(255,255,255,.65)\'>MBMP</span>')"></div>
-      <div class="foot-tagline"><span data-de>Wir fangen ein, was andere übersehen.</span><span data-en>We capture what others overlook.</span></div>
+      <div class="fl"><img src="Content/MBMP LOGO/MBMP schrift.svg" alt="MBMP" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="nf2">MBMP</span></div>
+      <div class="ftag"><span data-de>Wir fangen ein, was andere &uuml;bersehen.</span><span data-en>We capture what others overlook.</span></div>
     </div>
-    <div class="foot-links">
-      <a href="#positioning"><span data-de>Agentur</span><span data-en>Agency</span></a>
-      <a href="#expertise"><span data-de>Leistungen</span><span data-en>Services</span></a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#reels">Reels</a>
+    <nav class="flinks">
+      <a href="#pos"><span data-de>Agentur</span><span data-en>Agency</span></a>
+      <a href="#exp"><span data-de>Leistungen</span><span data-en>Services</span></a>
+      <a href="#videos">Video</a><a href="#photos">Foto</a><a href="#reels">Reels</a>
       <a href="dashboard.html">Client Portal</a>
       <a href="#contact"><span data-de>Kontakt</span><span data-en>Contact</span></a>
-    </div>
-    <a href="dashboard.html" class="btn-outline" style="font-size:.64rem;padding:8px 16px">Client Login →</a>
+    </nav>
+    <a href="dashboard.html" class="btn bo" style="font-size:.6rem;padding:7px 14px">Client Login &#x2192;</a>
   </div>
-  <div class="foot-bottom">
-    <div class="foot-copy">© 2025 MBMP. <span data-de>Alle Rechte vorbehalten.</span><span data-en>All rights reserved.</span></div>
-    <div class="foot-copy">Made in Germany.</div>
-  </div>
+  <div class="fb"><div class="fc">&copy; 2025 MBMP. <span data-de>Alle Rechte vorbehalten.</span><span data-en>All rights reserved.</span></div><div class="fc">Made in Germany.</div></div>
 </footer>
-
 <script async src="//www.instagram.com/embed.js"></script>
 <script>
-// NAV
-const mainNav=document.getElementById('main-nav');
-window.addEventListener('scroll',()=>mainNav.classList.toggle('scrolled',scrollY>60));
-// REVEAL
-const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target)}}),{threshold:.07});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-// LANG
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>50));
+const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');ro.unobserve(x.target)}}),{threshold:.06});
+document.querySelectorAll('.r').forEach(el=>ro.observe(el));
 let isEN=false;
-function toggleLang(){isEN=!isEN;document.body.classList.toggle('lang-en',isEN);document.getElementById('lang-btn').textContent=isEN?'DE':'EN';document.documentElement.lang=isEN?'en':'de'}
-// YT MODAL
-function openYT(id){
-  // Map placeholder IDs to real YouTube IDs — replace with actual IDs from your playlist
-  const map={
-    'REEL_CORP_1':'','REEL_CORP_2':'','REEL_CORP_3':'','REEL_CORP_4':'','REEL_CORP_5':'',
-    'REEL_EVENT_1':'','REEL_EVENT_2':'','REEL_EVENT_3':'',
-    'REEL_FOOD_1':'','REEL_FOOD_2':'','REEL_FOOD_3':''
-  };
-  const realId=map[id]||id;
-  if(!realId){window.open('https://www.youtube.com/playlist?list=PLSZTwTHQ9B0kscvJDz2eUH4bsEOwBn7Yz','_blank');return}
-  document.getElementById('yt-iframe').src=`https://www.youtube.com/embed/${realId}?autoplay=1&rel=0&modestbranding=1`;
-  document.getElementById('yt-modal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeYTBtn(){document.getElementById('yt-iframe').src='';document.getElementById('yt-modal').classList.remove('open');document.body.style.overflow=''}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeYTBtn();closeLBBtn()}});
-// TABS
-function switchReelTab(tab,el){
-  document.querySelectorAll('.reel-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.reels-panel').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('panel-'+tab).classList.add('active');
-  if(tab==='instagram'&&window.instgrm)window.instgrm.Embeds.process();
-}
-// PHOTO MOSAIC
-const PHOTOS=['051A1620','051A1680','051A1851','Copy of DSC07584','DSC01152','DSC01157','DSC01165','DSC01167','DSC01168','DSC01173','DSC01178','DSC01911','DSC02086','DSC02113','DSC03740','DSC06530','DSC06697','DSC06740','DSC06890','DSC07304','DSC07320','DSC07322(1)','DSC07322','DSC07328','DSC07334','DSC07378','DSC07419','DSC07435','DSC07521','DSC07696','DSC07703','DSC07729','DSC07812','DSC07840','DSC07970','DSC08026','DSC08051','DSC08056','DSC08923','DSC08972','DSC09073','DSC09137','DSC09198','DSC09417','L1001556','L1001558','L1001560','L1001680','_DSC6178','_DSC6506','_DSC6611','_DSC6819','_DSC6837','_DSC6849'];
+function toggleLang(){isEN=!isEN;document.body.classList.toggle('en',isEN);document.getElementById('lang-btn').textContent=isEN?'DE':'EN';document.documentElement.lang=isEN?'en':'de'}
+function hoverPlay(v){const d=Math.min(v.duration||15,15);v.currentTime=Math.random()*d*.5;v.play().catch(()=>{})}
+function hoverStop(v){v.pause();v.currentTime=0}
+function openV(src){const v=document.getElementById('vmv');v.src=src;document.getElementById('vm').classList.add('open');document.body.style.overflow='hidden';v.play().catch(()=>{})}
+function closeV(){const v=document.getElementById('vmv');v.pause();v.src='';document.getElementById('vm').classList.remove('open');document.body.style.overflow=''}
+function swTab(id,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('panel-'+id).classList.add('on');if(id==='ig'&&window.instgrm)window.instgrm.Embeds.process()}
+const PH=['051A1620','051A1680','051A1851','Copy of DSC07584','DSC01152','DSC01157','DSC01165','DSC01167','DSC01168','DSC01173','DSC01178','DSC01911','DSC02086','DSC02113','DSC03740','DSC06530','DSC06697','DSC06740','DSC06890','DSC07304','DSC07320','DSC07322(1)','DSC07322','DSC07328','DSC07334','DSC07378','DSC07419','DSC07435','DSC07521','DSC07696','DSC07703','DSC07729','DSC07812','DSC07840','DSC07970','DSC08026','DSC08051','DSC08056','DSC08923','DSC08972','DSC09073','DSC09137','DSC09198','DSC09417','L1001556','L1001558','L1001560','L1001680','_DSC6178','_DSC6506','_DSC6611','_DSC6819','_DSC6837','_DSC6849'];
 let lbIdx=0;
-function buildMosaic(){
-  const m=document.getElementById('photo-mosaic');
-  if(!m)return;
-  m.innerHTML=PHOTOS.map((p,i)=>`<div class="photo-mosaic-item" onclick="openLB(${i})"><img src="Content/Foto/${p}.jpg" alt="MBMP Photo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`).join('');
-}
-function openLB(i){lbIdx=i;const img=document.getElementById('lb-img');img.src=`Content/Foto/${PHOTOS[i]}.jpg`;document.getElementById('lb-counter').textContent=`${i+1} / ${PHOTOS.length}`;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden'}
-function closeLBBtn(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow=''}
-function lbNav(dir){lbIdx=(lbIdx+dir+PHOTOS.length)%PHOTOS.length;const img=document.getElementById('lb-img');img.style.opacity='0';setTimeout(()=>{img.src=`Content/Foto/${PHOTOS[lbIdx]}.jpg`;img.style.opacity='1';document.getElementById('lb-counter').textContent=`${lbIdx+1} / ${PHOTOS.length}`},150)}
-document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('open'))return;if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1)});
-// CONTACT
-function submitContact(){
-  const name=document.getElementById('cf-name').value.trim();
-  const email=document.getElementById('cf-email').value.trim();
-  if(!name||!email){alert(isEN?'Please enter name and email.':'Bitte Name und E-Mail ausfüllen.');return}
-  document.querySelector('.contact-form').innerHTML=`<div style="text-align:center;padding:48px 0;border:1px solid var(--border)"><div style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:var(--gold);margin-bottom:12px">✓</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--white);margin-bottom:8px">${isEN?'Received.':'Erhalten.'}</div><p style="font-size:.8rem;color:var(--muted)">${isEN?'We will contact you within 24 hours.':'Wir melden uns innerhalb von 24 Stunden.'}</p></div>`;
-}
-document.addEventListener('DOMContentLoaded',buildMosaic);
+function buildPh(){const g=document.getElementById('pgrid');if(!g)return;g.innerHTML=PH.map((p,i)=>`<div class="pi" onclick="openLb(${i})"><img src="Content/Foto/${p}.jpg" alt="" loading="lazy" onload="this.classList.add('loaded')" onerror="this.closest('.pi').style.display='none'"></div>`).join('')}
+function openLb(i){lbIdx=i;const img=document.getElementById('lbi');img.style.opacity='0';img.src='Content/Foto/'+PH[i]+'.jpg';img.onload=()=>{img.style.opacity='1'};document.getElementById('lbnum').textContent=(i+1)+' / '+PH.length;document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden'}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+function lbNav(d){lbIdx=(lbIdx+d+PH.length)%PH.length;const img=document.getElementById('lbi');img.style.opacity='0';setTimeout(()=>{img.src='Content/Foto/'+PH[lbIdx]+'.jpg';img.onload=()=>{img.style.opacity='1'};document.getElementById('lbnum').textContent=(lbIdx+1)+' / '+PH.length},120)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeV();closeLb()}if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1)});
+function submitForm(){const n=document.getElementById('cn').value.trim(),em=document.getElementById('ce').value.trim();if(!n||!em){alert(isEN?'Please enter name and email.':'Bitte Name und E-Mail.');return}document.querySelector('.form').innerHTML=`<div style="text-align:center;padding:38px 0;border:1px solid rgba(255,255,255,.08)"><div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:#c8a96e;margin-bottom:9px">&#x2713;</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:#fff;margin-bottom:6px">${isEN?'Received.':'Erhalten.'}</div><p style="font-size:.74rem;color:rgba(255,255,255,.36)">${isEN?'We\'ll be in touch within 24 hours.':'Wir melden uns innerhalb von 24 Stunden.'}</p></div>`}
+document.addEventListener('DOMContentLoaded',buildPh);
 </script>
 </body>
 </html>
